@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.containers.GridView API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.containers.GridView</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from pygame import Rect
+from pygame import Surface
+
+from pygame.event import Event
+
+from albow.core.Widget import Widget
+
+
+class GridView(Widget):
+    &#34;&#34;&#34;
+    The GridView class is an abstract base class for widgets that display information in a regular grid of
+    rows and columns. Subclasses implement methods that define the size of the grid, for drawing a cell of
+    the grid and for responding to mouse clicks in a cell.
+    &#34;&#34;&#34;
+
+    def __init__(self, cell_size, nrows, ncols, **kwds):
+        &#34;&#34;&#34;
+        Initializes the grid view with the specified cell_size, and a rect sized to show nrows rows and ncols
+        columns of cells.
+
+        Note that nrows and ncols are used only for calculating the initial size of the widget, and are not stored.
+
+        Args:
+            cell_size:  The cell_size as a tuple (width, height)
+
+            nrows:  The # of rows
+
+            ncols:  The number of columns
+
+            **kwds: Additional property values in keyword:value format
+
+        &#34;&#34;&#34;
+        #
+        # Python 3 update
+        #
+        super().__init__(**kwds)
+        self.cell_size = cell_size
+        w, h = cell_size
+        d = 2 * self.margin
+        self.size = (w * ncols + d, h * nrows + d)
+        self.cell_size = cell_size
+
+    def draw(self, surface):
+        #        for row in xrange(self.num_rows()):
+        #            for col in xrange(self.num_cols()):
+        #       Python 3 update
+        for row in range(self.num_rows()):
+            for col in range(self.num_cols()):
+                r = self.cell_rect(row, col)
+                self.draw_cell(surface, row, col, r)
+
+    def cell_rect(self, theRow: int, theColumn: int) -&gt; Rect:
+        &#34;&#34;&#34;
+        Returns a rectangle covering the cell for row &#39;theRow&#39; and column &#39;theColumn&#39;.
+
+        Args:
+            theRow: The Row
+
+            theColumn: The column
+
+        Returns:    A pygame rectangle
+
+        &#34;&#34;&#34;
+        w, h = self.cell_size
+        d = self.margin
+        x = theColumn * w + d
+        y = theRow * h + d
+
+        return Rect(x, y, w, h)
+
+    def mouse_down(self, event):
+
+        x, y = event.local
+        w, h = self.cell_size
+        W, H = self.size
+        d = self.margin
+        if d &lt;= x &lt; W - d and d &lt;= y &lt; H - d:
+            row = (y - d) // h
+            col = (x - d) // w
+            self.click_cell(row, col, event)
+
+    #
+    # Abstract methods follow
+    #
+
+    def click_cell(self, theRow: int, theColumn: int, theEvent: Event):
+        pass
+
+    def draw_cell(self, theSurface: Surface, theRow: int, theColumn: int, rect: Rect):
+        pass
+
+    def num_rows(self) -&gt; int:
+        &#34;&#34;&#34;
+
+        Returns:  The # of rows
+        &#34;&#34;&#34;
+        pass
+
+    def num_cols(self) -&gt; int:
+        &#34;&#34;&#34;
+
+        Returns: The # of columns
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.containers.GridView.GridView"><code class="flex name class">
+<span>class <span class="ident">GridView</span></span>
+<span>(</span><span>cell_size, nrows, ncols, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The GridView class is an abstract base class for widgets that display information in a regular grid of
+rows and columns. Subclasses implement methods that define the size of the grid, for drawing a cell of
+the grid and for responding to mouse clicks in a cell.</p>
+<p>Initializes the grid view with the specified cell_size, and a rect sized to show nrows rows and ncols
+columns of cells.</p>
+<p>Note that nrows and ncols are used only for calculating the initial size of the widget, and are not stored.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cell_size</code></strong></dt>
+<dd>The cell_size as a tuple (width, height)</dd>
+<dt><strong><code>nrows</code></strong></dt>
+<dd>The # of rows</dd>
+<dt><strong><code>ncols</code></strong></dt>
+<dd>The number of columns</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional property values in keyword:value format</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class GridView(Widget):
+    &#34;&#34;&#34;
+    The GridView class is an abstract base class for widgets that display information in a regular grid of
+    rows and columns. Subclasses implement methods that define the size of the grid, for drawing a cell of
+    the grid and for responding to mouse clicks in a cell.
+    &#34;&#34;&#34;
+
+    def __init__(self, cell_size, nrows, ncols, **kwds):
+        &#34;&#34;&#34;
+        Initializes the grid view with the specified cell_size, and a rect sized to show nrows rows and ncols
+        columns of cells.
+
+        Note that nrows and ncols are used only for calculating the initial size of the widget, and are not stored.
+
+        Args:
+            cell_size:  The cell_size as a tuple (width, height)
+
+            nrows:  The # of rows
+
+            ncols:  The number of columns
+
+            **kwds: Additional property values in keyword:value format
+
+        &#34;&#34;&#34;
+        #
+        # Python 3 update
+        #
+        super().__init__(**kwds)
+        self.cell_size = cell_size
+        w, h = cell_size
+        d = 2 * self.margin
+        self.size = (w * ncols + d, h * nrows + d)
+        self.cell_size = cell_size
+
+    def draw(self, surface):
+        #        for row in xrange(self.num_rows()):
+        #            for col in xrange(self.num_cols()):
+        #       Python 3 update
+        for row in range(self.num_rows()):
+            for col in range(self.num_cols()):
+                r = self.cell_rect(row, col)
+                self.draw_cell(surface, row, col, r)
+
+    def cell_rect(self, theRow: int, theColumn: int) -&gt; Rect:
+        &#34;&#34;&#34;
+        Returns a rectangle covering the cell for row &#39;theRow&#39; and column &#39;theColumn&#39;.
+
+        Args:
+            theRow: The Row
+
+            theColumn: The column
+
+        Returns:    A pygame rectangle
+
+        &#34;&#34;&#34;
+        w, h = self.cell_size
+        d = self.margin
+        x = theColumn * w + d
+        y = theRow * h + d
+
+        return Rect(x, y, w, h)
+
+    def mouse_down(self, event):
+
+        x, y = event.local
+        w, h = self.cell_size
+        W, H = self.size
+        d = self.margin
+        if d &lt;= x &lt; W - d and d &lt;= y &lt; H - d:
+            row = (y - d) // h
+            col = (x - d) // w
+            self.click_cell(row, col, event)
+
+    #
+    # Abstract methods follow
+    #
+
+    def click_cell(self, theRow: int, theColumn: int, theEvent: Event):
+        pass
+
+    def draw_cell(self, theSurface: Surface, theRow: int, theColumn: int, rect: Rect):
+        pass
+
+    def num_rows(self) -&gt; int:
+        &#34;&#34;&#34;
+
+        Returns:  The # of rows
+        &#34;&#34;&#34;
+        pass
+
+    def num_cols(self) -&gt; int:
+        &#34;&#34;&#34;
+
+        Returns: The # of columns
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.containers.PaletteView.PaletteView" href="PaletteView.html#albow.containers.PaletteView.PaletteView">PaletteView</a></li>
+<li><a title="albow.demo.views.DemoGridView.DemoGridView" href="../demo/views/DemoGridView.html#albow.demo.views.DemoGridView.DemoGridView">DemoGridView</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.containers.GridView.GridView.cell_rect"><code class="name flex">
+<span>def <span class="ident">cell_rect</span></span>(<span>self, theRow, theColumn)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a rectangle covering the cell for row 'theRow' and column 'theColumn'.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theRow</code></strong></dt>
+<dd>The Row</dd>
+<dt><strong><code>theColumn</code></strong></dt>
+<dd>The column</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;
+<code>A</code> <code>pygame</code> <code>rectangle</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def cell_rect(self, theRow: int, theColumn: int) -&gt; Rect:
+    &#34;&#34;&#34;
+    Returns a rectangle covering the cell for row &#39;theRow&#39; and column &#39;theColumn&#39;.
+
+    Args:
+        theRow: The Row
+
+        theColumn: The column
+
+    Returns:    A pygame rectangle
+
+    &#34;&#34;&#34;
+    w, h = self.cell_size
+    d = self.margin
+    x = theColumn * w + d
+    y = theRow * h + d
+
+    return Rect(x, y, w, h)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.GridView.GridView.click_cell"><code class="name flex">
+<span>def <span class="ident">click_cell</span></span>(<span>self, theRow, theColumn, theEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def click_cell(self, theRow: int, theColumn: int, theEvent: Event):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.GridView.GridView.draw_cell"><code class="name flex">
+<span>def <span class="ident">draw_cell</span></span>(<span>self, theSurface, theRow, theColumn, rect)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_cell(self, theSurface: Surface, theRow: int, theColumn: int, rect: Rect):
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.GridView.GridView.mouse_down"><code class="name flex">
+<span>def <span class="ident">mouse_down</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_down(self, event):
+
+    x, y = event.local
+    w, h = self.cell_size
+    W, H = self.size
+    d = self.margin
+    if d &lt;= x &lt; W - d and d &lt;= y &lt; H - d:
+        row = (y - d) // h
+        col = (x - d) // w
+        self.click_cell(row, col, event)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.GridView.GridView.num_cols"><code class="name flex">
+<span>def <span class="ident">num_cols</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> # of <code>columns</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def num_cols(self) -&gt; int:
+    &#34;&#34;&#34;
+
+    Returns: The # of columns
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.GridView.GridView.num_rows"><code class="name flex">
+<span>def <span class="ident">num_rows</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> # of <code>rows</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def num_rows(self) -&gt; int:
+    &#34;&#34;&#34;
+
+    Returns:  The # of rows
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.core.Widget.Widget.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.containers" href="index.html">albow.containers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.containers.GridView.GridView" href="#albow.containers.GridView.GridView">GridView</a></code></h4>
+<ul class="two-column">
+<li><code><a title="albow.containers.GridView.GridView.cell_rect" href="#albow.containers.GridView.GridView.cell_rect">cell_rect</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.click_cell" href="#albow.containers.GridView.GridView.click_cell">click_cell</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.draw_cell" href="#albow.containers.GridView.GridView.draw_cell">draw_cell</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.mouse_down" href="#albow.containers.GridView.GridView.mouse_down">mouse_down</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.num_cols" href="#albow.containers.GridView.GridView.num_cols">num_cols</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.num_rows" href="#albow.containers.GridView.GridView.num_rows">num_rows</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

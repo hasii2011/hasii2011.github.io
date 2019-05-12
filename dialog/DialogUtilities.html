@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.dialog.DialogUtilities API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.dialog.DialogUtilities</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import textwrap
+
+from albow.widgets.Button import Button
+from albow.widgets.Label import Label
+
+from albow.dialog.Dialog import Dialog
+
+from albow.layout.Row import Row
+from albow.layout.Column import Column
+from albow.input.TextField import TextField
+
+DEFAULT_ASK_RESPONSES = [&#34;OK&#34;, &#34;Cancel&#34;]
+
+
+def wrapped_label(text, wrap_width, **kwds) -&gt; Label:
+    &#34;&#34;&#34;
+    Constructs a `albow.widgets.Label` widget from the given text after using the ``textwrap`` module to wrap it to
+    the specified width in
+    characters.
+    Additional keyword parameters are passed to the Label constructor.
+
+    Args:
+        text:       The text to wrap in a label
+
+        wrap_width: The wrap width
+
+        **kwds:     Pass these to the Label constructor
+
+    Returns:    A Label widget
+
+    &#34;&#34;&#34;
+    paras = text.split(&#34;\n\n&#34;)
+    text = &#34;\n&#34;.join([textwrap.fill(para, wrap_width) for para in paras])
+    return Label(text, **kwds)
+
+
+def alert(theMessage: str, theWrapWidth=60, **kwds):
+    &#34;&#34;&#34;
+    Displays a message in a modal dialog, wrapped to the specified width in characters. The dialog can be dismissed by
+    pressing Return, Enter or Escape.
+
+    Args:
+        theMessage:  The alert message to display
+
+        theWrapWidth:  The wrap width in characters
+
+        **kwds: Additional keyword parameters passed to the `albow.dialog.Dialog` constructor.
+    &#34;&#34;&#34;
+    ask(theMessage, [&#34;OK&#34;], wrap_width=theWrapWidth, **kwds)
+
+
+def ask(theMessage: str, theResponses=None, default=0, cancel=-1, wrap_width=60, **kwds):
+    &#34;&#34;&#34;
+    Displays a message in a modal dialog with a set of buttons labelled with the specified responses. Clicking a
+    button causes the ask function to return the corresponding response string as its value. The default and
+    cancel parameters are indexes into the response list specifying the values to be returned by Return/Enter
+    and Escape, respectively.
+
+    Args:
+        theMessage: The message to display
+
+        theResponses:  Possible responses
+
+        default:  The index to the default message
+
+        cancel: The index to the cancel message
+
+        wrap_width:  The wrap width in characters
+
+        **kwds: Additional keyword parameters passed to the Dialog constructor.
+
+    Returns:    The dialog modal result
+
+    &#34;&#34;&#34;
+
+    #
+    # Fix &#39;Mutable default arguments&#39;
+    #
+    if theResponses is None:
+        theResponses = DEFAULT_ASK_RESPONSES
+    box = Dialog(**kwds)
+    d = box.margin
+    lb = wrapped_label(theMessage, wrap_width)
+    lb.topleft = (d, d)
+    buts = []
+    for caption in theResponses:
+        but = Button(caption, action=lambda x=caption: box.dismiss(x))
+        buts.append(but)
+    brow = Row(buts, spacing=d, equalize=&#39;w&#39;)
+    lb.width = max(lb.width, brow.width)
+    col = Column([lb, brow], spacing=d, align=&#39;r&#39;)
+    col.topleft = (d, d)
+    if default is not None:
+        box.enter_response = theResponses[default]
+    else:
+        box.enter_response = None
+    if cancel is not None:
+        box.cancel_response = theResponses[cancel]
+    else:
+        box.cancel_response = None
+    box.add(col)
+    box.shrink_wrap()
+
+    return box.present()
+
+
+def input_text(thePrompt: str, theInputWidth: int, theDefaultInput: str=None, **kwds):
+
+    &#34;&#34;&#34;
+    Presents a modal dialog containing the given prompt and a text field. The theInputWidth is the width of
+    the text field, and the theDefaultInput, if any, is its initial contents. If the dialog is dismissed by pressing
+    Return or Enter, the contents of the text field is returned. If it is dismissed by pressing Escape, None
+    is returned.
+
+    Args:
+        thePrompt:      The message to prompt with
+
+        theInputWidth:  The width of the input text widget
+
+        theDefaultInput: A possible default input
+
+        **kwds:  Additional keyword parameters passed to the Dialog constructor.
+
+    Returns:  The value that the user input
+    &#34;&#34;&#34;
+    box = Dialog(**kwds)
+    d = box.margin
+
+    def ok():
+        box.dismiss(True)
+
+    def cancel():
+        box.dismiss(False)
+
+    lb = Label(thePrompt)
+    lb.topleft = (d, d)
+    tf = TextField(theInputWidth)
+    if theDefaultInput:
+        tf.set_text(theDefaultInput)
+    tf.enter_action = ok
+    tf.escape_action = cancel
+    tf.top = lb.top
+    tf.left = lb.right + 5
+    box.add(lb)
+    box.add(tf)
+    tf.focus()
+    box.shrink_wrap()
+    if box.present():
+        return tf.get_text()
+    else:
+        return None</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="albow.dialog.DialogUtilities.alert"><code class="name flex">
+<span>def <span class="ident">alert</span></span>(<span>theMessage, theWrapWidth=60, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Displays a message in a modal dialog, wrapped to the specified width in characters. The dialog can be dismissed by
+pressing Return, Enter or Escape.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theMessage</code></strong></dt>
+<dd>The alert message to display</dd>
+<dt><strong><code>theWrapWidth</code></strong></dt>
+<dd>The wrap width in characters</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional keyword parameters passed to the <a title="albow.dialog.Dialog" href="Dialog.html"><code>albow.dialog.Dialog</code></a> constructor.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def alert(theMessage: str, theWrapWidth=60, **kwds):
+    &#34;&#34;&#34;
+    Displays a message in a modal dialog, wrapped to the specified width in characters. The dialog can be dismissed by
+    pressing Return, Enter or Escape.
+
+    Args:
+        theMessage:  The alert message to display
+
+        theWrapWidth:  The wrap width in characters
+
+        **kwds: Additional keyword parameters passed to the `albow.dialog.Dialog` constructor.
+    &#34;&#34;&#34;
+    ask(theMessage, [&#34;OK&#34;], wrap_width=theWrapWidth, **kwds)</code></pre>
+</details>
+</dd>
+<dt id="albow.dialog.DialogUtilities.ask"><code class="name flex">
+<span>def <span class="ident">ask</span></span>(<span>theMessage, theResponses=None, default=0, cancel=-1, wrap_width=60, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Displays a message in a modal dialog with a set of buttons labelled with the specified responses. Clicking a
+button causes the ask function to return the corresponding response string as its value. The default and
+cancel parameters are indexes into the response list specifying the values to be returned by Return/Enter
+and Escape, respectively.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theMessage</code></strong></dt>
+<dd>The message to display</dd>
+<dt><strong><code>theResponses</code></strong></dt>
+<dd>Possible responses</dd>
+<dt><strong><code>default</code></strong></dt>
+<dd>The index to the default message</dd>
+<dt><strong><code>cancel</code></strong></dt>
+<dd>The index to the cancel message</dd>
+<dt><strong><code>wrap_width</code></strong></dt>
+<dd>The wrap width in characters</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional keyword parameters passed to the Dialog constructor.</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;
+<code>The</code> <code>dialog</code> <code>modal</code> <code>result</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def ask(theMessage: str, theResponses=None, default=0, cancel=-1, wrap_width=60, **kwds):
+    &#34;&#34;&#34;
+    Displays a message in a modal dialog with a set of buttons labelled with the specified responses. Clicking a
+    button causes the ask function to return the corresponding response string as its value. The default and
+    cancel parameters are indexes into the response list specifying the values to be returned by Return/Enter
+    and Escape, respectively.
+
+    Args:
+        theMessage: The message to display
+
+        theResponses:  Possible responses
+
+        default:  The index to the default message
+
+        cancel: The index to the cancel message
+
+        wrap_width:  The wrap width in characters
+
+        **kwds: Additional keyword parameters passed to the Dialog constructor.
+
+    Returns:    The dialog modal result
+
+    &#34;&#34;&#34;
+
+    #
+    # Fix &#39;Mutable default arguments&#39;
+    #
+    if theResponses is None:
+        theResponses = DEFAULT_ASK_RESPONSES
+    box = Dialog(**kwds)
+    d = box.margin
+    lb = wrapped_label(theMessage, wrap_width)
+    lb.topleft = (d, d)
+    buts = []
+    for caption in theResponses:
+        but = Button(caption, action=lambda x=caption: box.dismiss(x))
+        buts.append(but)
+    brow = Row(buts, spacing=d, equalize=&#39;w&#39;)
+    lb.width = max(lb.width, brow.width)
+    col = Column([lb, brow], spacing=d, align=&#39;r&#39;)
+    col.topleft = (d, d)
+    if default is not None:
+        box.enter_response = theResponses[default]
+    else:
+        box.enter_response = None
+    if cancel is not None:
+        box.cancel_response = theResponses[cancel]
+    else:
+        box.cancel_response = None
+    box.add(col)
+    box.shrink_wrap()
+
+    return box.present()</code></pre>
+</details>
+</dd>
+<dt id="albow.dialog.DialogUtilities.input_text"><code class="name flex">
+<span>def <span class="ident">input_text</span></span>(<span>thePrompt, theInputWidth, theDefaultInput=None, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Presents a modal dialog containing the given prompt and a text field. The theInputWidth is the width of
+the text field, and the theDefaultInput, if any, is its initial contents. If the dialog is dismissed by pressing
+Return or Enter, the contents of the text field is returned. If it is dismissed by pressing Escape, None
+is returned.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>thePrompt</code></strong></dt>
+<dd>
+<p>The message to prompt with</p>
+</dd>
+<dt><strong><code>theInputWidth</code></strong></dt>
+<dd>The width of the input text widget</dd>
+<dt><strong><code>theDefaultInput</code></strong></dt>
+<dd>A possible default input</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional keyword parameters passed to the Dialog constructor.</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>value</code> <code>that</code> <code>the</code> <code>user</code> <code>input</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def input_text(thePrompt: str, theInputWidth: int, theDefaultInput: str=None, **kwds):
+
+    &#34;&#34;&#34;
+    Presents a modal dialog containing the given prompt and a text field. The theInputWidth is the width of
+    the text field, and the theDefaultInput, if any, is its initial contents. If the dialog is dismissed by pressing
+    Return or Enter, the contents of the text field is returned. If it is dismissed by pressing Escape, None
+    is returned.
+
+    Args:
+        thePrompt:      The message to prompt with
+
+        theInputWidth:  The width of the input text widget
+
+        theDefaultInput: A possible default input
+
+        **kwds:  Additional keyword parameters passed to the Dialog constructor.
+
+    Returns:  The value that the user input
+    &#34;&#34;&#34;
+    box = Dialog(**kwds)
+    d = box.margin
+
+    def ok():
+        box.dismiss(True)
+
+    def cancel():
+        box.dismiss(False)
+
+    lb = Label(thePrompt)
+    lb.topleft = (d, d)
+    tf = TextField(theInputWidth)
+    if theDefaultInput:
+        tf.set_text(theDefaultInput)
+    tf.enter_action = ok
+    tf.escape_action = cancel
+    tf.top = lb.top
+    tf.left = lb.right + 5
+    box.add(lb)
+    box.add(tf)
+    tf.focus()
+    box.shrink_wrap()
+    if box.present():
+        return tf.get_text()
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="albow.dialog.DialogUtilities.wrapped_label"><code class="name flex">
+<span>def <span class="ident">wrapped_label</span></span>(<span>text, wrap_width, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Constructs a <a title="albow.widgets.Label" href="../widgets/Label.html"><code>albow.widgets.Label</code></a> widget from the given text after using the <code>textwrap</code> module to wrap it to
+the specified width in
+characters.
+Additional keyword parameters are passed to the Label constructor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text</code></strong></dt>
+<dd>
+<p>The text to wrap in a label</p>
+</dd>
+<dt><strong><code>wrap_width</code></strong></dt>
+<dd>The wrap width</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>
+<p>Pass these to the Label constructor</p>
+</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;
+<code>A</code> <code>Label</code> <code>widget</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def wrapped_label(text, wrap_width, **kwds) -&gt; Label:
+    &#34;&#34;&#34;
+    Constructs a `albow.widgets.Label` widget from the given text after using the ``textwrap`` module to wrap it to
+    the specified width in
+    characters.
+    Additional keyword parameters are passed to the Label constructor.
+
+    Args:
+        text:       The text to wrap in a label
+
+        wrap_width: The wrap width
+
+        **kwds:     Pass these to the Label constructor
+
+    Returns:    A Label widget
+
+    &#34;&#34;&#34;
+    paras = text.split(&#34;\n\n&#34;)
+    text = &#34;\n&#34;.join([textwrap.fill(para, wrap_width) for para in paras])
+    return Label(text, **kwds)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.dialog" href="index.html">albow.dialog</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="albow.dialog.DialogUtilities.alert" href="#albow.dialog.DialogUtilities.alert">alert</a></code></li>
+<li><code><a title="albow.dialog.DialogUtilities.ask" href="#albow.dialog.DialogUtilities.ask">ask</a></code></li>
+<li><code><a title="albow.dialog.DialogUtilities.input_text" href="#albow.dialog.DialogUtilities.input_text">input_text</a></code></li>
+<li><code><a title="albow.dialog.DialogUtilities.wrapped_label" href="#albow.dialog.DialogUtilities.wrapped_label">wrapped_label</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

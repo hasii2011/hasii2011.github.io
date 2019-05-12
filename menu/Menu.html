@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.menu.Menu API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.menu.Menu</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from pygame import Surface
+
+from pygame.event import Event
+
+from albow.core.RootWidget import get_root
+from albow.core.RootWidget import get_focus
+
+from albow.dialog.Dialog import Dialog
+from albow.themes.ThemeProperty import ThemeProperty
+
+
+class Menu(Dialog):
+    &#34;&#34;&#34;
+    The Menu class provides a drop-down command menu for use with a MenuBar. It can also be used on its
+    own as a pop-up menu of selectable items.
+
+    Using Menus
+    -----------
+
+    There are two ways that a Menu can be used: as a drop-down menu in a menu bar, or as a stand-alone pop-up menu.
+
+    - To use it as a drop-down menu, simply add it to the menus list of a MenuBar. The menu bar takes care of showing
+    and interacting with the menu automatically.
+
+    - To use it as a pop-up menu, you will need to call the present() method, and possibly the find_item_for_key()
+    and/or invoke_command() methods yourself
+
+    Menu item specifications
+    ------------------------
+
+    When creating the menu, items are specified as a list of tuples:
+
+    ``(text, command_name)``
+
+    where ``text`` is the title to be displayed for the item, optionally followed by a slash and a key
+    combination specifier.
+
+    A key combination specifier consists of a single printable ASCII character, optionally preceded by one or more of
+    the following modifiers:
+
+        Character   Key
+        ^           Shift
+        @           Alt or Option
+
+    The command_name is an internal name used to associate the item with handling methods. Two method names are
+    derived from the command name: a handler method (suffixed with ``_cmd``) and an enabling method
+    (suffixed with ``_enabled``).
+    See `albow.menu.MenuBar` for details of how these methods are used.
+
+    An empty tuple may be used to create a separator between groups of menu items.
+
+    Example
+    -------
+    ```python
+
+    file_menu = Menu(&#39;File&#39;, [
+        (&#39;Open/O&#39;, &#39;open&#39;),
+        (),
+        (&#39;Save/S&#39;, &#39;save&#39;),
+        (Save As/^S&#39;, &#39;save_as&#39;)
+    ])
+
+    ```
+
+    &#34;&#34;&#34;
+    disabled_color = ThemeProperty(&#39;disabled_color&#39;)
+    &#34;&#34;&#34;
+    The color with which disabled menu items are displayed
+    &#34;&#34;&#34;
+    click_outside_response = -1
+
+    def __init__(self, title, items, **kwds):
+        &#34;&#34;&#34;
+        Creates a Menu with the specified title and item list. The title is not displayed in the menu itself,
+        but is used when the menu is attached to a MenuBar.
+
+        Args:
+            title:  The menu title
+
+            items:  The menu items
+            **kwds:
+        &#34;&#34;&#34;
+
+        self._hilited    = None
+        self._key_margin = None
+        self.title       = title
+        self.items       = items
+        #
+        # Python 3 update
+        #
+        # self._items      = [MenuItem(*item) for item in items]
+        self._items = items
+        super().__init__(**kwds)
+
+    def show(self, client, pos):
+        &#34;&#34;&#34;
+
+        :param client:
+        :param pos:
+        :return:
+        &#34;&#34;&#34;
+
+        client = client or get_root()
+        #
+        # Python 3 update
+        #
+        aValue = list(client.local_to_global(pos))
+        # self.topleft = client.local_to_global(pos)
+        self.topleft = aValue
+        focus = get_focus()
+        font = self.font
+        h = font.get_linesize()
+        items = self._items
+        margin = self.margin
+        height = h * len(items) + h
+        w1 = w2 = 0
+        for item in items:
+            item.enabled = self.command_is_enabled(item, focus)
+            w1 = max(w1, font.size(item.text)[0])
+            w2 = max(w2, font.size(item.keyname)[0])
+        width = w1 + 2 * margin
+        self._key_margin = width
+        if w2 &gt; 0:
+            width += w2 + margin
+        self.size = (width, height)
+
+        return Dialog.present(self, centered=False)
+
+    def command_is_enabled(self, item, focus):
+        cmd = item.command
+        if cmd:
+            enabler_name = cmd + &#39;_enabled&#39;
+            handler = focus
+            while handler:
+                enabler = getattr(handler, enabler_name, None)
+                if enabler:
+                    return enabler()
+                handler = handler.next_handler()
+        return True
+
+    def draw(self, surf: Surface):
+
+        font = self.font
+        h = font.get_linesize()
+        sep = surf.get_rect()
+        sep.height = 1
+        colors = [self.disabled_color, self.fg_color]
+        bg = self.bg_color
+        xt = self.margin
+        xk = self._key_margin
+        y = h // 2
+        hilited = self._hilited
+        for item in self._items:
+            text = item.text
+            if not text:
+                sep.top = y + h // 2
+                surf.fill(colors[0], sep)
+            else:
+                if item is hilited:
+                    rect = surf.get_rect()
+                    rect.top = y
+                    rect.height = h
+                    surf.fill(colors[1], rect)
+                    color = bg
+                else:
+                    color = colors[item.enabled]
+                buf = font.render(item.text, True, color)
+                surf.blit(buf, (xt, y))
+                keyname = item.keyname
+                if keyname:
+                    buf = font.render(keyname, True, color)
+                    surf.blit(buf, (xk, y))
+            y += h
+
+    def mouse_move(self, e):
+        self.mouse_drag(e)
+
+    def mouse_drag(self, e):
+        item = self.find_enabled_item(e)
+        if item is not self._hilited:
+            self._hilited = item
+            self.invalidate()
+
+    def mouse_up(self, e):
+        item = self.find_enabled_item(e)
+        if item:
+            self.dismiss(self._items.index(item))
+
+    def find_enabled_item(self, e):
+        x, y = e.local
+        if 0 &lt;= x &lt; self.width:
+            h = self.font.get_linesize()
+            i = (y - h // 2) // h
+            items = self._items
+            if 0 &lt;= i &lt; len(items):
+                item = items[i]
+                if item.enabled:
+                    return item
+
+    def find_item_for_key(self, theEvent: Event):
+        &#34;&#34;&#34;
+        Given a key event, finds a matching enabled item and returns its index (0-based).
+
+        Args:
+            theEvent: The key event to match up against
+
+        Returns:  Returns -1 if no matching item is found or the matching item is not enabled.
+
+        &#34;&#34;&#34;
+        for item in self._items:
+            if item.keycode == theEvent.key and item.shift == theEvent.shift and item.alt == theEvent.alt:
+                focus = get_focus()
+                if self.command_is_enabled(item, focus):
+                    return self._items.index(item)
+                else:
+                    return -1
+        return -1
+
+    def get_command(self, i):
+        if i &gt;= 0:
+            item = self._items[i]
+            cmd = item.command
+            if cmd:
+                return cmd + &#39;_cmd&#39;
+
+    def invoke_item(self, theCommandIndex):
+        &#34;&#34;&#34;
+        Locates and calls a command handler for the item with the given index (0-based). Does nothing if
+        the index is -1.
+
+        .. Note::
+            Does not check whether the item is enabled.
+
+        Args:
+            theCommandIndex: The command handler index
+        &#34;&#34;&#34;
+        cmd = self.get_command(theCommandIndex)
+        if cmd:
+            get_focus().handle_command(cmd)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.menu.Menu.Menu"><code class="flex name class">
+<span>class <span class="ident">Menu</span></span>
+<span>(</span><span>title, items, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The Menu class provides a drop-down command menu for use with a MenuBar. It can also be used on its
+own as a pop-up menu of selectable items.</p>
+<h2 id="using-menus">Using Menus</h2>
+<p>There are two ways that a Menu can be used: as a drop-down menu in a menu bar, or as a stand-alone pop-up menu.</p>
+<ul>
+<li>
+<p>To use it as a drop-down menu, simply add it to the menus list of a MenuBar. The menu bar takes care of showing
+and interacting with the menu automatically.</p>
+</li>
+<li>
+<p>To use it as a pop-up menu, you will need to call the present() method, and possibly the find_item_for_key()
+and/or invoke_command() methods yourself</p>
+</li>
+</ul>
+<h2 id="menu-item-specifications">Menu item specifications</h2>
+<p>When creating the menu, items are specified as a list of tuples:</p>
+<p><code>(text, command_name)</code></p>
+<p>where <code>text</code> is the title to be displayed for the item, optionally followed by a slash and a key
+combination specifier.</p>
+<p>A key combination specifier consists of a single printable ASCII character, optionally preceded by one or more of
+the following modifiers:</p>
+<pre><code>Character   Key
+^           Shift
+@           Alt or Option
+</code></pre>
+<p>The command_name is an internal name used to associate the item with handling methods. Two method names are
+derived from the command name: a handler method (suffixed with <code>_cmd</code>) and an enabling method
+(suffixed with <code>_enabled</code>).
+See <code>albow.menu.MenuBar</code> for details of how these methods are used.</p>
+<p>An empty tuple may be used to create a separator between groups of menu items.</p>
+<h2 id="example">Example</h2>
+<pre><code class="python">
+file_menu = Menu('File', [
+    ('Open/O', 'open'),
+    (),
+    ('Save/S', 'save'),
+    (Save As/^S', 'save_as')
+])
+
+</code></pre>
+<p>Creates a Menu with the specified title and item list. The title is not displayed in the menu itself,
+but is used when the menu is attached to a MenuBar.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>title</code></strong></dt>
+<dd>The menu title</dd>
+<dt><strong><code>items</code></strong></dt>
+<dd>The menu items</dd>
+</dl>
+<p>**kwds:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Menu(Dialog):
+    &#34;&#34;&#34;
+    The Menu class provides a drop-down command menu for use with a MenuBar. It can also be used on its
+    own as a pop-up menu of selectable items.
+
+    Using Menus
+    -----------
+
+    There are two ways that a Menu can be used: as a drop-down menu in a menu bar, or as a stand-alone pop-up menu.
+
+    - To use it as a drop-down menu, simply add it to the menus list of a MenuBar. The menu bar takes care of showing
+    and interacting with the menu automatically.
+
+    - To use it as a pop-up menu, you will need to call the present() method, and possibly the find_item_for_key()
+    and/or invoke_command() methods yourself
+
+    Menu item specifications
+    ------------------------
+
+    When creating the menu, items are specified as a list of tuples:
+
+    ``(text, command_name)``
+
+    where ``text`` is the title to be displayed for the item, optionally followed by a slash and a key
+    combination specifier.
+
+    A key combination specifier consists of a single printable ASCII character, optionally preceded by one or more of
+    the following modifiers:
+
+        Character   Key
+        ^           Shift
+        @           Alt or Option
+
+    The command_name is an internal name used to associate the item with handling methods. Two method names are
+    derived from the command name: a handler method (suffixed with ``_cmd``) and an enabling method
+    (suffixed with ``_enabled``).
+    See `albow.menu.MenuBar` for details of how these methods are used.
+
+    An empty tuple may be used to create a separator between groups of menu items.
+
+    Example
+    -------
+    ```python
+
+    file_menu = Menu(&#39;File&#39;, [
+        (&#39;Open/O&#39;, &#39;open&#39;),
+        (),
+        (&#39;Save/S&#39;, &#39;save&#39;),
+        (Save As/^S&#39;, &#39;save_as&#39;)
+    ])
+
+    ```
+
+    &#34;&#34;&#34;
+    disabled_color = ThemeProperty(&#39;disabled_color&#39;)
+    &#34;&#34;&#34;
+    The color with which disabled menu items are displayed
+    &#34;&#34;&#34;
+    click_outside_response = -1
+
+    def __init__(self, title, items, **kwds):
+        &#34;&#34;&#34;
+        Creates a Menu with the specified title and item list. The title is not displayed in the menu itself,
+        but is used when the menu is attached to a MenuBar.
+
+        Args:
+            title:  The menu title
+
+            items:  The menu items
+            **kwds:
+        &#34;&#34;&#34;
+
+        self._hilited    = None
+        self._key_margin = None
+        self.title       = title
+        self.items       = items
+        #
+        # Python 3 update
+        #
+        # self._items      = [MenuItem(*item) for item in items]
+        self._items = items
+        super().__init__(**kwds)
+
+    def show(self, client, pos):
+        &#34;&#34;&#34;
+
+        :param client:
+        :param pos:
+        :return:
+        &#34;&#34;&#34;
+
+        client = client or get_root()
+        #
+        # Python 3 update
+        #
+        aValue = list(client.local_to_global(pos))
+        # self.topleft = client.local_to_global(pos)
+        self.topleft = aValue
+        focus = get_focus()
+        font = self.font
+        h = font.get_linesize()
+        items = self._items
+        margin = self.margin
+        height = h * len(items) + h
+        w1 = w2 = 0
+        for item in items:
+            item.enabled = self.command_is_enabled(item, focus)
+            w1 = max(w1, font.size(item.text)[0])
+            w2 = max(w2, font.size(item.keyname)[0])
+        width = w1 + 2 * margin
+        self._key_margin = width
+        if w2 &gt; 0:
+            width += w2 + margin
+        self.size = (width, height)
+
+        return Dialog.present(self, centered=False)
+
+    def command_is_enabled(self, item, focus):
+        cmd = item.command
+        if cmd:
+            enabler_name = cmd + &#39;_enabled&#39;
+            handler = focus
+            while handler:
+                enabler = getattr(handler, enabler_name, None)
+                if enabler:
+                    return enabler()
+                handler = handler.next_handler()
+        return True
+
+    def draw(self, surf: Surface):
+
+        font = self.font
+        h = font.get_linesize()
+        sep = surf.get_rect()
+        sep.height = 1
+        colors = [self.disabled_color, self.fg_color]
+        bg = self.bg_color
+        xt = self.margin
+        xk = self._key_margin
+        y = h // 2
+        hilited = self._hilited
+        for item in self._items:
+            text = item.text
+            if not text:
+                sep.top = y + h // 2
+                surf.fill(colors[0], sep)
+            else:
+                if item is hilited:
+                    rect = surf.get_rect()
+                    rect.top = y
+                    rect.height = h
+                    surf.fill(colors[1], rect)
+                    color = bg
+                else:
+                    color = colors[item.enabled]
+                buf = font.render(item.text, True, color)
+                surf.blit(buf, (xt, y))
+                keyname = item.keyname
+                if keyname:
+                    buf = font.render(keyname, True, color)
+                    surf.blit(buf, (xk, y))
+            y += h
+
+    def mouse_move(self, e):
+        self.mouse_drag(e)
+
+    def mouse_drag(self, e):
+        item = self.find_enabled_item(e)
+        if item is not self._hilited:
+            self._hilited = item
+            self.invalidate()
+
+    def mouse_up(self, e):
+        item = self.find_enabled_item(e)
+        if item:
+            self.dismiss(self._items.index(item))
+
+    def find_enabled_item(self, e):
+        x, y = e.local
+        if 0 &lt;= x &lt; self.width:
+            h = self.font.get_linesize()
+            i = (y - h // 2) // h
+            items = self._items
+            if 0 &lt;= i &lt; len(items):
+                item = items[i]
+                if item.enabled:
+                    return item
+
+    def find_item_for_key(self, theEvent: Event):
+        &#34;&#34;&#34;
+        Given a key event, finds a matching enabled item and returns its index (0-based).
+
+        Args:
+            theEvent: The key event to match up against
+
+        Returns:  Returns -1 if no matching item is found or the matching item is not enabled.
+
+        &#34;&#34;&#34;
+        for item in self._items:
+            if item.keycode == theEvent.key and item.shift == theEvent.shift and item.alt == theEvent.alt:
+                focus = get_focus()
+                if self.command_is_enabled(item, focus):
+                    return self._items.index(item)
+                else:
+                    return -1
+        return -1
+
+    def get_command(self, i):
+        if i &gt;= 0:
+            item = self._items[i]
+            cmd = item.command
+            if cmd:
+                return cmd + &#39;_cmd&#39;
+
+    def invoke_item(self, theCommandIndex):
+        &#34;&#34;&#34;
+        Locates and calls a command handler for the item with the given index (0-based). Does nothing if
+        the index is -1.
+
+        .. Note::
+            Does not check whether the item is enabled.
+
+        Args:
+            theCommandIndex: The command handler index
+        &#34;&#34;&#34;
+        cmd = self.get_command(theCommandIndex)
+        if cmd:
+            get_focus().handle_command(cmd)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.dialog.Dialog.Dialog" href="../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
+<li><a title="albow.dialog.Modal.Modal" href="../dialog/Modal.html#albow.dialog.Modal.Modal">Modal</a></li>
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.menu.Menu.Menu.disabled_color"><code class="name">var <span class="ident">disabled_color</span></code></dt>
+<dd>
+<section class="desc"><p>The color with which disabled menu items are displayed</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.menu.Menu.Menu.command_is_enabled"><code class="name flex">
+<span>def <span class="ident">command_is_enabled</span></span>(<span>self, item, focus)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def command_is_enabled(self, item, focus):
+    cmd = item.command
+    if cmd:
+        enabler_name = cmd + &#39;_enabled&#39;
+        handler = focus
+        while handler:
+            enabler = getattr(handler, enabler_name, None)
+            if enabler:
+                return enabler()
+            handler = handler.next_handler()
+    return True</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.find_enabled_item"><code class="name flex">
+<span>def <span class="ident">find_enabled_item</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def find_enabled_item(self, e):
+    x, y = e.local
+    if 0 &lt;= x &lt; self.width:
+        h = self.font.get_linesize()
+        i = (y - h // 2) // h
+        items = self._items
+        if 0 &lt;= i &lt; len(items):
+            item = items[i]
+            if item.enabled:
+                return item</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.find_item_for_key"><code class="name flex">
+<span>def <span class="ident">find_item_for_key</span></span>(<span>self, theEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Given a key event, finds a matching enabled item and returns its index (0-based).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theEvent</code></strong></dt>
+<dd>The key event to match up against</dd>
+</dl>
+<p>Returns:
+Returns -1 if no matching item is found or the matching item is not enabled.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def find_item_for_key(self, theEvent: Event):
+    &#34;&#34;&#34;
+    Given a key event, finds a matching enabled item and returns its index (0-based).
+
+    Args:
+        theEvent: The key event to match up against
+
+    Returns:  Returns -1 if no matching item is found or the matching item is not enabled.
+
+    &#34;&#34;&#34;
+    for item in self._items:
+        if item.keycode == theEvent.key and item.shift == theEvent.shift and item.alt == theEvent.alt:
+            focus = get_focus()
+            if self.command_is_enabled(item, focus):
+                return self._items.index(item)
+            else:
+                return -1
+    return -1</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.get_command"><code class="name flex">
+<span>def <span class="ident">get_command</span></span>(<span>self, i)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_command(self, i):
+    if i &gt;= 0:
+        item = self._items[i]
+        cmd = item.command
+        if cmd:
+            return cmd + &#39;_cmd&#39;</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.invoke_item"><code class="name flex">
+<span>def <span class="ident">invoke_item</span></span>(<span>self, theCommandIndex)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Locates and calls a command handler for the item with the given index (0-based). Does nothing if
+the index is -1.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Does not check whether the item is enabled.</p>
+</div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theCommandIndex</code></strong></dt>
+<dd>The command handler index</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def invoke_item(self, theCommandIndex):
+    &#34;&#34;&#34;
+    Locates and calls a command handler for the item with the given index (0-based). Does nothing if
+    the index is -1.
+
+    .. Note::
+        Does not check whether the item is enabled.
+
+    Args:
+        theCommandIndex: The command handler index
+    &#34;&#34;&#34;
+    cmd = self.get_command(theCommandIndex)
+    if cmd:
+        get_focus().handle_command(cmd)</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.mouse_drag"><code class="name flex">
+<span>def <span class="ident">mouse_drag</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_drag(self, e):
+    item = self.find_enabled_item(e)
+    if item is not self._hilited:
+        self._hilited = item
+        self.invalidate()</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.mouse_move"><code class="name flex">
+<span>def <span class="ident">mouse_move</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_move(self, e):
+    self.mouse_drag(e)</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.mouse_up"><code class="name flex">
+<span>def <span class="ident">mouse_up</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_up(self, e):
+    item = self.find_enabled_item(e)
+    if item:
+        self.dismiss(self._items.index(item))</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.Menu.Menu.show"><code class="name flex">
+<span>def <span class="ident">show</span></span>(<span>self, client, pos)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>:param client:
+:param pos:
+:return:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def show(self, client, pos):
+    &#34;&#34;&#34;
+
+    :param client:
+    :param pos:
+    :return:
+    &#34;&#34;&#34;
+
+    client = client or get_root()
+    #
+    # Python 3 update
+    #
+    aValue = list(client.local_to_global(pos))
+    # self.topleft = client.local_to_global(pos)
+    self.topleft = aValue
+    focus = get_focus()
+    font = self.font
+    h = font.get_linesize()
+    items = self._items
+    margin = self.margin
+    height = h * len(items) + h
+    w1 = w2 = 0
+    for item in items:
+        item.enabled = self.command_is_enabled(item, focus)
+        w1 = max(w1, font.size(item.text)[0])
+        w2 = max(w2, font.size(item.keyname)[0])
+    width = w1 + 2 * margin
+    self._key_margin = width
+    if w2 &gt; 0:
+        width += w2 + margin
+    self.size = (width, height)
+
+    return Dialog.present(self, centered=False)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.dialog.Dialog.Dialog" href="../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.dialog.Dialog.Dialog.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.cancel_response" href="../dialog/Modal.html#albow.dialog.Modal.Modal.cancel_response">cancel_response</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.click_outside_response" href="../dialog/Dialog.html#albow.dialog.Dialog.Dialog.click_outside_response">click_outside_response</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.enter_response" href="../dialog/Modal.html#albow.dialog.Modal.Modal.enter_response">enter_response</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.dialog.Dialog.Dialog.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.menu" href="index.html">albow.menu</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.menu.Menu.Menu" href="#albow.menu.Menu.Menu">Menu</a></code></h4>
+<ul class="two-column">
+<li><code><a title="albow.menu.Menu.Menu.command_is_enabled" href="#albow.menu.Menu.Menu.command_is_enabled">command_is_enabled</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.disabled_color" href="#albow.menu.Menu.Menu.disabled_color">disabled_color</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.find_enabled_item" href="#albow.menu.Menu.Menu.find_enabled_item">find_enabled_item</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.find_item_for_key" href="#albow.menu.Menu.Menu.find_item_for_key">find_item_for_key</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.get_command" href="#albow.menu.Menu.Menu.get_command">get_command</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.invoke_item" href="#albow.menu.Menu.Menu.invoke_item">invoke_item</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.mouse_drag" href="#albow.menu.Menu.Menu.mouse_drag">mouse_drag</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.mouse_move" href="#albow.menu.Menu.Menu.mouse_move">mouse_move</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.mouse_up" href="#albow.menu.Menu.Menu.mouse_up">mouse_up</a></code></li>
+<li><code><a title="albow.menu.Menu.Menu.show" href="#albow.menu.Menu.Menu.show">show</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

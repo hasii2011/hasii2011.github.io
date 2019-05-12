@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.containers.PaletteView API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.containers.PaletteView</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import logging
+
+from pygame import Rect
+from pygame import Surface
+from pygame import draw
+
+from pygame.event import Event
+
+from albow.containers.GridView import GridView
+from albow.utils import frame_rect
+
+from albow.themes.ThemeProperty import ThemeProperty
+
+
+class PaletteView(GridView):
+    &#34;&#34;&#34;
+    The PaletteView class is an abstract base class for implementing tool palettes and similar things. A PaletteView
+    displays an array of items which can be selected by clicking, with the selected item being highlighted. There
+    is provision for scrolling, so that the palette can contain more items than are displayed at one time.
+
+    The PaletteView does not maintain the items themselves or keep track of which one is selected; these things
+    are responsibilities of the subclass.
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+       nrows   int   No. of displayed rows
+       ncols   int   No. of displayed columns
+
+       Abstract methods:
+
+         num_items()  --&gt;  no. of items
+         draw_item(surface, item_no, rect)
+    &#34;&#34;&#34;
+
+    sel_width = ThemeProperty(&#39;sel_width&#39;)
+    &#34;&#34;&#34;
+    Width of the border drawn around the selected item when the highlight_style is &#39;frame&#39;.
+    &#34;&#34;&#34;
+    scroll_button_size = ThemeProperty(&#39;scroll_button_size&#39;)
+    &#34;&#34;&#34;
+    Size of the scrolling buttons. (This is a number, not a tuple -- the scroll buttons are square.)
+    &#34;&#34;&#34;
+    scroll_button_color = ThemeProperty(&#39;scroll_button_color&#39;)
+    &#34;&#34;&#34;
+    Color in which to draw the scrolling buttons.
+    &#34;&#34;&#34;
+    highlight_style = ThemeProperty(&#39;highlight_style&#39;)
+    &#34;&#34;&#34;
+    Determines the way in which a selected cell is highlighted. Values are &#39;frame&#39; to draw a frame around 
+    the cell, &#39;fill&#39; to fill its background with the sel_color, and &#39;reverse&#39; to swap the 
+    foreground and background colours.
+    &#34;&#34;&#34;
+
+    def __init__(self, cell_size, nrows, ncols, scrolling=False, **kwds):
+        &#34;&#34;&#34;
+        Initializes the palette view with the specified cell_size, and a rect sized for displaying
+        nrows rows and ncols columns of items. If scrolling is true, controls will be
+        displayed for scrolling the view.
+
+        Args:
+            cell_size:  A tuple that specifies the cell size (width, height)
+            nrows:      The # of rows
+            ncols:      The # of columns
+            scrolling:  True to display scroll bars, else false
+            **kwds:
+        &#34;&#34;&#34;
+
+        self.logger = logging.getLogger(__name__)
+
+        #
+        # Python 3 update
+        #
+        # GridView.__init__(self, cell_size, nrows, ncols, **kwds)
+        super().__init__(cell_size, nrows, ncols, **kwds)
+
+        self.scrolling = scrolling
+        if scrolling:
+            d = self.scroll_button_size
+            #l = self.width
+            #b = self.height
+            self.width += d
+        # self.scroll_up_rect = Rect(l, 0, d, d).inflate(-4, -4)
+        # self.scroll_down_rect = Rect(l, b - d, d, d).inflate(-4, -4)
+        self.scroll = 0
+
+    def scroll_up_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.top = m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+        return r
+
+    def scroll_down_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.bottom = self.height - m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+
+        return r
+
+    def draw(self, surface):
+        GridView.draw(self, surface)
+        if self.can_scroll_up():
+            self.draw_scroll_up_button(surface)
+        if self.can_scroll_down():
+            self.draw_scroll_down_button(surface)
+
+    def draw_scroll_up_button(self, surface):
+        r = self.scroll_up_rect()
+        c = self.scroll_button_color
+        draw.polygon(surface, c, [r.bottomleft, r.midtop, r.bottomright])
+
+    def draw_scroll_down_button(self, surface):
+        r = self.scroll_down_rect()
+        c = self.scroll_button_color
+        draw.polygon(surface, c, [r.topleft, r.midbottom, r.topright])
+
+    def draw_cell(self, surface, row, col, rect):
+        i = self.cell_to_item_no(row, col)
+        if i is not None:
+            highlight = self.item_is_selected(i)
+            self.draw_item_and_highlight(surface, i, rect, highlight)
+
+    def draw_item_with(self, surface, i, rect, fg):
+        old_fg = self.fg_color
+        self.fg_color = fg
+        try:
+            self.draw_item(surface, i, rect)
+        finally:
+            self.fg_color = old_fg
+
+    def draw_prehighlight_with(self, theSurface: Surface, theItemNumber: int, theRect: Rect, color):
+
+        style = self.highlight_style
+        if style == &#39;frame&#39;:
+            frame_rect(theSurface, color, theRect, self.sel_width)
+        elif style == &#39;fill&#39; or style == &#39;reverse&#39;:
+            theSurface.fill(color, theRect)
+
+    def mouse_down(self, event):
+
+        if self.scrolling:
+
+            p = event.local
+            #
+            # Python 3 method signature update for tuples
+            # break up to make easier to debub
+            #
+            scrollDownRect: Rect = self.scroll_down_rect()
+            scrollUpRect:   Rect = self.scroll_up_rect()
+            canScrollDown:  bool = scrollDownRect.collidepoint(p[0], p[1])
+            canScrollUp:    bool = scrollUpRect.collidepoint(p[0], p[1])
+
+            self.logger.debug(&#34;p: %s, downRect.centerx %s, downRect.centery %s&#34;, p, scrollDownRect.centerx,scrollDownRect.centery)
+
+            # if self.scroll_up_rect().collidepoint(p):
+            if canScrollUp:
+                self.scroll_up()
+                return
+            # elif self.scroll_down_rect().collidepoint(p):
+            elif canScrollDown:
+                self.scroll_down()
+                return
+        GridView.mouse_down(self, event)
+
+    def scroll_up(self):
+        if self.can_scroll_up():
+            self.scroll -= self.items_per_page()
+
+    def scroll_down(self):
+        if self.can_scroll_down():
+            self.scroll += self.items_per_page()
+
+    def scroll_to_item(self, n):
+        i = max(0, min(n, self.num_items() - 1))
+        p = self.items_per_page()
+        self.scroll = p * (i // p)
+
+    def can_scroll_up(self):
+        return self.scrolling and self.scroll &gt; 0
+
+    def can_scroll_down(self):
+        return self.scrolling and self.scroll + self.items_per_page() &lt; self.num_items()
+
+    def items_per_page(self):
+        return self.num_rows() * self.num_cols()
+
+    def click_cell(self, row, col, event):
+        i = self.cell_to_item_no(row, col)
+        if i is not None:
+            self.click_item(i, event)
+
+    def cell_to_item_no(self, row, col):
+        i = self.scroll + row * self.num_cols() + col
+        if 0 &lt;= i &lt; self.num_items():
+            return i
+        else:
+            return None
+
+    def num_rows(self):
+        ch = self.cell_size[1]
+        if ch:
+            return self.height // ch
+        else:
+            return 0
+
+    def num_cols(self):
+        width = self.width
+        if self.scrolling:
+            width -= self.scroll_button_size
+        cw =  self.cell_size[0]
+        if cw:
+            return width // cw
+        else:
+            return 0
+
+    # ========================================================================
+    #
+    #  Abstract methods follow;  Some implemented with default behavior
+    #
+    # ========================================================================
+
+    def draw_item_and_highlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect, highlight: bool):
+        &#34;&#34;&#34;
+        Draws the cell for item theItemNumber, together with highlighting if highlight is true. The default
+        implementation calls draw_prehighlight, draw_item and draw_posthighlight.
+
+        Args:
+            theSurface:     The surface to drawn on
+            theItemNumber:  The item # of highlight
+            theRect:        The pygame rect to use
+            highlight:      If True highlight
+
+        Returns:
+
+        &#34;&#34;&#34;
+        if highlight:
+            self.draw_prehighlight(theSurface, theItemNumber, theRect)
+        if highlight and self.highlight_style == &#39;reverse&#39;:
+            fg = self.inherited(&#39;bg_color&#39;) or self.sel_color
+        else:
+            fg = self.fg_color
+        self.draw_item_with(theSurface, theItemNumber, theRect, fg)
+        if highlight:
+            self.draw_posthighlight(theSurface, theItemNumber, theRect)
+
+    def draw_prehighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+        &#34;&#34;&#34;
+        Called for highlighted cells before draw_item, to draw highlighting that is to appear
+        underneath the cell&#39;s contents.
+
+        Args:
+            theSurface:
+            theItemNumber:
+            theRect:
+
+        &#34;&#34;&#34;
+
+        if self.highlight_style == &#39;reverse&#39;:
+            color = self.fg_color
+        else:
+            color = self.sel_color
+        self.draw_prehighlight_with(theSurface, theItemNumber, theRect, color)
+
+    def draw_posthighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+        &#34;&#34;&#34;
+        Called for highlighted cells after draw_item, to draw highlighting that is to appear
+        on top of the cell&#39;s contents.
+
+        Args:
+            theSurface:
+            theItemNumber:
+            theRect:
+
+        &#34;&#34;&#34;
+        pass
+
+    def item_is_selected(self, theItemNumber: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Should return a boolean indicating whether item number item_no is currently to be considered selected.
+
+        Args:
+            theItemNumber:
+
+        Returns True if it is, False
+        &#34;&#34;&#34;
+
+        return False
+
+    def click_item(self, theItemNumber: int, theEvent: Event):
+        &#34;&#34;&#34;
+        Called when a mouse-down event occurs in item theItemNumber. Typically the subclass will record the fact that
+        the item is selected so that this can be reported later via item_is_selected().
+
+        Args:
+            theItemNumber:
+            theEvent:
+
+        Returns:
+
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.containers.PaletteView.PaletteView"><code class="flex name class">
+<span>class <span class="ident">PaletteView</span></span>
+<span>(</span><span>cell_size, nrows, ncols, scrolling=False, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The PaletteView class is an abstract base class for implementing tool palettes and similar things. A PaletteView
+displays an array of items which can be selected by clicking, with the selected item being highlighted. There
+is provision for scrolling, so that the palette can contain more items than are displayed at one time.</p>
+<p>The PaletteView does not maintain the items themselves or keep track of which one is selected; these things
+are responsibilities of the subclass.</p>
+<p>Initializes the palette view with the specified cell_size, and a rect sized for displaying
+nrows rows and ncols columns of items. If scrolling is true, controls will be
+displayed for scrolling the view.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cell_size</code></strong></dt>
+<dd>A tuple that specifies the cell size (width, height)</dd>
+<dt><strong><code>nrows</code></strong></dt>
+<dd>
+<p>The # of rows</p>
+</dd>
+<dt><strong><code>ncols</code></strong></dt>
+<dd>
+<p>The # of columns</p>
+</dd>
+<dt><strong><code>scrolling</code></strong></dt>
+<dd>True to display scroll bars, else false</dd>
+</dl>
+<p>**kwds:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class PaletteView(GridView):
+    &#34;&#34;&#34;
+    The PaletteView class is an abstract base class for implementing tool palettes and similar things. A PaletteView
+    displays an array of items which can be selected by clicking, with the selected item being highlighted. There
+    is provision for scrolling, so that the palette can contain more items than are displayed at one time.
+
+    The PaletteView does not maintain the items themselves or keep track of which one is selected; these things
+    are responsibilities of the subclass.
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+       nrows   int   No. of displayed rows
+       ncols   int   No. of displayed columns
+
+       Abstract methods:
+
+         num_items()  --&gt;  no. of items
+         draw_item(surface, item_no, rect)
+    &#34;&#34;&#34;
+
+    sel_width = ThemeProperty(&#39;sel_width&#39;)
+    &#34;&#34;&#34;
+    Width of the border drawn around the selected item when the highlight_style is &#39;frame&#39;.
+    &#34;&#34;&#34;
+    scroll_button_size = ThemeProperty(&#39;scroll_button_size&#39;)
+    &#34;&#34;&#34;
+    Size of the scrolling buttons. (This is a number, not a tuple -- the scroll buttons are square.)
+    &#34;&#34;&#34;
+    scroll_button_color = ThemeProperty(&#39;scroll_button_color&#39;)
+    &#34;&#34;&#34;
+    Color in which to draw the scrolling buttons.
+    &#34;&#34;&#34;
+    highlight_style = ThemeProperty(&#39;highlight_style&#39;)
+    &#34;&#34;&#34;
+    Determines the way in which a selected cell is highlighted. Values are &#39;frame&#39; to draw a frame around 
+    the cell, &#39;fill&#39; to fill its background with the sel_color, and &#39;reverse&#39; to swap the 
+    foreground and background colours.
+    &#34;&#34;&#34;
+
+    def __init__(self, cell_size, nrows, ncols, scrolling=False, **kwds):
+        &#34;&#34;&#34;
+        Initializes the palette view with the specified cell_size, and a rect sized for displaying
+        nrows rows and ncols columns of items. If scrolling is true, controls will be
+        displayed for scrolling the view.
+
+        Args:
+            cell_size:  A tuple that specifies the cell size (width, height)
+            nrows:      The # of rows
+            ncols:      The # of columns
+            scrolling:  True to display scroll bars, else false
+            **kwds:
+        &#34;&#34;&#34;
+
+        self.logger = logging.getLogger(__name__)
+
+        #
+        # Python 3 update
+        #
+        # GridView.__init__(self, cell_size, nrows, ncols, **kwds)
+        super().__init__(cell_size, nrows, ncols, **kwds)
+
+        self.scrolling = scrolling
+        if scrolling:
+            d = self.scroll_button_size
+            #l = self.width
+            #b = self.height
+            self.width += d
+        # self.scroll_up_rect = Rect(l, 0, d, d).inflate(-4, -4)
+        # self.scroll_down_rect = Rect(l, b - d, d, d).inflate(-4, -4)
+        self.scroll = 0
+
+    def scroll_up_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.top = m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+        return r
+
+    def scroll_down_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.bottom = self.height - m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+
+        return r
+
+    def draw(self, surface):
+        GridView.draw(self, surface)
+        if self.can_scroll_up():
+            self.draw_scroll_up_button(surface)
+        if self.can_scroll_down():
+            self.draw_scroll_down_button(surface)
+
+    def draw_scroll_up_button(self, surface):
+        r = self.scroll_up_rect()
+        c = self.scroll_button_color
+        draw.polygon(surface, c, [r.bottomleft, r.midtop, r.bottomright])
+
+    def draw_scroll_down_button(self, surface):
+        r = self.scroll_down_rect()
+        c = self.scroll_button_color
+        draw.polygon(surface, c, [r.topleft, r.midbottom, r.topright])
+
+    def draw_cell(self, surface, row, col, rect):
+        i = self.cell_to_item_no(row, col)
+        if i is not None:
+            highlight = self.item_is_selected(i)
+            self.draw_item_and_highlight(surface, i, rect, highlight)
+
+    def draw_item_with(self, surface, i, rect, fg):
+        old_fg = self.fg_color
+        self.fg_color = fg
+        try:
+            self.draw_item(surface, i, rect)
+        finally:
+            self.fg_color = old_fg
+
+    def draw_prehighlight_with(self, theSurface: Surface, theItemNumber: int, theRect: Rect, color):
+
+        style = self.highlight_style
+        if style == &#39;frame&#39;:
+            frame_rect(theSurface, color, theRect, self.sel_width)
+        elif style == &#39;fill&#39; or style == &#39;reverse&#39;:
+            theSurface.fill(color, theRect)
+
+    def mouse_down(self, event):
+
+        if self.scrolling:
+
+            p = event.local
+            #
+            # Python 3 method signature update for tuples
+            # break up to make easier to debub
+            #
+            scrollDownRect: Rect = self.scroll_down_rect()
+            scrollUpRect:   Rect = self.scroll_up_rect()
+            canScrollDown:  bool = scrollDownRect.collidepoint(p[0], p[1])
+            canScrollUp:    bool = scrollUpRect.collidepoint(p[0], p[1])
+
+            self.logger.debug(&#34;p: %s, downRect.centerx %s, downRect.centery %s&#34;, p, scrollDownRect.centerx,scrollDownRect.centery)
+
+            # if self.scroll_up_rect().collidepoint(p):
+            if canScrollUp:
+                self.scroll_up()
+                return
+            # elif self.scroll_down_rect().collidepoint(p):
+            elif canScrollDown:
+                self.scroll_down()
+                return
+        GridView.mouse_down(self, event)
+
+    def scroll_up(self):
+        if self.can_scroll_up():
+            self.scroll -= self.items_per_page()
+
+    def scroll_down(self):
+        if self.can_scroll_down():
+            self.scroll += self.items_per_page()
+
+    def scroll_to_item(self, n):
+        i = max(0, min(n, self.num_items() - 1))
+        p = self.items_per_page()
+        self.scroll = p * (i // p)
+
+    def can_scroll_up(self):
+        return self.scrolling and self.scroll &gt; 0
+
+    def can_scroll_down(self):
+        return self.scrolling and self.scroll + self.items_per_page() &lt; self.num_items()
+
+    def items_per_page(self):
+        return self.num_rows() * self.num_cols()
+
+    def click_cell(self, row, col, event):
+        i = self.cell_to_item_no(row, col)
+        if i is not None:
+            self.click_item(i, event)
+
+    def cell_to_item_no(self, row, col):
+        i = self.scroll + row * self.num_cols() + col
+        if 0 &lt;= i &lt; self.num_items():
+            return i
+        else:
+            return None
+
+    def num_rows(self):
+        ch = self.cell_size[1]
+        if ch:
+            return self.height // ch
+        else:
+            return 0
+
+    def num_cols(self):
+        width = self.width
+        if self.scrolling:
+            width -= self.scroll_button_size
+        cw =  self.cell_size[0]
+        if cw:
+            return width // cw
+        else:
+            return 0
+
+    # ========================================================================
+    #
+    #  Abstract methods follow;  Some implemented with default behavior
+    #
+    # ========================================================================
+
+    def draw_item_and_highlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect, highlight: bool):
+        &#34;&#34;&#34;
+        Draws the cell for item theItemNumber, together with highlighting if highlight is true. The default
+        implementation calls draw_prehighlight, draw_item and draw_posthighlight.
+
+        Args:
+            theSurface:     The surface to drawn on
+            theItemNumber:  The item # of highlight
+            theRect:        The pygame rect to use
+            highlight:      If True highlight
+
+        Returns:
+
+        &#34;&#34;&#34;
+        if highlight:
+            self.draw_prehighlight(theSurface, theItemNumber, theRect)
+        if highlight and self.highlight_style == &#39;reverse&#39;:
+            fg = self.inherited(&#39;bg_color&#39;) or self.sel_color
+        else:
+            fg = self.fg_color
+        self.draw_item_with(theSurface, theItemNumber, theRect, fg)
+        if highlight:
+            self.draw_posthighlight(theSurface, theItemNumber, theRect)
+
+    def draw_prehighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+        &#34;&#34;&#34;
+        Called for highlighted cells before draw_item, to draw highlighting that is to appear
+        underneath the cell&#39;s contents.
+
+        Args:
+            theSurface:
+            theItemNumber:
+            theRect:
+
+        &#34;&#34;&#34;
+
+        if self.highlight_style == &#39;reverse&#39;:
+            color = self.fg_color
+        else:
+            color = self.sel_color
+        self.draw_prehighlight_with(theSurface, theItemNumber, theRect, color)
+
+    def draw_posthighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+        &#34;&#34;&#34;
+        Called for highlighted cells after draw_item, to draw highlighting that is to appear
+        on top of the cell&#39;s contents.
+
+        Args:
+            theSurface:
+            theItemNumber:
+            theRect:
+
+        &#34;&#34;&#34;
+        pass
+
+    def item_is_selected(self, theItemNumber: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Should return a boolean indicating whether item number item_no is currently to be considered selected.
+
+        Args:
+            theItemNumber:
+
+        Returns True if it is, False
+        &#34;&#34;&#34;
+
+        return False
+
+    def click_item(self, theItemNumber: int, theEvent: Event):
+        &#34;&#34;&#34;
+        Called when a mouse-down event occurs in item theItemNumber. Typically the subclass will record the fact that
+        the item is selected so that this can be reported later via item_is_selected().
+
+        Args:
+            theItemNumber:
+            theEvent:
+
+        Returns:
+
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.containers.GridView.GridView" href="GridView.html#albow.containers.GridView.GridView">GridView</a></li>
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.demo.views.DemoPaletteView.DemoPaletteView" href="../demo/views/DemoPaletteView.html#albow.demo.views.DemoPaletteView.DemoPaletteView">DemoPaletteView</a></li>
+<li><a title="albow.table.TableRowBase.TableRowBase" href="../table/TableRowBase.html#albow.table.TableRowBase.TableRowBase">TableRowBase</a></li>
+<li><a title="albow.dialog.FileListView.FileListView" href="../dialog/FileListView.html#albow.dialog.FileListView.FileListView">FileListView</a></li>
+<li><a title="albow.widgets.ListBox.ListBox" href="../widgets/ListBox.html#albow.widgets.ListBox.ListBox">ListBox</a></li>
+<li><a title="albow.choices.MultiChoice.MultiChoice" href="../choices/MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.containers.PaletteView.PaletteView.highlight_style"><code class="name">var <span class="ident">highlight_style</span></code></dt>
+<dd>
+<section class="desc"><p>Determines the way in which a selected cell is highlighted. Values are 'frame' to draw a frame around
+the cell, 'fill' to fill its background with the sel_color, and 'reverse' to swap the
+foreground and background colours.</p></section>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_button_color"><code class="name">var <span class="ident">scroll_button_color</span></code></dt>
+<dd>
+<section class="desc"><p>Color in which to draw the scrolling buttons.</p></section>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_button_size"><code class="name">var <span class="ident">scroll_button_size</span></code></dt>
+<dd>
+<section class="desc"><p>Size of the scrolling buttons. (This is a number, not a tuple &ndash; the scroll buttons are square.)</p></section>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.sel_width"><code class="name">var <span class="ident">sel_width</span></code></dt>
+<dd>
+<section class="desc"><p>Width of the border drawn around the selected item when the highlight_style is 'frame'.</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.containers.PaletteView.PaletteView.can_scroll_down"><code class="name flex">
+<span>def <span class="ident">can_scroll_down</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def can_scroll_down(self):
+    return self.scrolling and self.scroll + self.items_per_page() &lt; self.num_items()</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.can_scroll_up"><code class="name flex">
+<span>def <span class="ident">can_scroll_up</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def can_scroll_up(self):
+    return self.scrolling and self.scroll &gt; 0</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.cell_to_item_no"><code class="name flex">
+<span>def <span class="ident">cell_to_item_no</span></span>(<span>self, row, col)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def cell_to_item_no(self, row, col):
+    i = self.scroll + row * self.num_cols() + col
+    if 0 &lt;= i &lt; self.num_items():
+        return i
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.click_cell"><code class="name flex">
+<span>def <span class="ident">click_cell</span></span>(<span>self, row, col, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def click_cell(self, row, col, event):
+    i = self.cell_to_item_no(row, col)
+    if i is not None:
+        self.click_item(i, event)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.click_item"><code class="name flex">
+<span>def <span class="ident">click_item</span></span>(<span>self, theItemNumber, theEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when a mouse-down event occurs in item theItemNumber. Typically the subclass will record the fact that
+the item is selected so that this can be reported later via item_is_selected().</p>
+<h2 id="args">Args</h2>
+<p>theItemNumber:
+theEvent:
+Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def click_item(self, theItemNumber: int, theEvent: Event):
+    &#34;&#34;&#34;
+    Called when a mouse-down event occurs in item theItemNumber. Typically the subclass will record the fact that
+    the item is selected so that this can be reported later via item_is_selected().
+
+    Args:
+        theItemNumber:
+        theEvent:
+
+    Returns:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_cell"><code class="name flex">
+<span>def <span class="ident">draw_cell</span></span>(<span>self, surface, row, col, rect)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_cell(self, surface, row, col, rect):
+    i = self.cell_to_item_no(row, col)
+    if i is not None:
+        highlight = self.item_is_selected(i)
+        self.draw_item_and_highlight(surface, i, rect, highlight)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_item_and_highlight"><code class="name flex">
+<span>def <span class="ident">draw_item_and_highlight</span></span>(<span>self, theSurface, theItemNumber, theRect, highlight)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Draws the cell for item theItemNumber, together with highlighting if highlight is true. The default
+implementation calls draw_prehighlight, draw_item and draw_posthighlight.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theSurface</code></strong></dt>
+<dd>
+<p>The surface to drawn on</p>
+</dd>
+<dt><strong><code>theItemNumber</code></strong></dt>
+<dd>The item # of highlight</dd>
+<dt><strong><code>theRect</code></strong></dt>
+<dd>
+<p>The pygame rect to use</p>
+</dd>
+<dt><strong><code>highlight</code></strong></dt>
+<dd>
+<p>If True highlight</p>
+</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_item_and_highlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect, highlight: bool):
+    &#34;&#34;&#34;
+    Draws the cell for item theItemNumber, together with highlighting if highlight is true. The default
+    implementation calls draw_prehighlight, draw_item and draw_posthighlight.
+
+    Args:
+        theSurface:     The surface to drawn on
+        theItemNumber:  The item # of highlight
+        theRect:        The pygame rect to use
+        highlight:      If True highlight
+
+    Returns:
+
+    &#34;&#34;&#34;
+    if highlight:
+        self.draw_prehighlight(theSurface, theItemNumber, theRect)
+    if highlight and self.highlight_style == &#39;reverse&#39;:
+        fg = self.inherited(&#39;bg_color&#39;) or self.sel_color
+    else:
+        fg = self.fg_color
+    self.draw_item_with(theSurface, theItemNumber, theRect, fg)
+    if highlight:
+        self.draw_posthighlight(theSurface, theItemNumber, theRect)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_item_with"><code class="name flex">
+<span>def <span class="ident">draw_item_with</span></span>(<span>self, surface, i, rect, fg)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_item_with(self, surface, i, rect, fg):
+    old_fg = self.fg_color
+    self.fg_color = fg
+    try:
+        self.draw_item(surface, i, rect)
+    finally:
+        self.fg_color = old_fg</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_posthighlight"><code class="name flex">
+<span>def <span class="ident">draw_posthighlight</span></span>(<span>self, theSurface, theItemNumber, theRect)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called for highlighted cells after draw_item, to draw highlighting that is to appear
+on top of the cell's contents.</p>
+<h2 id="args">Args</h2>
+<p>theSurface:
+theItemNumber:
+theRect:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_posthighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+    &#34;&#34;&#34;
+    Called for highlighted cells after draw_item, to draw highlighting that is to appear
+    on top of the cell&#39;s contents.
+
+    Args:
+        theSurface:
+        theItemNumber:
+        theRect:
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_prehighlight"><code class="name flex">
+<span>def <span class="ident">draw_prehighlight</span></span>(<span>self, theSurface, theItemNumber, theRect)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called for highlighted cells before draw_item, to draw highlighting that is to appear
+underneath the cell's contents.</p>
+<h2 id="args">Args</h2>
+<p>theSurface:
+theItemNumber:
+theRect:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_prehighlight(self, theSurface: Surface, theItemNumber: int, theRect: Rect):
+    &#34;&#34;&#34;
+    Called for highlighted cells before draw_item, to draw highlighting that is to appear
+    underneath the cell&#39;s contents.
+
+    Args:
+        theSurface:
+        theItemNumber:
+        theRect:
+
+    &#34;&#34;&#34;
+
+    if self.highlight_style == &#39;reverse&#39;:
+        color = self.fg_color
+    else:
+        color = self.sel_color
+    self.draw_prehighlight_with(theSurface, theItemNumber, theRect, color)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_prehighlight_with"><code class="name flex">
+<span>def <span class="ident">draw_prehighlight_with</span></span>(<span>self, theSurface, theItemNumber, theRect, color)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_prehighlight_with(self, theSurface: Surface, theItemNumber: int, theRect: Rect, color):
+
+    style = self.highlight_style
+    if style == &#39;frame&#39;:
+        frame_rect(theSurface, color, theRect, self.sel_width)
+    elif style == &#39;fill&#39; or style == &#39;reverse&#39;:
+        theSurface.fill(color, theRect)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_scroll_down_button"><code class="name flex">
+<span>def <span class="ident">draw_scroll_down_button</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_scroll_down_button(self, surface):
+    r = self.scroll_down_rect()
+    c = self.scroll_button_color
+    draw.polygon(surface, c, [r.topleft, r.midbottom, r.topright])</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.draw_scroll_up_button"><code class="name flex">
+<span>def <span class="ident">draw_scroll_up_button</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_scroll_up_button(self, surface):
+    r = self.scroll_up_rect()
+    c = self.scroll_button_color
+    draw.polygon(surface, c, [r.bottomleft, r.midtop, r.bottomright])</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.item_is_selected"><code class="name flex">
+<span>def <span class="ident">item_is_selected</span></span>(<span>self, theItemNumber)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Should return a boolean indicating whether item number item_no is currently to be considered selected.</p>
+<h2 id="args">Args</h2>
+<p>theItemNumber:
+Returns True if it is, False</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def item_is_selected(self, theItemNumber: int) -&gt; bool:
+    &#34;&#34;&#34;
+    Should return a boolean indicating whether item number item_no is currently to be considered selected.
+
+    Args:
+        theItemNumber:
+
+    Returns True if it is, False
+    &#34;&#34;&#34;
+
+    return False</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.items_per_page"><code class="name flex">
+<span>def <span class="ident">items_per_page</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def items_per_page(self):
+    return self.num_rows() * self.num_cols()</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.mouse_down"><code class="name flex">
+<span>def <span class="ident">mouse_down</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_down(self, event):
+
+    if self.scrolling:
+
+        p = event.local
+        #
+        # Python 3 method signature update for tuples
+        # break up to make easier to debub
+        #
+        scrollDownRect: Rect = self.scroll_down_rect()
+        scrollUpRect:   Rect = self.scroll_up_rect()
+        canScrollDown:  bool = scrollDownRect.collidepoint(p[0], p[1])
+        canScrollUp:    bool = scrollUpRect.collidepoint(p[0], p[1])
+
+        self.logger.debug(&#34;p: %s, downRect.centerx %s, downRect.centery %s&#34;, p, scrollDownRect.centerx,scrollDownRect.centery)
+
+        # if self.scroll_up_rect().collidepoint(p):
+        if canScrollUp:
+            self.scroll_up()
+            return
+        # elif self.scroll_down_rect().collidepoint(p):
+        elif canScrollDown:
+            self.scroll_down()
+            return
+    GridView.mouse_down(self, event)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_down"><code class="name flex">
+<span>def <span class="ident">scroll_down</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_down(self):
+    if self.can_scroll_down():
+        self.scroll += self.items_per_page()</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_down_rect"><code class="name flex">
+<span>def <span class="ident">scroll_down_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_down_rect(self):
+
+    d = self.scroll_button_size
+    r = Rect(0, 0, d, d)
+    m = self.margin
+    r.bottom = self.height - m
+    r.right = self.width - m
+    r.inflate_ip(-4, -4)
+
+    return r</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_to_item"><code class="name flex">
+<span>def <span class="ident">scroll_to_item</span></span>(<span>self, n)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_to_item(self, n):
+    i = max(0, min(n, self.num_items() - 1))
+    p = self.items_per_page()
+    self.scroll = p * (i // p)</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_up"><code class="name flex">
+<span>def <span class="ident">scroll_up</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_up(self):
+    if self.can_scroll_up():
+        self.scroll -= self.items_per_page()</code></pre>
+</details>
+</dd>
+<dt id="albow.containers.PaletteView.PaletteView.scroll_up_rect"><code class="name flex">
+<span>def <span class="ident">scroll_up_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_up_rect(self):
+
+    d = self.scroll_button_size
+    r = Rect(0, 0, d, d)
+    m = self.margin
+    r.top = m
+    r.right = self.width - m
+    r.inflate_ip(-4, -4)
+    return r</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.containers.GridView.GridView" href="GridView.html#albow.containers.GridView.GridView">GridView</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.containers.GridView.GridView.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.cell_rect" href="GridView.html#albow.containers.GridView.GridView.cell_rect">cell_rect</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.num_cols" href="GridView.html#albow.containers.GridView.GridView.num_cols">num_cols</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.num_rows" href="GridView.html#albow.containers.GridView.GridView.num_rows">num_rows</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.containers.GridView.GridView.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.containers" href="index.html">albow.containers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.containers.PaletteView.PaletteView" href="#albow.containers.PaletteView.PaletteView">PaletteView</a></code></h4>
+<ul class="">
+<li><code><a title="albow.containers.PaletteView.PaletteView.can_scroll_down" href="#albow.containers.PaletteView.PaletteView.can_scroll_down">can_scroll_down</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.can_scroll_up" href="#albow.containers.PaletteView.PaletteView.can_scroll_up">can_scroll_up</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.cell_to_item_no" href="#albow.containers.PaletteView.PaletteView.cell_to_item_no">cell_to_item_no</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.click_cell" href="#albow.containers.PaletteView.PaletteView.click_cell">click_cell</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.click_item" href="#albow.containers.PaletteView.PaletteView.click_item">click_item</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_cell" href="#albow.containers.PaletteView.PaletteView.draw_cell">draw_cell</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_item_and_highlight" href="#albow.containers.PaletteView.PaletteView.draw_item_and_highlight">draw_item_and_highlight</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_item_with" href="#albow.containers.PaletteView.PaletteView.draw_item_with">draw_item_with</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_posthighlight" href="#albow.containers.PaletteView.PaletteView.draw_posthighlight">draw_posthighlight</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_prehighlight" href="#albow.containers.PaletteView.PaletteView.draw_prehighlight">draw_prehighlight</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_prehighlight_with" href="#albow.containers.PaletteView.PaletteView.draw_prehighlight_with">draw_prehighlight_with</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_scroll_down_button" href="#albow.containers.PaletteView.PaletteView.draw_scroll_down_button">draw_scroll_down_button</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.draw_scroll_up_button" href="#albow.containers.PaletteView.PaletteView.draw_scroll_up_button">draw_scroll_up_button</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.highlight_style" href="#albow.containers.PaletteView.PaletteView.highlight_style">highlight_style</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.item_is_selected" href="#albow.containers.PaletteView.PaletteView.item_is_selected">item_is_selected</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.items_per_page" href="#albow.containers.PaletteView.PaletteView.items_per_page">items_per_page</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.mouse_down" href="#albow.containers.PaletteView.PaletteView.mouse_down">mouse_down</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_button_color" href="#albow.containers.PaletteView.PaletteView.scroll_button_color">scroll_button_color</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_button_size" href="#albow.containers.PaletteView.PaletteView.scroll_button_size">scroll_button_size</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_down" href="#albow.containers.PaletteView.PaletteView.scroll_down">scroll_down</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_down_rect" href="#albow.containers.PaletteView.PaletteView.scroll_down_rect">scroll_down_rect</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_to_item" href="#albow.containers.PaletteView.PaletteView.scroll_to_item">scroll_to_item</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_up" href="#albow.containers.PaletteView.PaletteView.scroll_up">scroll_up</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.scroll_up_rect" href="#albow.containers.PaletteView.PaletteView.scroll_up_rect">scroll_up_rect</a></code></li>
+<li><code><a title="albow.containers.PaletteView.PaletteView.sel_width" href="#albow.containers.PaletteView.PaletteView.sel_width">sel_width</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

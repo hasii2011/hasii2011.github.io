@@ -1,0 +1,4459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.core.Widget API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.core.Widget</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import sys
+import logging
+
+from pygame import Rect
+from pygame import Surface
+
+from pygame.event import Event
+
+from pygame.locals import K_RETURN
+from pygame.locals import K_KP_ENTER
+from pygame.locals import K_ESCAPE
+from pygame.locals import K_TAB
+from pygame.locals import KEYDOWN
+from pygame.locals import SRCALPHA
+
+from pygame.mouse import set_cursor
+from pygame.cursors import arrow as arrow_cursor
+from pygame.transform import rotozoom
+from albow.vectors import add
+from albow.vectors import subtract
+from albow.utils import frame_rect
+
+from albow.utils import overridable_property
+
+from albow.themes.ThemeProperty import ThemeProperty
+from albow.themes.FontProperty import FontProperty
+
+from albow.themes.Theme import themeRoot
+
+debug_rect = False
+debug_tab = True
+
+root_widget = None
+current_cursor = None
+
+
+def rect_property(name):
+
+    def get(self):
+        return getattr(self._rect, name)
+
+    def set(self, value):
+
+        r = self._rect
+        old_size = r.size
+        setattr(r, name, value)
+        new_size = r.size
+        #
+        # Python 3 update
+        # i f old_size &lt;&gt; new_size:
+        if old_size != new_size:
+            #
+            # Method signature changed since tuples not allowed to be passed
+            #
+            # self._resized(old_size)
+            self._resized(old_size[0], old_size[1])
+
+    return property(get, set)
+
+
+class Widget:
+    &#34;&#34;&#34;
+    The Widget class is the base class for all widgets. A widget occupies a rectangular area of the PyGame screen
+    to which all drawing in it is clipped, and it may receive mouse and keyboard events. A widget may also
+    contain subwidgets.
+
+    .. Note::
+        Due to a limitation of PyGame subsurfaces, a widget&#39;s rectangle must be entirely contained within that of
+        its parent widget. An exception will occur if this is violated.
+
+
+    - Reading the following attributes retrieves the corresponding values from the widget&#39;s rect.
+    - Assigning to them changes the size and position of the widget.
+    - Additionally, if the size of the widget is changed via these
+      attributes, the size and position of its subwidgets is updated according to each subwidget&#39;s anchor attribute.
+
+        &lt;pre&gt;
+        left, right, top, bottom, width, height, size,
+        topleft, topright, bottomleft, bottomright,
+        midleft, midright, midtop, midbottom,
+        center, centerx, centery
+        &lt;/pre&gt;
+
+    This does not happen if the rect is modified directly.
+
+    &#34;&#34;&#34;
+
+    left = rect_property(&#39;left&#39;)
+    right = rect_property(&#39;right&#39;)
+    top = rect_property(&#39;top&#39;)
+    bottom = rect_property(&#39;bottom&#39;)
+    width = rect_property(&#39;width&#39;)
+    height = rect_property(&#39;height&#39;)
+    size = rect_property(&#39;size&#39;)
+    topleft = rect_property(&#39;topleft&#39;)
+    topright = rect_property(&#39;topright&#39;)
+    bottomleft = rect_property(&#39;bottomleft&#39;)
+    bottomright = rect_property(&#39;bottomright&#39;)
+    midleft = rect_property(&#39;midleft&#39;)
+    midright = rect_property(&#39;midright&#39;)
+    midtop = rect_property(&#39;midtop&#39;)
+    midbottom = rect_property(&#39;midbottom&#39;)
+    center = rect_property(&#39;center&#39;)
+    centerx = rect_property(&#39;centerx&#39;)
+    centery = rect_property(&#39;centery&#39;)
+
+    font = FontProperty(&#39;font&#39;)
+    &#34;&#34;&#34;
+    Font to use for drawing text in the widget. How this property is used depends on the widget. Some widgets have 
+    additional font properties for specific parts of the widget.
+    &#34;&#34;&#34;
+    fg_color = ThemeProperty(&#39;fg_color&#39;)
+    &#34;&#34;&#34;
+    Foreground colour for the contents of the widget. How this property is used depends on the widget. Some widgets 
+    have additional colour properties for specific parts of the widget.
+    &#34;&#34;&#34;
+    bg_color = ThemeProperty(&#39;bg_color&#39;)
+    &#34;&#34;&#34;
+    Background colour of the widget. If specified, the widget&#39;s rect is filled with this colour before drawing its 
+    contents. If no background colour is specified or it is set to None, the widget has no background and is drawn 
+    transparently over its parent. For most widgets, it defaults to None.
+    &#34;&#34;&#34;
+    bg_image = ThemeProperty(&#39;bg_image&#39;)
+    &#34;&#34;&#34;
+    An image to be displayed in the background. If specified, this overrides any bg_color.
+    &#34;&#34;&#34;
+    scale_bg = ThemeProperty(&#39;scale_bg&#39;)
+    &#34;&#34;&#34;
+    If true, and the background image is smaller than the widget in either direction, the background image is scaled 
+    to fill the widget, otherwise it is centered. Note: Due to a limitation of the pygame rotozoom function, scaling 
+    is currently uniform in both directions, with the scale factor being that required to ensure that the whole 
+    widget is covered.
+    &#34;&#34;&#34;
+    border_width = ThemeProperty(&#39;border_width&#39;)
+    &#34;&#34;&#34;
+    Width of a border to be drawn inside the outer edge of the widget. If this is unspecified or set to zero, 
+    no border is drawn.
+    &#34;&#34;&#34;
+    border_color = ThemeProperty(&#39;border_color&#39;)
+    &#34;&#34;&#34;
+    Color in which to draw the border specified by border_width.
+    &#34;&#34;&#34;
+    sel_color = ThemeProperty(&#39;sel_color&#39;)
+    margin = ThemeProperty(&#39;margin&#39;)
+    &#34;&#34;&#34;
+    The amount of space to leave between the edge of the widget and its contents. Note that this distance includes the 
+    border_width, e.g. if border_width == 1 and margin == 3, then there is 2 pixels of space between the inside of 
+    the border and the contents.
+
+    Most of the predefined Albow widgets honour the margin property, but this is not automatic for your own widget 
+    subclasses. You may find the get_margin_rect() method helpful in implementing support for the margin property 
+    in your widget classes.
+    &#34;&#34;&#34;
+
+    menu_bar = overridable_property(&#39;menu_bar&#39;)
+    &#34;&#34;&#34;
+    A MenuBar to be attached to and managed by this widget. Assigning to the menu_bar property automatically adds the 
+    menu bar as a child widget. Also, if the width of the menu bar has not already been set, it is set to be the same 
+    width as this widget and to stretch horizontally with it.
+
+    When a key down event with the platform&#39;s standard menu command modifier (Command on Mac, Control on other 
+    platforms) is dispatched through this widget, the menu bar is first given a chance to handle the event. If the 
+    menu bar does not handle it, dispatching continues as normal.
+
+    &#34;&#34;&#34;
+    is_gl_container: bool = overridable_property(&#39;is_gl_container&#39;)
+    &#34;&#34;&#34;
+    Controls the drawing behaviour of the widget when used in an OpenGL window. When true, 
+    
+    - no 2D drawing is performed for the widget itself
+    - its background colour and border properties are ignored 
+    - its draw() and draw_over() methods are never called. 
+        
+    If it has 3D subwidgets, 3D drawing is performed for them.
+
+    When false, the widget and its subwidgets are rendered to a temporary surface which is then drawn to the window 
+    using glDrawPixels() with blending. No 3D drawing is performed for any of its subwidgets.
+
+    In either case, input events are handled in the usual way.
+
+    This property has no effect on widgets in a non-OpenGL window.
+    &#34;&#34;&#34;
+
+    tab_stop: bool = False
+    &#34;&#34;&#34;
+    True if this widget should receive the keyboard focus when the user presses the Tab key. Defaults to false.
+    &#34;&#34;&#34;
+    enter_response = None
+    cancel_response = None
+    anchor = &#39;lt&#39;
+    &#34;&#34;&#34;
+    A string specifying how this widget is to change in size and position when its parent widget changes size. The 
+    letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
+    parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
+    its parent changes in width or height.
+    &#34;&#34;&#34;
+    _menubar = None
+    _visible = True
+    _is_gl_container = False
+    redraw_every_event = True
+    resizing_axes = {&#39;h&#39;: &#39;lr&#39;, &#39;v&#39;: &#39;tb&#39;}
+    resizing_values = {&#39;&#39;: [0], &#39;m&#39;: [1], &#39;s&#39;: [0, 1]}
+
+    visible = overridable_property(&#39;visible&#39;)
+    &#34;&#34;&#34;
+    When true, the widget is visible and active. When false, the widget is invisible and will not receive events. 
+    Defaults to true. The behaviour of this property can be customized by overriding the get_visible method.
+    &#34;&#34;&#34;
+    parent = None
+    &#34;&#34;&#34;
+    Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another 
+    widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.
+    &#34;&#34;&#34;
+    subwidgets = []
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    focus_switch: &#34;Widget&#34; = None
+    &#34;&#34;&#34;
+    subwidget to receive key events
+    &#34;&#34;&#34;
+    debug_resize = False
+
+
+    def __init__(self, rect: Rect = None, **kwds):
+        &#34;&#34;&#34;
+        Creates a new widget, initially without any parent. If a rect is given, it specifies the new widget&#39;s initial s
+        ize and position relative to its parent.
+
+        Args:
+            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the\
+             widget. Modifying this rectangle changes the widget&#39;s size and position.
+
+            **kwds: Additional attributes specified as key-value pairs
+        &#34;&#34;&#34;
+        self.logger = logging.getLogger(__name__)
+
+        if rect and not isinstance(rect, Rect):
+            raise TypeError(&#34;Widget rect not a pygame.Rect&#34;)
+
+        self._rect = Rect(rect or (0, 0, 100, 100))
+        self.parent = None
+        self.subwidgets = []
+        self.focus_switch = None
+        self.is_modal = False
+
+        self.set(**kwds)
+
+    def set(self, **kwds):
+        # for name, value in kwds.iteritems():  -- update for python 3 -- hasii
+        for name, value in kwds.items():
+            if not hasattr(self, name):
+                raise TypeError(&#34;Unexpected keyword argument &#39;%s&#39;&#34; % name)
+            setattr(self, name, value)
+
+    def get_rect(self):
+        return self._rect
+
+    def set_rect(self, x):
+        old_size = self._rect.size
+        self._rect = Rect(x)
+        #
+        # Python 3 update no more tuples
+        # self._resized(old_size)
+        self._resized(old_size[0], old_size[1])
+
+    rect = property(get_rect, set_rect)
+    &#34;&#34;&#34;
+    bounds in parent&#39;s coordinates
+    &#34;&#34;&#34;
+
+    def add_anchor(self, mode: str):
+        &#34;&#34;&#34;
+        Adds the options specified by mode to the anchor property.
+
+        Args:
+            mode:  The new anchor mode to add
+
+        Returns:
+
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))
+
+    def remove_anchor(self, mode: str):
+        &#34;&#34;&#34;
+         Remove the options specified by mode from anchor property.
+
+        Args:
+            mode: The anchor mode to remove
+        Returns:
+
+        &#34;&#34;&#34;
+        self.anchor = &#34;&#34;.join(set(self.anchor) - set(mode))
+
+    def set_resizing(self, axis, value):
+        chars = self.resizing_axes[axis]
+        anchor = self.anchor
+        for c in chars:
+            anchor = anchor.replace(c, &#39;&#39;)
+        for i in self.resizing_values[value]:
+            anchor += chars[i]
+        self.anchor = anchor + value
+    #
+    # update for 3.7
+    # https://stackoverflow.com/questions/33837918/type-hints-solve-circular-dependency
+    #
+    def add(self, arg: &#39;Widget&#39;):     # Python 3 forward reference;
+        &#34;&#34;&#34;
+        Adds the given widget or sequence of widgets as a subwidget of this widget.
+
+        Args:
+            arg:  May be a single widget or multiple
+
+        &#34;&#34;&#34;
+        if arg:
+
+            self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+            #
+            # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
+            #
+            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+                arg.set_parent(self)
+            else:
+                self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+                for item in arg:
+                    self.add(item)
+
+    def add_centered(self, widget):
+        &#34;&#34;&#34;
+        Adds the given widget and positions it in the center of this widget.
+
+        Args:
+            widget: The widget to center
+
+        &#34;&#34;&#34;
+        w, h = self.size
+        widget.center = w // 2, h // 2
+        self.add(widget)
+
+    def remove(self, widget):
+        &#34;&#34;&#34;
+
+        If the given widget is a subwidget of this widget, it is removed and its parent attribute is set to None.
+
+        Args:
+            widget:  The widget to act on
+
+
+        &#34;&#34;&#34;
+        if widget in self.subwidgets:
+            widget.set_parent(None)
+
+    def set_parent(self, parent):
+        &#34;&#34;&#34;
+        Changes the parent of this widget to the given widget. This is an alternative to using the add and remove
+        methods of the parent widget. Setting the parent to None removes the widget from any parent.
+
+        Args:
+            parent:
+
+        &#34;&#34;&#34;
+        if parent is not self.parent:
+            if self.parent:
+                self.parent._remove(self)
+            self.parent = parent
+            if parent:
+                parent._add(self)
+
+    def _add(self, widget):
+        self.subwidgets.append(widget)
+
+    def _remove(self, widget):
+        self.subwidgets.remove(widget)
+        if self.focus_switch is widget:
+            self.focus_switch = None
+
+    def draw_all(self, surface):
+        # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+        if self.visible:
+            surf_rect = surface.get_rect()
+            bg_image = self.bg_image
+            if bg_image:
+                if self.scale_bg:
+                    bg_width, bg_height = bg_image.get_size()
+                    width, height = self.size
+                    if width &gt; bg_width or height &gt; bg_height:
+                        hscale = width / bg_width
+                        vscale = height / bg_height
+                        bg_image = rotozoom(bg_image, 0.0, max(hscale, vscale))
+                r = bg_image.get_rect()
+                r.center = surf_rect.center
+                surface.blit(bg_image, r)
+            else:
+                bg = self.bg_color
+                if bg:
+                    surface.fill(bg)
+            self.draw(surface)
+            bw = self.border_width
+            if bw:
+                bc = self.border_color or self.fg_color
+                frame_rect(surface, bc, surf_rect, bw)
+            for widget in self.subwidgets:
+                sub_rect = widget.rect
+                if debug_rect:
+                    print(&#34;Widget: Drawing subwidget %s of %s with rect %s&#34; % (
+                        widget, self, sub_rect))
+                sub_rect = surf_rect.clip(sub_rect)
+                if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
+                    try:
+                        sub = surface.subsurface(sub_rect)
+                    #
+                    # Python 3 update
+                    #
+                    # except ValueError, e:
+                    except ValueError as e:
+                        if str(e) == &#34;subsurface rectangle outside surface area&#34;:
+                            self.diagnose_subsurface_problem(surface, widget)
+                        else:
+                            raise
+                    else:
+                        widget.draw_all(sub)
+            self.draw_over(surface)
+
+    def diagnose_subsurface_problem(self, surface, widget):
+        mess = &#34;Widget %s %s outside parent surface %s %s&#34; % (
+            widget, widget.rect, self, surface.get_rect())
+        sys.stderr.write(&#34;%s\n&#34; % mess)
+        surface.fill((255, 0, 0), widget.rect)
+
+    def find_widget(self, pos: tuple):
+
+        for widget in self.subwidgets[::-1]:
+            if widget.visible:
+                r = widget.rect
+                #
+                # Python 3 update
+                #
+                # if r.collidepoint(pos):
+                if isinstance(pos, map):
+                    pos = list(pos)
+                if r.collidepoint(pos[0], pos[1]):
+                    return widget.find_widget(subtract(pos, r.topleft))
+        return self
+
+    def handle_mouse(self, name, event):
+        self.augment_mouse_event(event)
+        self.call_handler(name, event)
+        self.setup_cursor(event)
+
+    def augment_mouse_event(self, event):
+        &#34;&#34;&#34;
+        Python 3 update.  local really needs to be a list
+
+        Args:
+            event:   The event to augment
+
+        &#34;&#34;&#34;
+        posMap = self.global_to_local(event.pos)
+        # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
+        event.dict[&#39;local&#39;] = list(posMap)
+
+    def setup_cursor(self, event):
+        global current_cursor
+        cursor = self.get_cursor(event) or arrow_cursor
+        if cursor is not current_cursor:
+            set_cursor(*cursor)
+            current_cursor = cursor
+
+    def dispatch_key(self, name, event):
+        if self.visible:
+            if event.cmd and event.type == KEYDOWN:
+                menubar = self._menubar
+                if menubar and menubar.handle_command_key(event):
+                    return
+            widget = self.focus_switch
+            if widget:
+                widget.dispatch_key(name, event)
+            else:
+                self.call_handler(name, event)
+        else:
+            self.call_parent_handler(name, event)
+
+    def handle_event(self, name, event):
+        handler = getattr(self, name, None)
+        if handler:
+            return handler(event)
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.handle_event(name, event)
+
+    def get_focus(self):
+        &#34;&#34;&#34;
+        If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
+        the widget that would have the keyboard focus if this widget were on the focus path.
+
+        Returns:  A widget with the focus
+
+        &#34;&#34;&#34;
+        widget = self
+        while 1:
+            focus = widget.focus_switch
+            if not focus:
+                break
+            widget = focus
+        return widget
+
+    def notify_attention_loss(self):
+        widget = self
+        while 1:
+            if widget.is_modal:
+                break
+            parent = widget.parent
+            if not parent:
+                break
+            focus = parent.focus_switch
+            if focus and focus is not widget:
+                focus.dispatch_attention_loss()
+            widget = parent
+
+    def dispatch_attention_loss(self):
+        widget = self
+        while widget:
+            widget.attention_lost()
+            widget = widget.focus_switch
+
+    def handle_command(self, name, *args):
+        method = getattr(self, name, None)
+        if method:
+            return method(*args)
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.handle_command(name, *args)
+
+    def next_handler(self):
+        if not self.is_modal:
+            return self.parent
+
+    def call_handler(self, name, *args):
+        &#34;&#34;&#34;
+        If the widget has a method with the given name, it is called with the given arguments, and its return value is
+        is returned. Otherwise, nothing is done and &#39;pass&#39; is returned.
+
+        Args:
+            name:  The method name
+            *args: The arguments to use
+
+        Returns:  The value of the &#39;called&#39; method
+
+        &#34;&#34;&#34;
+        method = getattr(self, name, None)
+        if method:
+            return method(*args)
+        else:
+            return &#39;pass&#39;
+
+    def call_parent_handler(self, name, *args):
+        &#34;&#34;&#34;
+        Invokes call_handler on the parent of this widget, if any. This can be used to pass an event on to a
+        parent widget if you don&#39;t want to handle it.
+
+        Args:
+            name:   The method name
+            *args:  Its arguments
+
+        Returns:  The value of the &#39;called&#39; methood
+
+        &#34;&#34;&#34;
+        parent = self.next_handler()
+        if parent:
+            parent.call_handler(name, *args)
+
+    def global_to_local(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+        Args:
+            p:  The global coordinates
+
+        Returns:  The widget&#39;s local coordinates
+
+        &#34;&#34;&#34;
+        return subtract(p, self.local_to_global_offset())
+
+    def local_to_global(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+        Args:
+            p: Widget local coordinates
+
+        Returns:
+
+        &#34;&#34;&#34;
+        return add(p, self.local_to_global_offset())
+
+    def local_to_global_offset(self):
+        d = self.topleft
+        parent = self.parent
+        if parent:
+            d = add(d, parent.local_to_global_offset())
+        return d
+
+    def get_global_rect(self):
+
+        p = self.local_to_global_offset()
+        #
+        # Python 3 update
+        #
+        pTuple = tuple(p)
+        s = self.rect.size
+        #
+        # Python 3 update
+        #
+        # return Rect(p, s)
+        return Rect(pTuple, s)
+
+    def is_inside(self, container):
+        widget = self
+        while widget:
+            if widget is container:
+                return True
+            widget = widget.parent
+        return False
+
+    def present(self, centered: bool = True):
+
+        &#34;&#34;&#34;
+        Presents the widget as a modal dialog. The widget is added as a subwidget of the root widget, centered
+        within it if centered is true. A nested event loop is entered in which any events for widgets other
+        than this widget and its subwidgets are ignored. Control is retained until this widget&#39;s dismiss
+        method is called. The argument to dismiss is returned from the present call.
+
+        Args:
+            centered:  Indicates whether or not to center;  default is True
+
+        Returns:  The value returned from the modal widget
+
+        &#34;&#34;&#34;
+        #
+        # TODO  Something about my re-packaging caused me to lose
+        # visibility to the root widget;  Figure it out later
+        #
+        global root_widget
+        # print &#34;Widget: presenting with rect&#34;, self.rect
+        # root = self.get_root()
+        root = Widget.root_widget
+        if centered:
+            self.center = root.center
+        root.add(self)
+        root.run_modal(self)
+        self.dispatch_attention_loss()
+        root.remove(self)
+
+        self.logger.debug(&#34;Widget.present: returning.  Result: %s&#34;, self.modal_result)
+        return self.modal_result
+
+    def dismiss(self, value=True):
+        &#34;&#34;&#34;
+        When the presented widget presented is modal using present() causes the modal event loop to exit and
+        the present() call to return with the given result.
+
+        Args:
+            value:  The value to set in modal_result
+
+        Returns:
+
+        &#34;&#34;&#34;
+        self.modal_result = value
+
+    def get_root(self):
+        &#34;&#34;&#34;
+        Returns the root widget (whether this widget is contained within it or not).
+
+            Deprecated, use root.get_root()
+
+        Returns:  The root widget
+
+        &#34;&#34;&#34;
+        return root_widget
+
+    def get_top_widget(self) -&gt; &#34;Widget&#34;:
+        &#34;&#34;&#34;
+        Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
+        dialog is in progress, the modal dialog widget is the top widget, otherwise it is the root widget.
+
+        Returns:  The top level widget in a containment hierarchy
+
+        &#34;&#34;&#34;
+        top = self
+        while top.parent and not top.is_modal:
+            top = top.parent
+        return top
+
+    def focus(self):
+        &#34;&#34;&#34;
+        Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
+        widget) for this to have any affect.
+
+        &#34;&#34;&#34;
+        parent = self.next_handler()
+        if parent:
+            parent.focus_on(self)
+
+    def focus_on(self, subwidget):
+        old_focus = self.focus_switch
+        if old_focus is not subwidget:
+            if old_focus:
+                old_focus.dispatch_attention_loss()
+            self.focus_switch = subwidget
+        self.focus()
+
+    def has_focus(self):
+        &#34;&#34;&#34;
+
+        Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
+        has the keyboard focus.
+
+        &#34;&#34;&#34;
+        return self.is_modal or (self.parent and self.parent.focused_on(self))
+
+    def focused_on(self, widget):
+        return self.focus_switch is widget and self.has_focus()
+
+    def focus_chain(self):
+        result = []
+        widget = self
+        while widget:
+            result.append(widget)
+            widget = widget.focus_switch
+        return result
+
+    def shrink_wrap(self):
+        contents = self.subwidgets
+        if contents:
+            rects = [widget.rect for widget in contents]
+            # rmax = Rect.unionall(rects) # broken in PyGame 1.7.1
+            rmax = rects.pop()
+            for r in rects:
+                rmax = rmax.union(r)
+            #
+            # Updated python 3 -- hasii
+            #
+            # self._rect.size = add(rmax.topleft, rmax.bottomright)
+            self._rect.size = list(add(rmax.topleft, rmax.bottomright))
+
+    def invalidate(self):
+        &#34;&#34;&#34;
+        Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
+        Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
+
+        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+        to the event loop. Future versions may be more selective.
+
+        &#34;&#34;&#34;
+        root = self.get_root()
+        if root:
+            root.do_draw = True
+
+    def predict(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return themeRoot.get(self.__class__, name)
+
+    def predict_attr(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return getattr(self, name)
+
+    def init_attr(self, kwds, name):
+        try:
+            return kwds.pop(name)
+        except KeyError:
+            return getattr(self, name)
+
+    def predict_font(self, kwds, name=&#39;font&#39;):
+        return kwds.get(name) or themeRoot.get_font(self.__class__, name)
+
+    def get_margin_rect(self) -&gt; Rect:
+        &#34;&#34;&#34;
+        Returns a Rect in local coordinates representing the content area of the widget, as determined
+        by its margin property.
+
+        Returns: The rect of the content area
+
+        &#34;&#34;&#34;
+        r = Rect((0, 0), self.size)
+        d = -2 * self.margin
+        r.inflate_ip(d, d)
+        return r
+
+    def set_size_for_text(self, width, nLines=1):
+        &#34;&#34;&#34;
+        Sets the widget&#39;s Rect to a suitable size for displaying text of the specified width and number of lines in
+        its current font, as determined by the font property. The width can be either a number of pixels or a
+        piece of sample text.
+
+        Args:
+            width:  The number of pixes or some sample text
+
+            nLines: The number of lines in the text;  Defaults to 1
+
+
+        &#34;&#34;&#34;
+        if width is not None:
+            font = self.font
+            d = 2 * self.margin
+            #
+            # Python 3 update
+            # if isinstance(width, basestring):
+            if isinstance(width, str):
+                width, height = font.size(width)
+                width += d + 2
+            else:
+                height = font.size(&#34;X&#34;)[1]
+            self.size = (width, height * nLines + d)
+
+    def tab_to_first(self):
+        chain = self.get_tab_order()
+        if chain:
+            chain[0].focus()
+
+    def tab_to_next(self):
+        top = self.get_top_widget()
+        chain = top.get_tab_order()
+        try:
+            i = chain.index(self)
+        except ValueError:
+            return
+        target = chain[(i + 1) % len(chain)]
+        target.focus()
+
+    def get_tab_order(self):
+        result = []
+        self.collect_tab_order(result)
+        return result
+
+    def collect_tab_order(self, result):
+        if self.visible:
+            if self.tab_stop:
+                result.append(self)
+            for child in self.subwidgets:
+                child.collect_tab_order(result)
+
+    def inherited(self, attributeName: str):
+        &#34;&#34;&#34;
+        Looks up the parent hierarchy to find the first widget that has an attribute with the given name, and
+        returns its value. If not found, returns None.
+
+        Args:
+            attributeName:  The name of the attribute
+
+        Returns: The attribute&#39;s value or None if not found
+
+        &#34;&#34;&#34;
+        value = getattr(self, attributeName)
+
+        if value is not None:
+            return value
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.inherited(attributeName)
+
+    def get_mouse(self):
+        root = self.get_root()
+        return root.get_mouse_for(self)
+
+    def get_menu_bar(self):
+        return self._menubar
+
+    def set_menu_bar(self, menubar):
+        if menubar is not self._menubar:
+            if self._menubar:
+                self.remove(self._menubar)
+            self._menubar = menubar
+            if menubar:
+                if menubar.width == 0:
+                    menubar.width = self.width
+                    menubar.anchor = &#39;lr&#39;
+                self.add(menubar)
+
+    def get_is_gl_container(self):
+        return self._is_gl_container
+
+    def set_is_gl_container(self, x):
+        self._is_gl_container = x
+
+    def gl_draw_all(self, gl_surface):
+
+        # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
+        if self.visible:
+            if self.is_gl_container:
+                self.gl_draw_self(gl_surface)
+                for subwidget in self.subwidgets:
+                    gl_subsurface = gl_surface.subsurface(subwidget.rect)
+                    subwidget.gl_draw_all(gl_subsurface)
+            else:
+                surface = Surface(self.size, SRCALPHA)
+                self.draw_all(surface)
+                gl_surface.gl_enter()
+                gl_surface.blit(surface)
+                gl_surface.gl_exit()
+
+    def gl_draw_self(self, gl_surface):
+
+        # print &#34;Widget.gl_draw_self:&#34;, self ###
+        gl_surface.gl_enter()
+        # TODO: draw background and border here
+        self.draw(gl_surface)
+        gl_surface.gl_exit()
+
+    def defer_drawing(self):
+        &#34;&#34;&#34;
+        Called every time around the event loop on the root widget or a
+        widget that is modal. If it returns true, the frame timer runs,
+        scheduled calls are made, and screen updates are performed once per
+        frame. Otherwise the screen is updated after each mouse down, mouser
+        up or keyboard event and scheduled calls are not made.
+        &#34;&#34;&#34;
+        return False
+
+    def relative_mode(self):
+        &#34;&#34;&#34;
+        Return true if relative input mode should be used. Called each
+        time around the event loop on the root widget or a widget that is
+        modal.
+
+        In relative input mode, the mouse cursor is hidden and mouse
+        movements are not constrained to the edges of the window. In this
+        mode, mouse movement events are delivered to the widget having the
+        keyboard focus by calling the &#39;mouse_delta&#39; method. The &#39;rel&#39;
+        attribute of the event should be used to obtain the movement since
+        the last mouse event. Mouse down and mouse up events are also
+        delivered to the focus widget, using the usual methods.
+
+        The user can always escape from relative mode temporarily by
+        pressing Ctrl-Shift-Escape. Normal mouse functionality is restored
+        and further input events are ignored until a mouse click or key
+        press occurs.
+        &#34;&#34;&#34;
+        return False
+
+    def __contains__(self, event):
+        r = Rect(self._rect)
+        r.left = 0
+        r.top = 0
+
+        answer: bool = False
+        try:
+            p      = self.global_to_local(event.pos)
+            pList  = list(p)
+            answer = r.collidepoint(pList[0], pList[1])
+        except AttributeError as ae:
+            self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
+        #
+        # Python 3 method signature change
+        #
+        # return r.collidepoint(p)
+        # return r.collidepoint(pList[0], pList[1])
+        return answer
+
+    #
+    # Python 3 update
+    # def _resized(self, (old_width, old_height)): # remove tuple parameters
+    #
+    def _resized(self, old_width, old_height):
+        &#34;&#34;&#34;
+
+        :param old_width:
+        :param old_height:
+        :return:
+        &#34;&#34;&#34;
+        new_width, new_height = self._rect.size
+        dw = new_width - old_width
+        dh = new_height - old_height
+        if dw or dh:
+            self.resized(dw, dh)
+
+    #
+    #
+    #   Abstract methods follow
+    #
+    #
+    def draw(self, surface: Surface):
+        &#34;&#34;&#34;
+        Called whenever the widget&#39;s contents need to be drawn. The surface is a subsurface the same size as the
+        widget&#39;s rect with the drawing origin at its top left corner.
+
+        The widget is filled with its background colour, if any, before this method is called. The border and
+        subwidgets, if any, are drawn after this method returns.
+
+        Args:
+            surface:  The pygame surface to draw on
+        &#34;&#34;&#34;
+        pass
+
+    def draw_over(self, surface: Surface):
+        &#34;&#34;&#34;
+        Called after drawing all the subwidgets of this widget. This method can be used to draw content that is
+        to appear on top of any subwidgets.
+
+        Args:
+            surface:  The pygame surface to draw on
+        &#34;&#34;&#34;
+        pass
+
+    def key_down(self, theKeyEvent: Event):
+        &#34;&#34;&#34;
+        Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
+        focus but did not handle the event.
+
+        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+        key_down() method to pass the event to the parent widget.
+
+        Args:
+            theKeyEvent: The key event
+        &#34;&#34;&#34;
+        k = theKeyEvent.key
+        self.logger.debug(&#34;Widget.key_down: %s&#34;, k)
+
+        if k == K_RETURN or k == K_KP_ENTER:
+            if self.enter_response is not None:
+                self.dismiss(self.enter_response)
+                return
+        elif k == K_ESCAPE:
+            if self.cancel_response is not None:
+                self.dismiss(self.cancel_response)
+                return
+        elif k == K_TAB:
+            self.tab_to_next()
+            return
+        self.call_parent_handler(&#39;key_down&#39;, theKeyEvent)
+
+    def key_up(self, theKeyEvent: Event):
+        &#34;&#34;&#34;
+        Called when a key release event occurs and this widget has the keyboard focus.
+
+        NOTE:
+            - If you override this method and don&#39;t want to handle a key_up event
+            - be sure to call the inherited key_up() method to pass the event to the parent widget.
+
+        Args:
+            theKeyEvent:  The key event
+
+        &#34;&#34;&#34;
+        self.call_parent_handler(&#39;key_up&#39;, theKeyEvent)
+
+    def get_cursor(self, event):
+        &#34;&#34;&#34;
+        Called to determine the appropriate cursor to display over the widget.
+        The ResourceUtility.get_cursor() function returns a suitable tuple.
+
+        Args:
+            event:  An event object containing the mouse coordinates to be used in determining the cursor.
+
+        Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
+
+
+        &#34;&#34;&#34;
+        return arrow_cursor
+
+    def attention_lost(self):
+        &#34;&#34;&#34;
+        Called when the widget is on the focus path, and a mouse-down event occurs in any widget which is not on
+        the focus path. The focus path is defined as the widget having the keyboard focus, plus any widgets on the
+        path from there up the parent hierarchy to the root widget. This method can be useful to ensure that changes
+        to a data structure being edited are committed before performing some other action.
+
+        &#34;&#34;&#34;
+        pass
+
+    def resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget changes size as a result of assigning to its width, height or size attributes,
+        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+        Args:
+            dw:  width
+            dh:  height
+
+        Returns:
+
+        &#34;&#34;&#34;
+        if self.debug_resize:
+            self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
+        for widget in self.subwidgets:
+            widget.parent_resized(dw, dh)
+
+    def parent_resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+        the widget according to its anchor attribute.
+
+        Args:
+            dw:  Width
+            dh:  Height
+
+        &#34;&#34;&#34;
+        debug_resize = self.debug_resize or self.parent.debug_resize
+
+        if debug_resize:
+            self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
+
+        left, top, width, height = self._rect
+        move = False
+        resize = False
+        anchor = self.anchor
+
+        if dw and &#39;r&#39; in anchor:
+            if &#39;l&#39; in anchor:
+                resize = True
+                width += dw
+            else:
+                move = True
+                left += dw
+        if dh and &#39;b&#39; in anchor:
+            if &#39;t&#39; in anchor:
+                resize = True
+                height += dh
+            else:
+                move = True
+                top += dh
+
+        if resize:
+            if debug_resize:
+                self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
+            self.rect = (left, top, width, height)
+        elif move:
+            if debug_resize:
+                self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
+            self._rect.topleft = (left, top)
+
+    def get_visible(self):
+        &#34;&#34;&#34;
+        Called to determine the value of the visible property. By overriding this, you can make the visibility of the
+        widget dependent on some external condition.
+
+        Returns: The widget visibility state
+
+        &#34;&#34;&#34;
+        return self._visible
+
+    def set_visible(self, x):
+        self._visible = x</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="albow.core.Widget.rect_property"><code class="name flex">
+<span>def <span class="ident">rect_property</span></span>(<span>name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def rect_property(name):
+
+    def get(self):
+        return getattr(self._rect, name)
+
+    def set(self, value):
+
+        r = self._rect
+        old_size = r.size
+        setattr(r, name, value)
+        new_size = r.size
+        #
+        # Python 3 update
+        # i f old_size &lt;&gt; new_size:
+        if old_size != new_size:
+            #
+            # Method signature changed since tuples not allowed to be passed
+            #
+            # self._resized(old_size)
+            self._resized(old_size[0], old_size[1])
+
+    return property(get, set)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.core.Widget.Widget"><code class="flex name class">
+<span>class <span class="ident">Widget</span></span>
+<span>(</span><span>rect=None, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The Widget class is the base class for all widgets. A widget occupies a rectangular area of the PyGame screen
+to which all drawing in it is clipped, and it may receive mouse and keyboard events. A widget may also
+contain subwidgets.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to a limitation of PyGame subsurfaces, a widget's rectangle must be entirely contained within that of
+its parent widget. An exception will occur if this is violated.</p>
+</div>
+<ul>
+<li>Reading the following attributes retrieves the corresponding values from the widget's rect.</li>
+<li>Assigning to them changes the size and position of the widget.</li>
+<li>
+<p>Additionally, if the size of the widget is changed via these
+attributes, the size and position of its subwidgets is updated according to each subwidget's anchor attribute.</p>
+<p><pre>
+left, right, top, bottom, width, height, size,
+topleft, topright, bottomleft, bottomright,
+midleft, midright, midtop, midbottom,
+center, centerx, centery
+</pre></p>
+</li>
+</ul>
+<p>This does not happen if the rect is modified directly.</p>
+<p>Creates a new widget, initially without any parent. If a rect is given, it specifies the new widget's initial s
+ize and position relative to its parent.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rect</code></strong></dt>
+<dd>A PyGame rectangle defining the portion of the parent widget's coordinate system occupied by the
+widget. Modifying this rectangle changes the widget's size and position.</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional attributes specified as key-value pairs</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Widget:
+    &#34;&#34;&#34;
+    The Widget class is the base class for all widgets. A widget occupies a rectangular area of the PyGame screen
+    to which all drawing in it is clipped, and it may receive mouse and keyboard events. A widget may also
+    contain subwidgets.
+
+    .. Note::
+        Due to a limitation of PyGame subsurfaces, a widget&#39;s rectangle must be entirely contained within that of
+        its parent widget. An exception will occur if this is violated.
+
+
+    - Reading the following attributes retrieves the corresponding values from the widget&#39;s rect.
+    - Assigning to them changes the size and position of the widget.
+    - Additionally, if the size of the widget is changed via these
+      attributes, the size and position of its subwidgets is updated according to each subwidget&#39;s anchor attribute.
+
+        &lt;pre&gt;
+        left, right, top, bottom, width, height, size,
+        topleft, topright, bottomleft, bottomright,
+        midleft, midright, midtop, midbottom,
+        center, centerx, centery
+        &lt;/pre&gt;
+
+    This does not happen if the rect is modified directly.
+
+    &#34;&#34;&#34;
+
+    left = rect_property(&#39;left&#39;)
+    right = rect_property(&#39;right&#39;)
+    top = rect_property(&#39;top&#39;)
+    bottom = rect_property(&#39;bottom&#39;)
+    width = rect_property(&#39;width&#39;)
+    height = rect_property(&#39;height&#39;)
+    size = rect_property(&#39;size&#39;)
+    topleft = rect_property(&#39;topleft&#39;)
+    topright = rect_property(&#39;topright&#39;)
+    bottomleft = rect_property(&#39;bottomleft&#39;)
+    bottomright = rect_property(&#39;bottomright&#39;)
+    midleft = rect_property(&#39;midleft&#39;)
+    midright = rect_property(&#39;midright&#39;)
+    midtop = rect_property(&#39;midtop&#39;)
+    midbottom = rect_property(&#39;midbottom&#39;)
+    center = rect_property(&#39;center&#39;)
+    centerx = rect_property(&#39;centerx&#39;)
+    centery = rect_property(&#39;centery&#39;)
+
+    font = FontProperty(&#39;font&#39;)
+    &#34;&#34;&#34;
+    Font to use for drawing text in the widget. How this property is used depends on the widget. Some widgets have 
+    additional font properties for specific parts of the widget.
+    &#34;&#34;&#34;
+    fg_color = ThemeProperty(&#39;fg_color&#39;)
+    &#34;&#34;&#34;
+    Foreground colour for the contents of the widget. How this property is used depends on the widget. Some widgets 
+    have additional colour properties for specific parts of the widget.
+    &#34;&#34;&#34;
+    bg_color = ThemeProperty(&#39;bg_color&#39;)
+    &#34;&#34;&#34;
+    Background colour of the widget. If specified, the widget&#39;s rect is filled with this colour before drawing its 
+    contents. If no background colour is specified or it is set to None, the widget has no background and is drawn 
+    transparently over its parent. For most widgets, it defaults to None.
+    &#34;&#34;&#34;
+    bg_image = ThemeProperty(&#39;bg_image&#39;)
+    &#34;&#34;&#34;
+    An image to be displayed in the background. If specified, this overrides any bg_color.
+    &#34;&#34;&#34;
+    scale_bg = ThemeProperty(&#39;scale_bg&#39;)
+    &#34;&#34;&#34;
+    If true, and the background image is smaller than the widget in either direction, the background image is scaled 
+    to fill the widget, otherwise it is centered. Note: Due to a limitation of the pygame rotozoom function, scaling 
+    is currently uniform in both directions, with the scale factor being that required to ensure that the whole 
+    widget is covered.
+    &#34;&#34;&#34;
+    border_width = ThemeProperty(&#39;border_width&#39;)
+    &#34;&#34;&#34;
+    Width of a border to be drawn inside the outer edge of the widget. If this is unspecified or set to zero, 
+    no border is drawn.
+    &#34;&#34;&#34;
+    border_color = ThemeProperty(&#39;border_color&#39;)
+    &#34;&#34;&#34;
+    Color in which to draw the border specified by border_width.
+    &#34;&#34;&#34;
+    sel_color = ThemeProperty(&#39;sel_color&#39;)
+    margin = ThemeProperty(&#39;margin&#39;)
+    &#34;&#34;&#34;
+    The amount of space to leave between the edge of the widget and its contents. Note that this distance includes the 
+    border_width, e.g. if border_width == 1 and margin == 3, then there is 2 pixels of space between the inside of 
+    the border and the contents.
+
+    Most of the predefined Albow widgets honour the margin property, but this is not automatic for your own widget 
+    subclasses. You may find the get_margin_rect() method helpful in implementing support for the margin property 
+    in your widget classes.
+    &#34;&#34;&#34;
+
+    menu_bar = overridable_property(&#39;menu_bar&#39;)
+    &#34;&#34;&#34;
+    A MenuBar to be attached to and managed by this widget. Assigning to the menu_bar property automatically adds the 
+    menu bar as a child widget. Also, if the width of the menu bar has not already been set, it is set to be the same 
+    width as this widget and to stretch horizontally with it.
+
+    When a key down event with the platform&#39;s standard menu command modifier (Command on Mac, Control on other 
+    platforms) is dispatched through this widget, the menu bar is first given a chance to handle the event. If the 
+    menu bar does not handle it, dispatching continues as normal.
+
+    &#34;&#34;&#34;
+    is_gl_container: bool = overridable_property(&#39;is_gl_container&#39;)
+    &#34;&#34;&#34;
+    Controls the drawing behaviour of the widget when used in an OpenGL window. When true, 
+    
+    - no 2D drawing is performed for the widget itself
+    - its background colour and border properties are ignored 
+    - its draw() and draw_over() methods are never called. 
+        
+    If it has 3D subwidgets, 3D drawing is performed for them.
+
+    When false, the widget and its subwidgets are rendered to a temporary surface which is then drawn to the window 
+    using glDrawPixels() with blending. No 3D drawing is performed for any of its subwidgets.
+
+    In either case, input events are handled in the usual way.
+
+    This property has no effect on widgets in a non-OpenGL window.
+    &#34;&#34;&#34;
+
+    tab_stop: bool = False
+    &#34;&#34;&#34;
+    True if this widget should receive the keyboard focus when the user presses the Tab key. Defaults to false.
+    &#34;&#34;&#34;
+    enter_response = None
+    cancel_response = None
+    anchor = &#39;lt&#39;
+    &#34;&#34;&#34;
+    A string specifying how this widget is to change in size and position when its parent widget changes size. The 
+    letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
+    parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
+    its parent changes in width or height.
+    &#34;&#34;&#34;
+    _menubar = None
+    _visible = True
+    _is_gl_container = False
+    redraw_every_event = True
+    resizing_axes = {&#39;h&#39;: &#39;lr&#39;, &#39;v&#39;: &#39;tb&#39;}
+    resizing_values = {&#39;&#39;: [0], &#39;m&#39;: [1], &#39;s&#39;: [0, 1]}
+
+    visible = overridable_property(&#39;visible&#39;)
+    &#34;&#34;&#34;
+    When true, the widget is visible and active. When false, the widget is invisible and will not receive events. 
+    Defaults to true. The behaviour of this property can be customized by overriding the get_visible method.
+    &#34;&#34;&#34;
+    parent = None
+    &#34;&#34;&#34;
+    Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another 
+    widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.
+    &#34;&#34;&#34;
+    subwidgets = []
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    focus_switch: &#34;Widget&#34; = None
+    &#34;&#34;&#34;
+    subwidget to receive key events
+    &#34;&#34;&#34;
+    debug_resize = False
+
+
+    def __init__(self, rect: Rect = None, **kwds):
+        &#34;&#34;&#34;
+        Creates a new widget, initially without any parent. If a rect is given, it specifies the new widget&#39;s initial s
+        ize and position relative to its parent.
+
+        Args:
+            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the\
+             widget. Modifying this rectangle changes the widget&#39;s size and position.
+
+            **kwds: Additional attributes specified as key-value pairs
+        &#34;&#34;&#34;
+        self.logger = logging.getLogger(__name__)
+
+        if rect and not isinstance(rect, Rect):
+            raise TypeError(&#34;Widget rect not a pygame.Rect&#34;)
+
+        self._rect = Rect(rect or (0, 0, 100, 100))
+        self.parent = None
+        self.subwidgets = []
+        self.focus_switch = None
+        self.is_modal = False
+
+        self.set(**kwds)
+
+    def set(self, **kwds):
+        # for name, value in kwds.iteritems():  -- update for python 3 -- hasii
+        for name, value in kwds.items():
+            if not hasattr(self, name):
+                raise TypeError(&#34;Unexpected keyword argument &#39;%s&#39;&#34; % name)
+            setattr(self, name, value)
+
+    def get_rect(self):
+        return self._rect
+
+    def set_rect(self, x):
+        old_size = self._rect.size
+        self._rect = Rect(x)
+        #
+        # Python 3 update no more tuples
+        # self._resized(old_size)
+        self._resized(old_size[0], old_size[1])
+
+    rect = property(get_rect, set_rect)
+    &#34;&#34;&#34;
+    bounds in parent&#39;s coordinates
+    &#34;&#34;&#34;
+
+    def add_anchor(self, mode: str):
+        &#34;&#34;&#34;
+        Adds the options specified by mode to the anchor property.
+
+        Args:
+            mode:  The new anchor mode to add
+
+        Returns:
+
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))
+
+    def remove_anchor(self, mode: str):
+        &#34;&#34;&#34;
+         Remove the options specified by mode from anchor property.
+
+        Args:
+            mode: The anchor mode to remove
+        Returns:
+
+        &#34;&#34;&#34;
+        self.anchor = &#34;&#34;.join(set(self.anchor) - set(mode))
+
+    def set_resizing(self, axis, value):
+        chars = self.resizing_axes[axis]
+        anchor = self.anchor
+        for c in chars:
+            anchor = anchor.replace(c, &#39;&#39;)
+        for i in self.resizing_values[value]:
+            anchor += chars[i]
+        self.anchor = anchor + value
+    #
+    # update for 3.7
+    # https://stackoverflow.com/questions/33837918/type-hints-solve-circular-dependency
+    #
+    def add(self, arg: &#39;Widget&#39;):     # Python 3 forward reference;
+        &#34;&#34;&#34;
+        Adds the given widget or sequence of widgets as a subwidget of this widget.
+
+        Args:
+            arg:  May be a single widget or multiple
+
+        &#34;&#34;&#34;
+        if arg:
+
+            self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+            #
+            # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
+            #
+            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+                arg.set_parent(self)
+            else:
+                self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+                for item in arg:
+                    self.add(item)
+
+    def add_centered(self, widget):
+        &#34;&#34;&#34;
+        Adds the given widget and positions it in the center of this widget.
+
+        Args:
+            widget: The widget to center
+
+        &#34;&#34;&#34;
+        w, h = self.size
+        widget.center = w // 2, h // 2
+        self.add(widget)
+
+    def remove(self, widget):
+        &#34;&#34;&#34;
+
+        If the given widget is a subwidget of this widget, it is removed and its parent attribute is set to None.
+
+        Args:
+            widget:  The widget to act on
+
+
+        &#34;&#34;&#34;
+        if widget in self.subwidgets:
+            widget.set_parent(None)
+
+    def set_parent(self, parent):
+        &#34;&#34;&#34;
+        Changes the parent of this widget to the given widget. This is an alternative to using the add and remove
+        methods of the parent widget. Setting the parent to None removes the widget from any parent.
+
+        Args:
+            parent:
+
+        &#34;&#34;&#34;
+        if parent is not self.parent:
+            if self.parent:
+                self.parent._remove(self)
+            self.parent = parent
+            if parent:
+                parent._add(self)
+
+    def _add(self, widget):
+        self.subwidgets.append(widget)
+
+    def _remove(self, widget):
+        self.subwidgets.remove(widget)
+        if self.focus_switch is widget:
+            self.focus_switch = None
+
+    def draw_all(self, surface):
+        # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+        if self.visible:
+            surf_rect = surface.get_rect()
+            bg_image = self.bg_image
+            if bg_image:
+                if self.scale_bg:
+                    bg_width, bg_height = bg_image.get_size()
+                    width, height = self.size
+                    if width &gt; bg_width or height &gt; bg_height:
+                        hscale = width / bg_width
+                        vscale = height / bg_height
+                        bg_image = rotozoom(bg_image, 0.0, max(hscale, vscale))
+                r = bg_image.get_rect()
+                r.center = surf_rect.center
+                surface.blit(bg_image, r)
+            else:
+                bg = self.bg_color
+                if bg:
+                    surface.fill(bg)
+            self.draw(surface)
+            bw = self.border_width
+            if bw:
+                bc = self.border_color or self.fg_color
+                frame_rect(surface, bc, surf_rect, bw)
+            for widget in self.subwidgets:
+                sub_rect = widget.rect
+                if debug_rect:
+                    print(&#34;Widget: Drawing subwidget %s of %s with rect %s&#34; % (
+                        widget, self, sub_rect))
+                sub_rect = surf_rect.clip(sub_rect)
+                if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
+                    try:
+                        sub = surface.subsurface(sub_rect)
+                    #
+                    # Python 3 update
+                    #
+                    # except ValueError, e:
+                    except ValueError as e:
+                        if str(e) == &#34;subsurface rectangle outside surface area&#34;:
+                            self.diagnose_subsurface_problem(surface, widget)
+                        else:
+                            raise
+                    else:
+                        widget.draw_all(sub)
+            self.draw_over(surface)
+
+    def diagnose_subsurface_problem(self, surface, widget):
+        mess = &#34;Widget %s %s outside parent surface %s %s&#34; % (
+            widget, widget.rect, self, surface.get_rect())
+        sys.stderr.write(&#34;%s\n&#34; % mess)
+        surface.fill((255, 0, 0), widget.rect)
+
+    def find_widget(self, pos: tuple):
+
+        for widget in self.subwidgets[::-1]:
+            if widget.visible:
+                r = widget.rect
+                #
+                # Python 3 update
+                #
+                # if r.collidepoint(pos):
+                if isinstance(pos, map):
+                    pos = list(pos)
+                if r.collidepoint(pos[0], pos[1]):
+                    return widget.find_widget(subtract(pos, r.topleft))
+        return self
+
+    def handle_mouse(self, name, event):
+        self.augment_mouse_event(event)
+        self.call_handler(name, event)
+        self.setup_cursor(event)
+
+    def augment_mouse_event(self, event):
+        &#34;&#34;&#34;
+        Python 3 update.  local really needs to be a list
+
+        Args:
+            event:   The event to augment
+
+        &#34;&#34;&#34;
+        posMap = self.global_to_local(event.pos)
+        # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
+        event.dict[&#39;local&#39;] = list(posMap)
+
+    def setup_cursor(self, event):
+        global current_cursor
+        cursor = self.get_cursor(event) or arrow_cursor
+        if cursor is not current_cursor:
+            set_cursor(*cursor)
+            current_cursor = cursor
+
+    def dispatch_key(self, name, event):
+        if self.visible:
+            if event.cmd and event.type == KEYDOWN:
+                menubar = self._menubar
+                if menubar and menubar.handle_command_key(event):
+                    return
+            widget = self.focus_switch
+            if widget:
+                widget.dispatch_key(name, event)
+            else:
+                self.call_handler(name, event)
+        else:
+            self.call_parent_handler(name, event)
+
+    def handle_event(self, name, event):
+        handler = getattr(self, name, None)
+        if handler:
+            return handler(event)
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.handle_event(name, event)
+
+    def get_focus(self):
+        &#34;&#34;&#34;
+        If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
+        the widget that would have the keyboard focus if this widget were on the focus path.
+
+        Returns:  A widget with the focus
+
+        &#34;&#34;&#34;
+        widget = self
+        while 1:
+            focus = widget.focus_switch
+            if not focus:
+                break
+            widget = focus
+        return widget
+
+    def notify_attention_loss(self):
+        widget = self
+        while 1:
+            if widget.is_modal:
+                break
+            parent = widget.parent
+            if not parent:
+                break
+            focus = parent.focus_switch
+            if focus and focus is not widget:
+                focus.dispatch_attention_loss()
+            widget = parent
+
+    def dispatch_attention_loss(self):
+        widget = self
+        while widget:
+            widget.attention_lost()
+            widget = widget.focus_switch
+
+    def handle_command(self, name, *args):
+        method = getattr(self, name, None)
+        if method:
+            return method(*args)
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.handle_command(name, *args)
+
+    def next_handler(self):
+        if not self.is_modal:
+            return self.parent
+
+    def call_handler(self, name, *args):
+        &#34;&#34;&#34;
+        If the widget has a method with the given name, it is called with the given arguments, and its return value is
+        is returned. Otherwise, nothing is done and &#39;pass&#39; is returned.
+
+        Args:
+            name:  The method name
+            *args: The arguments to use
+
+        Returns:  The value of the &#39;called&#39; method
+
+        &#34;&#34;&#34;
+        method = getattr(self, name, None)
+        if method:
+            return method(*args)
+        else:
+            return &#39;pass&#39;
+
+    def call_parent_handler(self, name, *args):
+        &#34;&#34;&#34;
+        Invokes call_handler on the parent of this widget, if any. This can be used to pass an event on to a
+        parent widget if you don&#39;t want to handle it.
+
+        Args:
+            name:   The method name
+            *args:  Its arguments
+
+        Returns:  The value of the &#39;called&#39; methood
+
+        &#34;&#34;&#34;
+        parent = self.next_handler()
+        if parent:
+            parent.call_handler(name, *args)
+
+    def global_to_local(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+        Args:
+            p:  The global coordinates
+
+        Returns:  The widget&#39;s local coordinates
+
+        &#34;&#34;&#34;
+        return subtract(p, self.local_to_global_offset())
+
+    def local_to_global(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+        Args:
+            p: Widget local coordinates
+
+        Returns:
+
+        &#34;&#34;&#34;
+        return add(p, self.local_to_global_offset())
+
+    def local_to_global_offset(self):
+        d = self.topleft
+        parent = self.parent
+        if parent:
+            d = add(d, parent.local_to_global_offset())
+        return d
+
+    def get_global_rect(self):
+
+        p = self.local_to_global_offset()
+        #
+        # Python 3 update
+        #
+        pTuple = tuple(p)
+        s = self.rect.size
+        #
+        # Python 3 update
+        #
+        # return Rect(p, s)
+        return Rect(pTuple, s)
+
+    def is_inside(self, container):
+        widget = self
+        while widget:
+            if widget is container:
+                return True
+            widget = widget.parent
+        return False
+
+    def present(self, centered: bool = True):
+
+        &#34;&#34;&#34;
+        Presents the widget as a modal dialog. The widget is added as a subwidget of the root widget, centered
+        within it if centered is true. A nested event loop is entered in which any events for widgets other
+        than this widget and its subwidgets are ignored. Control is retained until this widget&#39;s dismiss
+        method is called. The argument to dismiss is returned from the present call.
+
+        Args:
+            centered:  Indicates whether or not to center;  default is True
+
+        Returns:  The value returned from the modal widget
+
+        &#34;&#34;&#34;
+        #
+        # TODO  Something about my re-packaging caused me to lose
+        # visibility to the root widget;  Figure it out later
+        #
+        global root_widget
+        # print &#34;Widget: presenting with rect&#34;, self.rect
+        # root = self.get_root()
+        root = Widget.root_widget
+        if centered:
+            self.center = root.center
+        root.add(self)
+        root.run_modal(self)
+        self.dispatch_attention_loss()
+        root.remove(self)
+
+        self.logger.debug(&#34;Widget.present: returning.  Result: %s&#34;, self.modal_result)
+        return self.modal_result
+
+    def dismiss(self, value=True):
+        &#34;&#34;&#34;
+        When the presented widget presented is modal using present() causes the modal event loop to exit and
+        the present() call to return with the given result.
+
+        Args:
+            value:  The value to set in modal_result
+
+        Returns:
+
+        &#34;&#34;&#34;
+        self.modal_result = value
+
+    def get_root(self):
+        &#34;&#34;&#34;
+        Returns the root widget (whether this widget is contained within it or not).
+
+            Deprecated, use root.get_root()
+
+        Returns:  The root widget
+
+        &#34;&#34;&#34;
+        return root_widget
+
+    def get_top_widget(self) -&gt; &#34;Widget&#34;:
+        &#34;&#34;&#34;
+        Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
+        dialog is in progress, the modal dialog widget is the top widget, otherwise it is the root widget.
+
+        Returns:  The top level widget in a containment hierarchy
+
+        &#34;&#34;&#34;
+        top = self
+        while top.parent and not top.is_modal:
+            top = top.parent
+        return top
+
+    def focus(self):
+        &#34;&#34;&#34;
+        Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
+        widget) for this to have any affect.
+
+        &#34;&#34;&#34;
+        parent = self.next_handler()
+        if parent:
+            parent.focus_on(self)
+
+    def focus_on(self, subwidget):
+        old_focus = self.focus_switch
+        if old_focus is not subwidget:
+            if old_focus:
+                old_focus.dispatch_attention_loss()
+            self.focus_switch = subwidget
+        self.focus()
+
+    def has_focus(self):
+        &#34;&#34;&#34;
+
+        Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
+        has the keyboard focus.
+
+        &#34;&#34;&#34;
+        return self.is_modal or (self.parent and self.parent.focused_on(self))
+
+    def focused_on(self, widget):
+        return self.focus_switch is widget and self.has_focus()
+
+    def focus_chain(self):
+        result = []
+        widget = self
+        while widget:
+            result.append(widget)
+            widget = widget.focus_switch
+        return result
+
+    def shrink_wrap(self):
+        contents = self.subwidgets
+        if contents:
+            rects = [widget.rect for widget in contents]
+            # rmax = Rect.unionall(rects) # broken in PyGame 1.7.1
+            rmax = rects.pop()
+            for r in rects:
+                rmax = rmax.union(r)
+            #
+            # Updated python 3 -- hasii
+            #
+            # self._rect.size = add(rmax.topleft, rmax.bottomright)
+            self._rect.size = list(add(rmax.topleft, rmax.bottomright))
+
+    def invalidate(self):
+        &#34;&#34;&#34;
+        Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
+        Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
+
+        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+        to the event loop. Future versions may be more selective.
+
+        &#34;&#34;&#34;
+        root = self.get_root()
+        if root:
+            root.do_draw = True
+
+    def predict(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return themeRoot.get(self.__class__, name)
+
+    def predict_attr(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return getattr(self, name)
+
+    def init_attr(self, kwds, name):
+        try:
+            return kwds.pop(name)
+        except KeyError:
+            return getattr(self, name)
+
+    def predict_font(self, kwds, name=&#39;font&#39;):
+        return kwds.get(name) or themeRoot.get_font(self.__class__, name)
+
+    def get_margin_rect(self) -&gt; Rect:
+        &#34;&#34;&#34;
+        Returns a Rect in local coordinates representing the content area of the widget, as determined
+        by its margin property.
+
+        Returns: The rect of the content area
+
+        &#34;&#34;&#34;
+        r = Rect((0, 0), self.size)
+        d = -2 * self.margin
+        r.inflate_ip(d, d)
+        return r
+
+    def set_size_for_text(self, width, nLines=1):
+        &#34;&#34;&#34;
+        Sets the widget&#39;s Rect to a suitable size for displaying text of the specified width and number of lines in
+        its current font, as determined by the font property. The width can be either a number of pixels or a
+        piece of sample text.
+
+        Args:
+            width:  The number of pixes or some sample text
+
+            nLines: The number of lines in the text;  Defaults to 1
+
+
+        &#34;&#34;&#34;
+        if width is not None:
+            font = self.font
+            d = 2 * self.margin
+            #
+            # Python 3 update
+            # if isinstance(width, basestring):
+            if isinstance(width, str):
+                width, height = font.size(width)
+                width += d + 2
+            else:
+                height = font.size(&#34;X&#34;)[1]
+            self.size = (width, height * nLines + d)
+
+    def tab_to_first(self):
+        chain = self.get_tab_order()
+        if chain:
+            chain[0].focus()
+
+    def tab_to_next(self):
+        top = self.get_top_widget()
+        chain = top.get_tab_order()
+        try:
+            i = chain.index(self)
+        except ValueError:
+            return
+        target = chain[(i + 1) % len(chain)]
+        target.focus()
+
+    def get_tab_order(self):
+        result = []
+        self.collect_tab_order(result)
+        return result
+
+    def collect_tab_order(self, result):
+        if self.visible:
+            if self.tab_stop:
+                result.append(self)
+            for child in self.subwidgets:
+                child.collect_tab_order(result)
+
+    def inherited(self, attributeName: str):
+        &#34;&#34;&#34;
+        Looks up the parent hierarchy to find the first widget that has an attribute with the given name, and
+        returns its value. If not found, returns None.
+
+        Args:
+            attributeName:  The name of the attribute
+
+        Returns: The attribute&#39;s value or None if not found
+
+        &#34;&#34;&#34;
+        value = getattr(self, attributeName)
+
+        if value is not None:
+            return value
+        else:
+            parent = self.next_handler()
+            if parent:
+                return parent.inherited(attributeName)
+
+    def get_mouse(self):
+        root = self.get_root()
+        return root.get_mouse_for(self)
+
+    def get_menu_bar(self):
+        return self._menubar
+
+    def set_menu_bar(self, menubar):
+        if menubar is not self._menubar:
+            if self._menubar:
+                self.remove(self._menubar)
+            self._menubar = menubar
+            if menubar:
+                if menubar.width == 0:
+                    menubar.width = self.width
+                    menubar.anchor = &#39;lr&#39;
+                self.add(menubar)
+
+    def get_is_gl_container(self):
+        return self._is_gl_container
+
+    def set_is_gl_container(self, x):
+        self._is_gl_container = x
+
+    def gl_draw_all(self, gl_surface):
+
+        # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
+        if self.visible:
+            if self.is_gl_container:
+                self.gl_draw_self(gl_surface)
+                for subwidget in self.subwidgets:
+                    gl_subsurface = gl_surface.subsurface(subwidget.rect)
+                    subwidget.gl_draw_all(gl_subsurface)
+            else:
+                surface = Surface(self.size, SRCALPHA)
+                self.draw_all(surface)
+                gl_surface.gl_enter()
+                gl_surface.blit(surface)
+                gl_surface.gl_exit()
+
+    def gl_draw_self(self, gl_surface):
+
+        # print &#34;Widget.gl_draw_self:&#34;, self ###
+        gl_surface.gl_enter()
+        # TODO: draw background and border here
+        self.draw(gl_surface)
+        gl_surface.gl_exit()
+
+    def defer_drawing(self):
+        &#34;&#34;&#34;
+        Called every time around the event loop on the root widget or a
+        widget that is modal. If it returns true, the frame timer runs,
+        scheduled calls are made, and screen updates are performed once per
+        frame. Otherwise the screen is updated after each mouse down, mouser
+        up or keyboard event and scheduled calls are not made.
+        &#34;&#34;&#34;
+        return False
+
+    def relative_mode(self):
+        &#34;&#34;&#34;
+        Return true if relative input mode should be used. Called each
+        time around the event loop on the root widget or a widget that is
+        modal.
+
+        In relative input mode, the mouse cursor is hidden and mouse
+        movements are not constrained to the edges of the window. In this
+        mode, mouse movement events are delivered to the widget having the
+        keyboard focus by calling the &#39;mouse_delta&#39; method. The &#39;rel&#39;
+        attribute of the event should be used to obtain the movement since
+        the last mouse event. Mouse down and mouse up events are also
+        delivered to the focus widget, using the usual methods.
+
+        The user can always escape from relative mode temporarily by
+        pressing Ctrl-Shift-Escape. Normal mouse functionality is restored
+        and further input events are ignored until a mouse click or key
+        press occurs.
+        &#34;&#34;&#34;
+        return False
+
+    def __contains__(self, event):
+        r = Rect(self._rect)
+        r.left = 0
+        r.top = 0
+
+        answer: bool = False
+        try:
+            p      = self.global_to_local(event.pos)
+            pList  = list(p)
+            answer = r.collidepoint(pList[0], pList[1])
+        except AttributeError as ae:
+            self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
+        #
+        # Python 3 method signature change
+        #
+        # return r.collidepoint(p)
+        # return r.collidepoint(pList[0], pList[1])
+        return answer
+
+    #
+    # Python 3 update
+    # def _resized(self, (old_width, old_height)): # remove tuple parameters
+    #
+    def _resized(self, old_width, old_height):
+        &#34;&#34;&#34;
+
+        :param old_width:
+        :param old_height:
+        :return:
+        &#34;&#34;&#34;
+        new_width, new_height = self._rect.size
+        dw = new_width - old_width
+        dh = new_height - old_height
+        if dw or dh:
+            self.resized(dw, dh)
+
+    #
+    #
+    #   Abstract methods follow
+    #
+    #
+    def draw(self, surface: Surface):
+        &#34;&#34;&#34;
+        Called whenever the widget&#39;s contents need to be drawn. The surface is a subsurface the same size as the
+        widget&#39;s rect with the drawing origin at its top left corner.
+
+        The widget is filled with its background colour, if any, before this method is called. The border and
+        subwidgets, if any, are drawn after this method returns.
+
+        Args:
+            surface:  The pygame surface to draw on
+        &#34;&#34;&#34;
+        pass
+
+    def draw_over(self, surface: Surface):
+        &#34;&#34;&#34;
+        Called after drawing all the subwidgets of this widget. This method can be used to draw content that is
+        to appear on top of any subwidgets.
+
+        Args:
+            surface:  The pygame surface to draw on
+        &#34;&#34;&#34;
+        pass
+
+    def key_down(self, theKeyEvent: Event):
+        &#34;&#34;&#34;
+        Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
+        focus but did not handle the event.
+
+        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+        key_down() method to pass the event to the parent widget.
+
+        Args:
+            theKeyEvent: The key event
+        &#34;&#34;&#34;
+        k = theKeyEvent.key
+        self.logger.debug(&#34;Widget.key_down: %s&#34;, k)
+
+        if k == K_RETURN or k == K_KP_ENTER:
+            if self.enter_response is not None:
+                self.dismiss(self.enter_response)
+                return
+        elif k == K_ESCAPE:
+            if self.cancel_response is not None:
+                self.dismiss(self.cancel_response)
+                return
+        elif k == K_TAB:
+            self.tab_to_next()
+            return
+        self.call_parent_handler(&#39;key_down&#39;, theKeyEvent)
+
+    def key_up(self, theKeyEvent: Event):
+        &#34;&#34;&#34;
+        Called when a key release event occurs and this widget has the keyboard focus.
+
+        NOTE:
+            - If you override this method and don&#39;t want to handle a key_up event
+            - be sure to call the inherited key_up() method to pass the event to the parent widget.
+
+        Args:
+            theKeyEvent:  The key event
+
+        &#34;&#34;&#34;
+        self.call_parent_handler(&#39;key_up&#39;, theKeyEvent)
+
+    def get_cursor(self, event):
+        &#34;&#34;&#34;
+        Called to determine the appropriate cursor to display over the widget.
+        The ResourceUtility.get_cursor() function returns a suitable tuple.
+
+        Args:
+            event:  An event object containing the mouse coordinates to be used in determining the cursor.
+
+        Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
+
+
+        &#34;&#34;&#34;
+        return arrow_cursor
+
+    def attention_lost(self):
+        &#34;&#34;&#34;
+        Called when the widget is on the focus path, and a mouse-down event occurs in any widget which is not on
+        the focus path. The focus path is defined as the widget having the keyboard focus, plus any widgets on the
+        path from there up the parent hierarchy to the root widget. This method can be useful to ensure that changes
+        to a data structure being edited are committed before performing some other action.
+
+        &#34;&#34;&#34;
+        pass
+
+    def resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget changes size as a result of assigning to its width, height or size attributes,
+        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+        Args:
+            dw:  width
+            dh:  height
+
+        Returns:
+
+        &#34;&#34;&#34;
+        if self.debug_resize:
+            self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
+        for widget in self.subwidgets:
+            widget.parent_resized(dw, dh)
+
+    def parent_resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+        the widget according to its anchor attribute.
+
+        Args:
+            dw:  Width
+            dh:  Height
+
+        &#34;&#34;&#34;
+        debug_resize = self.debug_resize or self.parent.debug_resize
+
+        if debug_resize:
+            self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
+
+        left, top, width, height = self._rect
+        move = False
+        resize = False
+        anchor = self.anchor
+
+        if dw and &#39;r&#39; in anchor:
+            if &#39;l&#39; in anchor:
+                resize = True
+                width += dw
+            else:
+                move = True
+                left += dw
+        if dh and &#39;b&#39; in anchor:
+            if &#39;t&#39; in anchor:
+                resize = True
+                height += dh
+            else:
+                move = True
+                top += dh
+
+        if resize:
+            if debug_resize:
+                self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
+            self.rect = (left, top, width, height)
+        elif move:
+            if debug_resize:
+                self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
+            self._rect.topleft = (left, top)
+
+    def get_visible(self):
+        &#34;&#34;&#34;
+        Called to determine the value of the visible property. By overriding this, you can make the visibility of the
+        widget dependent on some external condition.
+
+        Returns: The widget visibility state
+
+        &#34;&#34;&#34;
+        return self._visible
+
+    def set_visible(self, x):
+        self._visible = x</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.core.RootWidget.RootWidget" href="RootWidget.html#albow.core.RootWidget.RootWidget">RootWidget</a></li>
+<li><a title="albow.layout.RowOrColumn.RowOrColumn" href="../layout/RowOrColumn.html#albow.layout.RowOrColumn.RowOrColumn">RowOrColumn</a></li>
+<li><a title="albow.widgets.Label.Label" href="../widgets/Label.html#albow.widgets.Label.Label">Label</a></li>
+<li><a title="albow.containers.GridView.GridView" href="../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
+<li><a title="albow.core.Screen.Screen" href="Screen.html#albow.core.Screen.Screen">Screen</a></li>
+<li><a title="albow.input.TextEditor.TextEditor" href="../input/TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
+<li><a title="albow.layout.Grid.Grid" href="../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
+<li><a title="albow.widgets.Image.Image" href="../widgets/Image.html#albow.widgets.Image.Image">Image</a></li>
+<li><a title="albow.containers.TabPanel.TabPanel" href="../containers/TabPanel.html#albow.containers.TabPanel.TabPanel">TabPanel</a></li>
+<li><a title="albow.dialog.Dialog.Dialog" href="../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
+<li><a title="albow.dialog.DirectoryPathView.DirectoryPathView" href="../dialog/DirectoryPathView.html#albow.dialog.DirectoryPathView.DirectoryPathView">DirectoryPathView</a></li>
+<li><a title="albow.widgets.CheckWidget.CheckWidget" href="../widgets/CheckWidget.html#albow.widgets.CheckWidget.CheckWidget">CheckWidget</a></li>
+<li><a title="albow.media.MusicVolumeControl.MusicVolumeControl" href="../media/MusicVolumeControl.html#albow.media.MusicVolumeControl.MusicVolumeControl">MusicVolumeControl</a></li>
+<li><a title="albow.layout.Frame.Frame" href="../layout/Frame.html#albow.layout.Frame.Frame">Frame</a></li>
+<li><a title="albow.menu.MenuBar.MenuBar" href="../menu/MenuBar.html#albow.menu.MenuBar.MenuBar">MenuBar</a></li>
+<li><a title="albow.widgets.ValueDisplay.ValueDisplay" href="../widgets/ValueDisplay.html#albow.widgets.ValueDisplay.ValueDisplay">ValueDisplay</a></li>
+<li><a title="albow.openGL.GLViewport.GLViewport" href="../openGL/GLViewport.html#albow.openGL.GLViewport.GLViewport">GLViewport</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.core.Widget.Widget.anchor"><code class="name">var <span class="ident">anchor</span></code></dt>
+<dd>
+<section class="desc"><p>A string specifying how this widget is to change in size and position when its parent widget changes size. The
+letters 'l', 'r', 't' and 'b' are used to anchor the widget to the left, right, top or bottom sides of its
+parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when
+its parent changes in width or height.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.bg_color"><code class="name">var <span class="ident">bg_color</span></code></dt>
+<dd>
+<section class="desc"><p>Background colour of the widget. If specified, the widget's rect is filled with this colour before drawing its
+contents. If no background colour is specified or it is set to None, the widget has no background and is drawn
+transparently over its parent. For most widgets, it defaults to None.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.bg_image"><code class="name">var <span class="ident">bg_image</span></code></dt>
+<dd>
+<section class="desc"><p>An image to be displayed in the background. If specified, this overrides any bg_color.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.border_color"><code class="name">var <span class="ident">border_color</span></code></dt>
+<dd>
+<section class="desc"><p>Color in which to draw the border specified by border_width.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.border_width"><code class="name">var <span class="ident">border_width</span></code></dt>
+<dd>
+<section class="desc"><p>Width of a border to be drawn inside the outer edge of the widget. If this is unspecified or set to zero,
+no border is drawn.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.cancel_response"><code class="name">var <span class="ident">cancel_response</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.debug_resize"><code class="name">var <span class="ident">debug_resize</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.enter_response"><code class="name">var <span class="ident">enter_response</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.fg_color"><code class="name">var <span class="ident">fg_color</span></code></dt>
+<dd>
+<section class="desc"><p>Foreground colour for the contents of the widget. How this property is used depends on the widget. Some widgets
+have additional colour properties for specific parts of the widget.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.focus_switch"><code class="name">var <span class="ident">focus_switch</span></code></dt>
+<dd>
+<section class="desc"><p>subwidget to receive key events</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.font"><code class="name">var <span class="ident">font</span></code></dt>
+<dd>
+<section class="desc"><p>Font to use for drawing text in the widget. How this property is used depends on the widget. Some widgets have
+additional font properties for specific parts of the widget.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.is_gl_container"><code class="name">var <span class="ident">is_gl_container</span></code></dt>
+<dd>
+<section class="desc"><p>Controls the drawing behaviour of the widget when used in an OpenGL window. When true, </p>
+<ul>
+<li>no 2D drawing is performed for the widget itself</li>
+<li>its background colour and border properties are ignored </li>
+<li>its draw() and draw_over() methods are never called. </li>
+</ul>
+<p>If it has 3D subwidgets, 3D drawing is performed for them.</p>
+<p>When false, the widget and its subwidgets are rendered to a temporary surface which is then drawn to the window
+using glDrawPixels() with blending. No 3D drawing is performed for any of its subwidgets.</p>
+<p>In either case, input events are handled in the usual way.</p>
+<p>This property has no effect on widgets in a non-OpenGL window.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.margin"><code class="name">var <span class="ident">margin</span></code></dt>
+<dd>
+<section class="desc"><p>The amount of space to leave between the edge of the widget and its contents. Note that this distance includes the
+border_width, e.g. if border_width == 1 and margin == 3, then there is 2 pixels of space between the inside of
+the border and the contents.</p>
+<p>Most of the predefined Albow widgets honour the margin property, but this is not automatic for your own widget
+subclasses. You may find the get_margin_rect() method helpful in implementing support for the margin property
+in your widget classes.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.menu_bar"><code class="name">var <span class="ident">menu_bar</span></code></dt>
+<dd>
+<section class="desc"><p>A MenuBar to be attached to and managed by this widget. Assigning to the menu_bar property automatically adds the
+menu bar as a child widget. Also, if the width of the menu bar has not already been set, it is set to be the same
+width as this widget and to stretch horizontally with it.</p>
+<p>When a key down event with the platform's standard menu command modifier (Command on Mac, Control on other
+platforms) is dispatched through this widget, the menu bar is first given a chance to handle the event. If the
+menu bar does not handle it, dispatching continues as normal.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.parent"><code class="name">var <span class="ident">parent</span></code></dt>
+<dd>
+<section class="desc"><p>Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another
+widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.rect"><code class="name">var <span class="ident">rect</span></code></dt>
+<dd>
+<section class="desc"><p>bounds in parent's coordinates</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.redraw_every_event"><code class="name">var <span class="ident">redraw_every_event</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.resizing_axes"><code class="name">var <span class="ident">resizing_axes</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.resizing_values"><code class="name">var <span class="ident">resizing_values</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.scale_bg"><code class="name">var <span class="ident">scale_bg</span></code></dt>
+<dd>
+<section class="desc"><p>If true, and the background image is smaller than the widget in either direction, the background image is scaled
+to fill the widget, otherwise it is centered. Note: Due to a limitation of the pygame rotozoom function, scaling
+is currently uniform in both directions, with the scale factor being that required to ensure that the whole
+widget is covered.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.subwidgets"><code class="name">var <span class="ident">subwidgets</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.tab_stop"><code class="name">var <span class="ident">tab_stop</span></code></dt>
+<dd>
+<section class="desc"><p>True if this widget should receive the keyboard focus when the user presses the Tab key. Defaults to false.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.visible"><code class="name">var <span class="ident">visible</span></code></dt>
+<dd>
+<section class="desc"><p>When true, the widget is visible and active. When false, the widget is invisible and will not receive events.
+Defaults to true. The behaviour of this property can be customized by overriding the get_visible method.</p></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="albow.core.Widget.Widget.bottom"><code class="name">var <span class="ident">bottom</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.bottomleft"><code class="name">var <span class="ident">bottomleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.bottomright"><code class="name">var <span class="ident">bottomright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.center"><code class="name">var <span class="ident">center</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.centerx"><code class="name">var <span class="ident">centerx</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.centery"><code class="name">var <span class="ident">centery</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.height"><code class="name">var <span class="ident">height</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.left"><code class="name">var <span class="ident">left</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.midbottom"><code class="name">var <span class="ident">midbottom</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.midleft"><code class="name">var <span class="ident">midleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.midright"><code class="name">var <span class="ident">midright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.midtop"><code class="name">var <span class="ident">midtop</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.right"><code class="name">var <span class="ident">right</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.sel_color"><code class="name">var <span class="ident">sel_color</span></code></dt>
+<dd>
+<section class="desc"><p>The ThemeProperty class is a property descriptor used for defining theme properties.</p>
+<h2 id="example">Example</h2>
+<pre><code class="python">
+    class Battlefield(Widget):
+
+    phaser_color = ThemeProperty('phaser_color')
+
+</code></pre></section>
+</dd>
+<dt id="albow.core.Widget.Widget.size"><code class="name">var <span class="ident">size</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.top"><code class="name">var <span class="ident">top</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.topleft"><code class="name">var <span class="ident">topleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.topright"><code class="name">var <span class="ident">topright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.width"><code class="name">var <span class="ident">width</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.core.Widget.Widget.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>self, arg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds the given widget or sequence of widgets as a subwidget of this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>arg</code></strong></dt>
+<dd>May be a single widget or multiple</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add(self, arg: &#39;Widget&#39;):     # Python 3 forward reference;
+    &#34;&#34;&#34;
+    Adds the given widget or sequence of widgets as a subwidget of this widget.
+
+    Args:
+        arg:  May be a single widget or multiple
+
+    &#34;&#34;&#34;
+    if arg:
+
+        self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+        #
+        # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
+        #
+        if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+            arg.set_parent(self)
+        else:
+            self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+            for item in arg:
+                self.add(item)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.add_anchor"><code class="name flex">
+<span>def <span class="ident">add_anchor</span></span>(<span>self, mode)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds the options specified by mode to the anchor property.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mode</code></strong></dt>
+<dd>The new anchor mode to add</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_anchor(self, mode: str):
+    &#34;&#34;&#34;
+    Adds the options specified by mode to the anchor property.
+
+    Args:
+        mode:  The new anchor mode to add
+
+    Returns:
+
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.add_centered"><code class="name flex">
+<span>def <span class="ident">add_centered</span></span>(<span>self, widget)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds the given widget and positions it in the center of this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong></dt>
+<dd>The widget to center</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_centered(self, widget):
+    &#34;&#34;&#34;
+    Adds the given widget and positions it in the center of this widget.
+
+    Args:
+        widget: The widget to center
+
+    &#34;&#34;&#34;
+    w, h = self.size
+    widget.center = w // 2, h // 2
+    self.add(widget)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.attention_lost"><code class="name flex">
+<span>def <span class="ident">attention_lost</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when the widget is on the focus path, and a mouse-down event occurs in any widget which is not on
+the focus path. The focus path is defined as the widget having the keyboard focus, plus any widgets on the
+path from there up the parent hierarchy to the root widget. This method can be useful to ensure that changes
+to a data structure being edited are committed before performing some other action.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def attention_lost(self):
+    &#34;&#34;&#34;
+    Called when the widget is on the focus path, and a mouse-down event occurs in any widget which is not on
+    the focus path. The focus path is defined as the widget having the keyboard focus, plus any widgets on the
+    path from there up the parent hierarchy to the root widget. This method can be useful to ensure that changes
+    to a data structure being edited are committed before performing some other action.
+
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.augment_mouse_event"><code class="name flex">
+<span>def <span class="ident">augment_mouse_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Python 3 update.
+local really needs to be a list</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>event</code></strong></dt>
+<dd>The event to augment</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def augment_mouse_event(self, event):
+    &#34;&#34;&#34;
+    Python 3 update.  local really needs to be a list
+
+    Args:
+        event:   The event to augment
+
+    &#34;&#34;&#34;
+    posMap = self.global_to_local(event.pos)
+    # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
+    event.dict[&#39;local&#39;] = list(posMap)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.call_handler"><code class="name flex">
+<span>def <span class="ident">call_handler</span></span>(<span>self, name, *args)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>If the widget has a method with the given name, it is called with the given arguments, and its return value is
+is returned. Otherwise, nothing is done and 'pass' is returned.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The method name</dd>
+<dt><strong><code>*args</code></strong></dt>
+<dd>The arguments to use</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>value</code> of <code>the</code> <code>'called'</code> <code>method</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def call_handler(self, name, *args):
+    &#34;&#34;&#34;
+    If the widget has a method with the given name, it is called with the given arguments, and its return value is
+    is returned. Otherwise, nothing is done and &#39;pass&#39; is returned.
+
+    Args:
+        name:  The method name
+        *args: The arguments to use
+
+    Returns:  The value of the &#39;called&#39; method
+
+    &#34;&#34;&#34;
+    method = getattr(self, name, None)
+    if method:
+        return method(*args)
+    else:
+        return &#39;pass&#39;</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.call_parent_handler"><code class="name flex">
+<span>def <span class="ident">call_parent_handler</span></span>(<span>self, name, *args)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Invokes call_handler on the parent of this widget, if any. This can be used to pass an event on to a
+parent widget if you don't want to handle it.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The method name</dd>
+<dt><strong><code>*args</code></strong></dt>
+<dd>Its arguments</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>value</code> of <code>the</code> <code>'called'</code> <code>methood</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def call_parent_handler(self, name, *args):
+    &#34;&#34;&#34;
+    Invokes call_handler on the parent of this widget, if any. This can be used to pass an event on to a
+    parent widget if you don&#39;t want to handle it.
+
+    Args:
+        name:   The method name
+        *args:  Its arguments
+
+    Returns:  The value of the &#39;called&#39; methood
+
+    &#34;&#34;&#34;
+    parent = self.next_handler()
+    if parent:
+        parent.call_handler(name, *args)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.collect_tab_order"><code class="name flex">
+<span>def <span class="ident">collect_tab_order</span></span>(<span>self, result)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def collect_tab_order(self, result):
+    if self.visible:
+        if self.tab_stop:
+            result.append(self)
+        for child in self.subwidgets:
+            child.collect_tab_order(result)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.defer_drawing"><code class="name flex">
+<span>def <span class="ident">defer_drawing</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called every time around the event loop on the root widget or a
+widget that is modal. If it returns true, the frame timer runs,
+scheduled calls are made, and screen updates are performed once per
+frame. Otherwise the screen is updated after each mouse down, mouser
+up or keyboard event and scheduled calls are not made.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def defer_drawing(self):
+    &#34;&#34;&#34;
+    Called every time around the event loop on the root widget or a
+    widget that is modal. If it returns true, the frame timer runs,
+    scheduled calls are made, and screen updates are performed once per
+    frame. Otherwise the screen is updated after each mouse down, mouser
+    up or keyboard event and scheduled calls are not made.
+    &#34;&#34;&#34;
+    return False</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.diagnose_subsurface_problem"><code class="name flex">
+<span>def <span class="ident">diagnose_subsurface_problem</span></span>(<span>self, surface, widget)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def diagnose_subsurface_problem(self, surface, widget):
+    mess = &#34;Widget %s %s outside parent surface %s %s&#34; % (
+        widget, widget.rect, self, surface.get_rect())
+    sys.stderr.write(&#34;%s\n&#34; % mess)
+    surface.fill((255, 0, 0), widget.rect)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.dismiss"><code class="name flex">
+<span>def <span class="ident">dismiss</span></span>(<span>self, value=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>When the presented widget presented is modal using present() causes the modal event loop to exit and
+the present() call to return with the given result.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>The value to set in modal_result</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def dismiss(self, value=True):
+    &#34;&#34;&#34;
+    When the presented widget presented is modal using present() causes the modal event loop to exit and
+    the present() call to return with the given result.
+
+    Args:
+        value:  The value to set in modal_result
+
+    Returns:
+
+    &#34;&#34;&#34;
+    self.modal_result = value</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.dispatch_attention_loss"><code class="name flex">
+<span>def <span class="ident">dispatch_attention_loss</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def dispatch_attention_loss(self):
+    widget = self
+    while widget:
+        widget.attention_lost()
+        widget = widget.focus_switch</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.dispatch_key"><code class="name flex">
+<span>def <span class="ident">dispatch_key</span></span>(<span>self, name, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def dispatch_key(self, name, event):
+    if self.visible:
+        if event.cmd and event.type == KEYDOWN:
+            menubar = self._menubar
+            if menubar and menubar.handle_command_key(event):
+                return
+        widget = self.focus_switch
+        if widget:
+            widget.dispatch_key(name, event)
+        else:
+            self.call_handler(name, event)
+    else:
+        self.call_parent_handler(name, event)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called whenever the widget's contents need to be drawn. The surface is a subsurface the same size as the
+widget's rect with the drawing origin at its top left corner.</p>
+<p>The widget is filled with its background colour, if any, before this method is called. The border and
+subwidgets, if any, are drawn after this method returns.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>surface</code></strong></dt>
+<dd>The pygame surface to draw on</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw(self, surface: Surface):
+    &#34;&#34;&#34;
+    Called whenever the widget&#39;s contents need to be drawn. The surface is a subsurface the same size as the
+    widget&#39;s rect with the drawing origin at its top left corner.
+
+    The widget is filled with its background colour, if any, before this method is called. The border and
+    subwidgets, if any, are drawn after this method returns.
+
+    Args:
+        surface:  The pygame surface to draw on
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.draw_all"><code class="name flex">
+<span>def <span class="ident">draw_all</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_all(self, surface):
+    # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+    if self.visible:
+        surf_rect = surface.get_rect()
+        bg_image = self.bg_image
+        if bg_image:
+            if self.scale_bg:
+                bg_width, bg_height = bg_image.get_size()
+                width, height = self.size
+                if width &gt; bg_width or height &gt; bg_height:
+                    hscale = width / bg_width
+                    vscale = height / bg_height
+                    bg_image = rotozoom(bg_image, 0.0, max(hscale, vscale))
+            r = bg_image.get_rect()
+            r.center = surf_rect.center
+            surface.blit(bg_image, r)
+        else:
+            bg = self.bg_color
+            if bg:
+                surface.fill(bg)
+        self.draw(surface)
+        bw = self.border_width
+        if bw:
+            bc = self.border_color or self.fg_color
+            frame_rect(surface, bc, surf_rect, bw)
+        for widget in self.subwidgets:
+            sub_rect = widget.rect
+            if debug_rect:
+                print(&#34;Widget: Drawing subwidget %s of %s with rect %s&#34; % (
+                    widget, self, sub_rect))
+            sub_rect = surf_rect.clip(sub_rect)
+            if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
+                try:
+                    sub = surface.subsurface(sub_rect)
+                #
+                # Python 3 update
+                #
+                # except ValueError, e:
+                except ValueError as e:
+                    if str(e) == &#34;subsurface rectangle outside surface area&#34;:
+                        self.diagnose_subsurface_problem(surface, widget)
+                    else:
+                        raise
+                else:
+                    widget.draw_all(sub)
+        self.draw_over(surface)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.draw_over"><code class="name flex">
+<span>def <span class="ident">draw_over</span></span>(<span>self, surface)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called after drawing all the subwidgets of this widget. This method can be used to draw content that is
+to appear on top of any subwidgets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>surface</code></strong></dt>
+<dd>The pygame surface to draw on</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_over(self, surface: Surface):
+    &#34;&#34;&#34;
+    Called after drawing all the subwidgets of this widget. This method can be used to draw content that is
+    to appear on top of any subwidgets.
+
+    Args:
+        surface:  The pygame surface to draw on
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.find_widget"><code class="name flex">
+<span>def <span class="ident">find_widget</span></span>(<span>self, pos)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def find_widget(self, pos: tuple):
+
+    for widget in self.subwidgets[::-1]:
+        if widget.visible:
+            r = widget.rect
+            #
+            # Python 3 update
+            #
+            # if r.collidepoint(pos):
+            if isinstance(pos, map):
+                pos = list(pos)
+            if r.collidepoint(pos[0], pos[1]):
+                return widget.find_widget(subtract(pos, r.topleft))
+    return self</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.focus"><code class="name flex">
+<span>def <span class="ident">focus</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
+widget) for this to have any affect.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def focus(self):
+    &#34;&#34;&#34;
+    Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
+    widget) for this to have any affect.
+
+    &#34;&#34;&#34;
+    parent = self.next_handler()
+    if parent:
+        parent.focus_on(self)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.focus_chain"><code class="name flex">
+<span>def <span class="ident">focus_chain</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def focus_chain(self):
+    result = []
+    widget = self
+    while widget:
+        result.append(widget)
+        widget = widget.focus_switch
+    return result</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.focus_on"><code class="name flex">
+<span>def <span class="ident">focus_on</span></span>(<span>self, subwidget)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def focus_on(self, subwidget):
+    old_focus = self.focus_switch
+    if old_focus is not subwidget:
+        if old_focus:
+            old_focus.dispatch_attention_loss()
+        self.focus_switch = subwidget
+    self.focus()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.focused_on"><code class="name flex">
+<span>def <span class="ident">focused_on</span></span>(<span>self, widget)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def focused_on(self, widget):
+    return self.focus_switch is widget and self.has_focus()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_cursor"><code class="name flex">
+<span>def <span class="ident">get_cursor</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called to determine the appropriate cursor to display over the widget.
+The ResourceUtility.get_cursor() function returns a suitable tuple.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>event</code></strong></dt>
+<dd>An event object containing the mouse coordinates to be used in determining the cursor.</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>A</code> <code>cursor</code> <code>in</code> <code>the</code> <code>form</code> of <code>a</code> <code>tuple</code> of <code>arguments</code> <code>to</code> <code>the</code> <code>PyGame</code> <code>set_cursor</code>() <code>function</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_cursor(self, event):
+    &#34;&#34;&#34;
+    Called to determine the appropriate cursor to display over the widget.
+    The ResourceUtility.get_cursor() function returns a suitable tuple.
+
+    Args:
+        event:  An event object containing the mouse coordinates to be used in determining the cursor.
+
+    Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
+
+
+    &#34;&#34;&#34;
+    return arrow_cursor</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_focus"><code class="name flex">
+<span>def <span class="ident">get_focus</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
+the widget that would have the keyboard focus if this widget were on the focus path.</p>
+<dl>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>A</code> <code>widget</code> <code>with</code> <code>the</code> <code>focus</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_focus(self):
+    &#34;&#34;&#34;
+    If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
+    the widget that would have the keyboard focus if this widget were on the focus path.
+
+    Returns:  A widget with the focus
+
+    &#34;&#34;&#34;
+    widget = self
+    while 1:
+        focus = widget.focus_switch
+        if not focus:
+            break
+        widget = focus
+    return widget</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_global_rect"><code class="name flex">
+<span>def <span class="ident">get_global_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_global_rect(self):
+
+    p = self.local_to_global_offset()
+    #
+    # Python 3 update
+    #
+    pTuple = tuple(p)
+    s = self.rect.size
+    #
+    # Python 3 update
+    #
+    # return Rect(p, s)
+    return Rect(pTuple, s)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_is_gl_container"><code class="name flex">
+<span>def <span class="ident">get_is_gl_container</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_is_gl_container(self):
+    return self._is_gl_container</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_margin_rect"><code class="name flex">
+<span>def <span class="ident">get_margin_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a Rect in local coordinates representing the content area of the widget, as determined
+by its margin property.</p>
+<dl>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> <code>rect</code> of <code>the</code> <code>content</code> <code>area</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_margin_rect(self) -&gt; Rect:
+    &#34;&#34;&#34;
+    Returns a Rect in local coordinates representing the content area of the widget, as determined
+    by its margin property.
+
+    Returns: The rect of the content area
+
+    &#34;&#34;&#34;
+    r = Rect((0, 0), self.size)
+    d = -2 * self.margin
+    r.inflate_ip(d, d)
+    return r</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_menu_bar"><code class="name flex">
+<span>def <span class="ident">get_menu_bar</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_menu_bar(self):
+    return self._menubar</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_mouse"><code class="name flex">
+<span>def <span class="ident">get_mouse</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_mouse(self):
+    root = self.get_root()
+    return root.get_mouse_for(self)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_rect"><code class="name flex">
+<span>def <span class="ident">get_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_rect(self):
+    return self._rect</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_root"><code class="name flex">
+<span>def <span class="ident">get_root</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the root widget (whether this widget is contained within it or not).</p>
+<pre><code>Deprecated, use root.get_root()
+</code></pre>
+<dl>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>root</code> <code>widget</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_root(self):
+    &#34;&#34;&#34;
+    Returns the root widget (whether this widget is contained within it or not).
+
+        Deprecated, use root.get_root()
+
+    Returns:  The root widget
+
+    &#34;&#34;&#34;
+    return root_widget</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_tab_order"><code class="name flex">
+<span>def <span class="ident">get_tab_order</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_tab_order(self):
+    result = []
+    self.collect_tab_order(result)
+    return result</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_top_widget"><code class="name flex">
+<span>def <span class="ident">get_top_widget</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
+dialog is in progress, the modal dialog widget is the top widget, otherwise it is the root widget.</p>
+<dl>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>top</code> <code>level</code> <code>widget</code> <code>in</code> <code>a</code> <code>containment</code> <code>hierarchy</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_top_widget(self) -&gt; &#34;Widget&#34;:
+    &#34;&#34;&#34;
+    Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
+    dialog is in progress, the modal dialog widget is the top widget, otherwise it is the root widget.
+
+    Returns:  The top level widget in a containment hierarchy
+
+    &#34;&#34;&#34;
+    top = self
+    while top.parent and not top.is_modal:
+        top = top.parent
+    return top</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.get_visible"><code class="name flex">
+<span>def <span class="ident">get_visible</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called to determine the value of the visible property. By overriding this, you can make the visibility of the
+widget dependent on some external condition.</p>
+<dl>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> <code>widget</code> <code>visibility</code> <code>state</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_visible(self):
+    &#34;&#34;&#34;
+    Called to determine the value of the visible property. By overriding this, you can make the visibility of the
+    widget dependent on some external condition.
+
+    Returns: The widget visibility state
+
+    &#34;&#34;&#34;
+    return self._visible</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.gl_draw_all"><code class="name flex">
+<span>def <span class="ident">gl_draw_all</span></span>(<span>self, gl_surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_draw_all(self, gl_surface):
+
+    # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
+    if self.visible:
+        if self.is_gl_container:
+            self.gl_draw_self(gl_surface)
+            for subwidget in self.subwidgets:
+                gl_subsurface = gl_surface.subsurface(subwidget.rect)
+                subwidget.gl_draw_all(gl_subsurface)
+        else:
+            surface = Surface(self.size, SRCALPHA)
+            self.draw_all(surface)
+            gl_surface.gl_enter()
+            gl_surface.blit(surface)
+            gl_surface.gl_exit()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.gl_draw_self"><code class="name flex">
+<span>def <span class="ident">gl_draw_self</span></span>(<span>self, gl_surface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_draw_self(self, gl_surface):
+
+    # print &#34;Widget.gl_draw_self:&#34;, self ###
+    gl_surface.gl_enter()
+    # TODO: draw background and border here
+    self.draw(gl_surface)
+    gl_surface.gl_exit()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.global_to_local"><code class="name flex">
+<span>def <span class="ident">global_to_local</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Converts the given coordinate pair from PyGame screen coordinates to the widget's local coordinate system.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>p</code></strong></dt>
+<dd>The global coordinates</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>widget's</code> <code>local</code> <code>coordinates</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def global_to_local(self, p):
+    &#34;&#34;&#34;
+    Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+    Args:
+        p:  The global coordinates
+
+    Returns:  The widget&#39;s local coordinates
+
+    &#34;&#34;&#34;
+    return subtract(p, self.local_to_global_offset())</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.handle_command"><code class="name flex">
+<span>def <span class="ident">handle_command</span></span>(<span>self, name, *args)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def handle_command(self, name, *args):
+    method = getattr(self, name, None)
+    if method:
+        return method(*args)
+    else:
+        parent = self.next_handler()
+        if parent:
+            return parent.handle_command(name, *args)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.handle_event"><code class="name flex">
+<span>def <span class="ident">handle_event</span></span>(<span>self, name, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def handle_event(self, name, event):
+    handler = getattr(self, name, None)
+    if handler:
+        return handler(event)
+    else:
+        parent = self.next_handler()
+        if parent:
+            return parent.handle_event(name, event)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.handle_mouse"><code class="name flex">
+<span>def <span class="ident">handle_mouse</span></span>(<span>self, name, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def handle_mouse(self, name, event):
+    self.augment_mouse_event(event)
+    self.call_handler(name, event)
+    self.setup_cursor(event)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.has_focus"><code class="name flex">
+<span>def <span class="ident">has_focus</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns:
+True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently
+has the keyboard focus.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def has_focus(self):
+    &#34;&#34;&#34;
+
+    Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
+    has the keyboard focus.
+
+    &#34;&#34;&#34;
+    return self.is_modal or (self.parent and self.parent.focused_on(self))</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.inherited"><code class="name flex">
+<span>def <span class="ident">inherited</span></span>(<span>self, attributeName)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Looks up the parent hierarchy to find the first widget that has an attribute with the given name, and
+returns its value. If not found, returns None.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>attributeName</code></strong></dt>
+<dd>The name of the attribute</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> <code>attribute's</code> <code>value</code> or <code>None</code> <code>if</code> <code>not</code> <code>found</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def inherited(self, attributeName: str):
+    &#34;&#34;&#34;
+    Looks up the parent hierarchy to find the first widget that has an attribute with the given name, and
+    returns its value. If not found, returns None.
+
+    Args:
+        attributeName:  The name of the attribute
+
+    Returns: The attribute&#39;s value or None if not found
+
+    &#34;&#34;&#34;
+    value = getattr(self, attributeName)
+
+    if value is not None:
+        return value
+    else:
+        parent = self.next_handler()
+        if parent:
+            return parent.inherited(attributeName)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.init_attr"><code class="name flex">
+<span>def <span class="ident">init_attr</span></span>(<span>self, kwds, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def init_attr(self, kwds, name):
+    try:
+        return kwds.pop(name)
+    except KeyError:
+        return getattr(self, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.invalidate"><code class="name flex">
+<span>def <span class="ident">invalidate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
+Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.</p>
+<p>NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return
+to the event loop. Future versions may be more selective.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def invalidate(self):
+    &#34;&#34;&#34;
+    Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
+    Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
+
+    NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+    to the event loop. Future versions may be more selective.
+
+    &#34;&#34;&#34;
+    root = self.get_root()
+    if root:
+        root.do_draw = True</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.is_inside"><code class="name flex">
+<span>def <span class="ident">is_inside</span></span>(<span>self, container)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def is_inside(self, container):
+    widget = self
+    while widget:
+        if widget is container:
+            return True
+        widget = widget.parent
+    return False</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.key_down"><code class="name flex">
+<span>def <span class="ident">key_down</span></span>(<span>self, theKeyEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
+focus but did not handle the event.</p>
+<p>NOTE: If you override this method and don't want to handle a key_down event, be sure to call the inherited
+key_down() method to pass the event to the parent widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theKeyEvent</code></strong></dt>
+<dd>The key event</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def key_down(self, theKeyEvent: Event):
+    &#34;&#34;&#34;
+    Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
+    focus but did not handle the event.
+
+    NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+    key_down() method to pass the event to the parent widget.
+
+    Args:
+        theKeyEvent: The key event
+    &#34;&#34;&#34;
+    k = theKeyEvent.key
+    self.logger.debug(&#34;Widget.key_down: %s&#34;, k)
+
+    if k == K_RETURN or k == K_KP_ENTER:
+        if self.enter_response is not None:
+            self.dismiss(self.enter_response)
+            return
+    elif k == K_ESCAPE:
+        if self.cancel_response is not None:
+            self.dismiss(self.cancel_response)
+            return
+    elif k == K_TAB:
+        self.tab_to_next()
+        return
+    self.call_parent_handler(&#39;key_down&#39;, theKeyEvent)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.key_up"><code class="name flex">
+<span>def <span class="ident">key_up</span></span>(<span>self, theKeyEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when a key release event occurs and this widget has the keyboard focus.</p>
+<h2 id="note">NOTE</h2>
+<ul>
+<li>If you override this method and don't want to handle a key_up event</li>
+<li>be sure to call the inherited key_up() method to pass the event to the parent widget.</li>
+</ul>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theKeyEvent</code></strong></dt>
+<dd>The key event</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def key_up(self, theKeyEvent: Event):
+    &#34;&#34;&#34;
+    Called when a key release event occurs and this widget has the keyboard focus.
+
+    NOTE:
+        - If you override this method and don&#39;t want to handle a key_up event
+        - be sure to call the inherited key_up() method to pass the event to the parent widget.
+
+    Args:
+        theKeyEvent:  The key event
+
+    &#34;&#34;&#34;
+    self.call_parent_handler(&#39;key_up&#39;, theKeyEvent)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.local_to_global"><code class="name flex">
+<span>def <span class="ident">local_to_global</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Converts the given coordinate pair from the widget's local coordinate system to PyGame screen coordinates.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>p</code></strong></dt>
+<dd>Widget local coordinates</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def local_to_global(self, p):
+    &#34;&#34;&#34;
+    Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+    Args:
+        p: Widget local coordinates
+
+    Returns:
+
+    &#34;&#34;&#34;
+    return add(p, self.local_to_global_offset())</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.local_to_global_offset"><code class="name flex">
+<span>def <span class="ident">local_to_global_offset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def local_to_global_offset(self):
+    d = self.topleft
+    parent = self.parent
+    if parent:
+        d = add(d, parent.local_to_global_offset())
+    return d</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.next_handler"><code class="name flex">
+<span>def <span class="ident">next_handler</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def next_handler(self):
+    if not self.is_modal:
+        return self.parent</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.notify_attention_loss"><code class="name flex">
+<span>def <span class="ident">notify_attention_loss</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def notify_attention_loss(self):
+    widget = self
+    while 1:
+        if widget.is_modal:
+            break
+        parent = widget.parent
+        if not parent:
+            break
+        focus = parent.focus_switch
+        if focus and focus is not widget:
+            focus.dispatch_attention_loss()
+        widget = parent</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.parent_resized"><code class="name flex">
+<span>def <span class="ident">parent_resized</span></span>(<span>self, dw, dh)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when the widget's parent changes size as a result of assigning to its width, height or size
+attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+the widget according to its anchor attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dw</code></strong></dt>
+<dd>Width</dd>
+<dt><strong><code>dh</code></strong></dt>
+<dd>Height</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def parent_resized(self, dw, dh):
+    &#34;&#34;&#34;
+    Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+    attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+    the widget according to its anchor attribute.
+
+    Args:
+        dw:  Width
+        dh:  Height
+
+    &#34;&#34;&#34;
+    debug_resize = self.debug_resize or self.parent.debug_resize
+
+    if debug_resize:
+        self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
+
+    left, top, width, height = self._rect
+    move = False
+    resize = False
+    anchor = self.anchor
+
+    if dw and &#39;r&#39; in anchor:
+        if &#39;l&#39; in anchor:
+            resize = True
+            width += dw
+        else:
+            move = True
+            left += dw
+    if dh and &#39;b&#39; in anchor:
+        if &#39;t&#39; in anchor:
+            resize = True
+            height += dh
+        else:
+            move = True
+            top += dh
+
+    if resize:
+        if debug_resize:
+            self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
+        self.rect = (left, top, width, height)
+    elif move:
+        if debug_resize:
+            self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
+        self._rect.topleft = (left, top)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.predict"><code class="name flex">
+<span>def <span class="ident">predict</span></span>(<span>self, kwds, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def predict(self, kwds, name):
+    try:
+        return kwds[name]
+    except KeyError:
+        return themeRoot.get(self.__class__, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.predict_attr"><code class="name flex">
+<span>def <span class="ident">predict_attr</span></span>(<span>self, kwds, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def predict_attr(self, kwds, name):
+    try:
+        return kwds[name]
+    except KeyError:
+        return getattr(self, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.predict_font"><code class="name flex">
+<span>def <span class="ident">predict_font</span></span>(<span>self, kwds, name='font')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def predict_font(self, kwds, name=&#39;font&#39;):
+    return kwds.get(name) or themeRoot.get_font(self.__class__, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.present"><code class="name flex">
+<span>def <span class="ident">present</span></span>(<span>self, centered=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Presents the widget as a modal dialog. The widget is added as a subwidget of the root widget, centered
+within it if centered is true. A nested event loop is entered in which any events for widgets other
+than this widget and its subwidgets are ignored. Control is retained until this widget's dismiss
+method is called. The argument to dismiss is returned from the present call.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>centered</code></strong></dt>
+<dd>Indicates whether or not to center;
+default is True</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>value</code> <code>returned</code> <code>from</code> <code>the</code> <code>modal</code> <code>widget</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def present(self, centered: bool = True):
+
+    &#34;&#34;&#34;
+    Presents the widget as a modal dialog. The widget is added as a subwidget of the root widget, centered
+    within it if centered is true. A nested event loop is entered in which any events for widgets other
+    than this widget and its subwidgets are ignored. Control is retained until this widget&#39;s dismiss
+    method is called. The argument to dismiss is returned from the present call.
+
+    Args:
+        centered:  Indicates whether or not to center;  default is True
+
+    Returns:  The value returned from the modal widget
+
+    &#34;&#34;&#34;
+    #
+    # TODO  Something about my re-packaging caused me to lose
+    # visibility to the root widget;  Figure it out later
+    #
+    global root_widget
+    # print &#34;Widget: presenting with rect&#34;, self.rect
+    # root = self.get_root()
+    root = Widget.root_widget
+    if centered:
+        self.center = root.center
+    root.add(self)
+    root.run_modal(self)
+    self.dispatch_attention_loss()
+    root.remove(self)
+
+    self.logger.debug(&#34;Widget.present: returning.  Result: %s&#34;, self.modal_result)
+    return self.modal_result</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.relative_mode"><code class="name flex">
+<span>def <span class="ident">relative_mode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return true if relative input mode should be used. Called each
+time around the event loop on the root widget or a widget that is
+modal.</p>
+<p>In relative input mode, the mouse cursor is hidden and mouse
+movements are not constrained to the edges of the window. In this
+mode, mouse movement events are delivered to the widget having the
+keyboard focus by calling the 'mouse_delta' method. The 'rel'
+attribute of the event should be used to obtain the movement since
+the last mouse event. Mouse down and mouse up events are also
+delivered to the focus widget, using the usual methods.</p>
+<p>The user can always escape from relative mode temporarily by
+pressing Ctrl-Shift-Escape. Normal mouse functionality is restored
+and further input events are ignored until a mouse click or key
+press occurs.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def relative_mode(self):
+    &#34;&#34;&#34;
+    Return true if relative input mode should be used. Called each
+    time around the event loop on the root widget or a widget that is
+    modal.
+
+    In relative input mode, the mouse cursor is hidden and mouse
+    movements are not constrained to the edges of the window. In this
+    mode, mouse movement events are delivered to the widget having the
+    keyboard focus by calling the &#39;mouse_delta&#39; method. The &#39;rel&#39;
+    attribute of the event should be used to obtain the movement since
+    the last mouse event. Mouse down and mouse up events are also
+    delivered to the focus widget, using the usual methods.
+
+    The user can always escape from relative mode temporarily by
+    pressing Ctrl-Shift-Escape. Normal mouse functionality is restored
+    and further input events are ignored until a mouse click or key
+    press occurs.
+    &#34;&#34;&#34;
+    return False</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.remove"><code class="name flex">
+<span>def <span class="ident">remove</span></span>(<span>self, widget)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>If the given widget is a subwidget of this widget, it is removed and its parent attribute is set to None.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong></dt>
+<dd>The widget to act on</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove(self, widget):
+    &#34;&#34;&#34;
+
+    If the given widget is a subwidget of this widget, it is removed and its parent attribute is set to None.
+
+    Args:
+        widget:  The widget to act on
+
+
+    &#34;&#34;&#34;
+    if widget in self.subwidgets:
+        widget.set_parent(None)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.remove_anchor"><code class="name flex">
+<span>def <span class="ident">remove_anchor</span></span>(<span>self, mode)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Remove the options specified by mode from anchor property.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>mode</code></strong></dt>
+<dd>The anchor mode to remove</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove_anchor(self, mode: str):
+    &#34;&#34;&#34;
+     Remove the options specified by mode from anchor property.
+
+    Args:
+        mode: The anchor mode to remove
+    Returns:
+
+    &#34;&#34;&#34;
+    self.anchor = &#34;&#34;.join(set(self.anchor) - set(mode))</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.resized"><code class="name flex">
+<span>def <span class="ident">resized</span></span>(<span>self, dw, dh)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when the widget changes size as a result of assigning to its width, height or size attributes,
+with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dw</code></strong></dt>
+<dd>width</dd>
+<dt><strong><code>dh</code></strong></dt>
+<dd>height</dd>
+</dl>
+<p>Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def resized(self, dw, dh):
+    &#34;&#34;&#34;
+    Called when the widget changes size as a result of assigning to its width, height or size attributes,
+    with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+    Args:
+        dw:  width
+        dh:  height
+
+    Returns:
+
+    &#34;&#34;&#34;
+    if self.debug_resize:
+        self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
+    for widget in self.subwidgets:
+        widget.parent_resized(dw, dh)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set"><code class="name flex">
+<span>def <span class="ident">set</span></span>(<span>self, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set(self, **kwds):
+    # for name, value in kwds.iteritems():  -- update for python 3 -- hasii
+    for name, value in kwds.items():
+        if not hasattr(self, name):
+            raise TypeError(&#34;Unexpected keyword argument &#39;%s&#39;&#34; % name)
+        setattr(self, name, value)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_is_gl_container"><code class="name flex">
+<span>def <span class="ident">set_is_gl_container</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_is_gl_container(self, x):
+    self._is_gl_container = x</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_menu_bar"><code class="name flex">
+<span>def <span class="ident">set_menu_bar</span></span>(<span>self, menubar)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_menu_bar(self, menubar):
+    if menubar is not self._menubar:
+        if self._menubar:
+            self.remove(self._menubar)
+        self._menubar = menubar
+        if menubar:
+            if menubar.width == 0:
+                menubar.width = self.width
+                menubar.anchor = &#39;lr&#39;
+            self.add(menubar)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_parent"><code class="name flex">
+<span>def <span class="ident">set_parent</span></span>(<span>self, parent)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Changes the parent of this widget to the given widget. This is an alternative to using the add and remove
+methods of the parent widget. Setting the parent to None removes the widget from any parent.</p>
+<h2 id="args">Args</h2>
+<p>parent:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_parent(self, parent):
+    &#34;&#34;&#34;
+    Changes the parent of this widget to the given widget. This is an alternative to using the add and remove
+    methods of the parent widget. Setting the parent to None removes the widget from any parent.
+
+    Args:
+        parent:
+
+    &#34;&#34;&#34;
+    if parent is not self.parent:
+        if self.parent:
+            self.parent._remove(self)
+        self.parent = parent
+        if parent:
+            parent._add(self)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_rect"><code class="name flex">
+<span>def <span class="ident">set_rect</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_rect(self, x):
+    old_size = self._rect.size
+    self._rect = Rect(x)
+    #
+    # Python 3 update no more tuples
+    # self._resized(old_size)
+    self._resized(old_size[0], old_size[1])</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_resizing"><code class="name flex">
+<span>def <span class="ident">set_resizing</span></span>(<span>self, axis, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_resizing(self, axis, value):
+    chars = self.resizing_axes[axis]
+    anchor = self.anchor
+    for c in chars:
+        anchor = anchor.replace(c, &#39;&#39;)
+    for i in self.resizing_values[value]:
+        anchor += chars[i]
+    self.anchor = anchor + value</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_size_for_text"><code class="name flex">
+<span>def <span class="ident">set_size_for_text</span></span>(<span>self, width, nLines=1)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Sets the widget's Rect to a suitable size for displaying text of the specified width and number of lines in
+its current font, as determined by the font property. The width can be either a number of pixels or a
+piece of sample text.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>width</code></strong></dt>
+<dd>The number of pixes or some sample text</dd>
+<dt><strong><code>nLines</code></strong></dt>
+<dd>The number of lines in the text;
+Defaults to 1</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_size_for_text(self, width, nLines=1):
+    &#34;&#34;&#34;
+    Sets the widget&#39;s Rect to a suitable size for displaying text of the specified width and number of lines in
+    its current font, as determined by the font property. The width can be either a number of pixels or a
+    piece of sample text.
+
+    Args:
+        width:  The number of pixes or some sample text
+
+        nLines: The number of lines in the text;  Defaults to 1
+
+
+    &#34;&#34;&#34;
+    if width is not None:
+        font = self.font
+        d = 2 * self.margin
+        #
+        # Python 3 update
+        # if isinstance(width, basestring):
+        if isinstance(width, str):
+            width, height = font.size(width)
+            width += d + 2
+        else:
+            height = font.size(&#34;X&#34;)[1]
+        self.size = (width, height * nLines + d)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.set_visible"><code class="name flex">
+<span>def <span class="ident">set_visible</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_visible(self, x):
+    self._visible = x</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.setup_cursor"><code class="name flex">
+<span>def <span class="ident">setup_cursor</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def setup_cursor(self, event):
+    global current_cursor
+    cursor = self.get_cursor(event) or arrow_cursor
+    if cursor is not current_cursor:
+        set_cursor(*cursor)
+        current_cursor = cursor</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.shrink_wrap"><code class="name flex">
+<span>def <span class="ident">shrink_wrap</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def shrink_wrap(self):
+    contents = self.subwidgets
+    if contents:
+        rects = [widget.rect for widget in contents]
+        # rmax = Rect.unionall(rects) # broken in PyGame 1.7.1
+        rmax = rects.pop()
+        for r in rects:
+            rmax = rmax.union(r)
+        #
+        # Updated python 3 -- hasii
+        #
+        # self._rect.size = add(rmax.topleft, rmax.bottomright)
+        self._rect.size = list(add(rmax.topleft, rmax.bottomright))</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.tab_to_first"><code class="name flex">
+<span>def <span class="ident">tab_to_first</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def tab_to_first(self):
+    chain = self.get_tab_order()
+    if chain:
+        chain[0].focus()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Widget.Widget.tab_to_next"><code class="name flex">
+<span>def <span class="ident">tab_to_next</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def tab_to_next(self):
+    top = self.get_top_widget()
+    chain = top.get_tab_order()
+    try:
+        i = chain.index(self)
+    except ValueError:
+        return
+    target = chain[(i + 1) % len(chain)]
+    target.focus()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="albow.core.Widget.rect_property" href="#albow.core.Widget.rect_property">rect_property</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.core.Widget.Widget" href="#albow.core.Widget.Widget">Widget</a></code></h4>
+<ul class="">
+<li><code><a title="albow.core.Widget.Widget.add" href="#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_anchor" href="#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_centered" href="#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.anchor" href="#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.attention_lost" href="#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_color" href="#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_image" href="#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_color" href="#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_width" href="#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bottom" href="#albow.core.Widget.Widget.bottom">bottom</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bottomleft" href="#albow.core.Widget.Widget.bottomleft">bottomleft</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bottomright" href="#albow.core.Widget.Widget.bottomright">bottomright</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_handler" href="#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.cancel_response" href="#albow.core.Widget.Widget.cancel_response">cancel_response</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.center" href="#albow.core.Widget.Widget.center">center</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.centerx" href="#albow.core.Widget.Widget.centerx">centerx</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.centery" href="#albow.core.Widget.Widget.centery">centery</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.collect_tab_order" href="#albow.core.Widget.Widget.collect_tab_order">collect_tab_order</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.debug_resize" href="#albow.core.Widget.Widget.debug_resize">debug_resize</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.diagnose_subsurface_problem" href="#albow.core.Widget.Widget.diagnose_subsurface_problem">diagnose_subsurface_problem</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dismiss" href="#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dispatch_attention_loss" href="#albow.core.Widget.Widget.dispatch_attention_loss">dispatch_attention_loss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dispatch_key" href="#albow.core.Widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw" href="#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_all" href="#albow.core.Widget.Widget.draw_all">draw_all</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_over" href="#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.enter_response" href="#albow.core.Widget.Widget.enter_response">enter_response</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.fg_color" href="#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.find_widget" href="#albow.core.Widget.Widget.find_widget">find_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus" href="#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_chain" href="#albow.core.Widget.Widget.focus_chain">focus_chain</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_on" href="#albow.core.Widget.Widget.focus_on">focus_on</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_switch" href="#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focused_on" href="#albow.core.Widget.Widget.focused_on">focused_on</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.font" href="#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_cursor" href="#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_focus" href="#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_global_rect" href="#albow.core.Widget.Widget.get_global_rect">get_global_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_is_gl_container" href="#albow.core.Widget.Widget.get_is_gl_container">get_is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_menu_bar" href="#albow.core.Widget.Widget.get_menu_bar">get_menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_mouse" href="#albow.core.Widget.Widget.get_mouse">get_mouse</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_rect" href="#albow.core.Widget.Widget.get_rect">get_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_root" href="#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_tab_order" href="#albow.core.Widget.Widget.get_tab_order">get_tab_order</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_visible" href="#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.gl_draw_all" href="#albow.core.Widget.Widget.gl_draw_all">gl_draw_all</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.gl_draw_self" href="#albow.core.Widget.Widget.gl_draw_self">gl_draw_self</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.global_to_local" href="#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.handle_command" href="#albow.core.Widget.Widget.handle_command">handle_command</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.handle_event" href="#albow.core.Widget.Widget.handle_event">handle_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.handle_mouse" href="#albow.core.Widget.Widget.handle_mouse">handle_mouse</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.has_focus" href="#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.height" href="#albow.core.Widget.Widget.height">height</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.inherited" href="#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.init_attr" href="#albow.core.Widget.Widget.init_attr">init_attr</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.invalidate" href="#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_inside" href="#albow.core.Widget.Widget.is_inside">is_inside</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_down" href="#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_up" href="#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.left" href="#albow.core.Widget.Widget.left">left</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global" href="#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global_offset" href="#albow.core.Widget.Widget.local_to_global_offset">local_to_global_offset</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.margin" href="#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.menu_bar" href="#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.midbottom" href="#albow.core.Widget.Widget.midbottom">midbottom</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.midleft" href="#albow.core.Widget.Widget.midleft">midleft</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.midright" href="#albow.core.Widget.Widget.midright">midright</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.midtop" href="#albow.core.Widget.Widget.midtop">midtop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.next_handler" href="#albow.core.Widget.Widget.next_handler">next_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.notify_attention_loss" href="#albow.core.Widget.Widget.notify_attention_loss">notify_attention_loss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent" href="#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent_resized" href="#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.predict" href="#albow.core.Widget.Widget.predict">predict</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.predict_attr" href="#albow.core.Widget.Widget.predict_attr">predict_attr</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.predict_font" href="#albow.core.Widget.Widget.predict_font">predict_font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.present" href="#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.rect" href="#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.redraw_every_event" href="#albow.core.Widget.Widget.redraw_every_event">redraw_every_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.relative_mode" href="#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove" href="#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resized" href="#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resizing_axes" href="#albow.core.Widget.Widget.resizing_axes">resizing_axes</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resizing_values" href="#albow.core.Widget.Widget.resizing_values">resizing_values</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.right" href="#albow.core.Widget.Widget.right">right</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.scale_bg" href="#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.sel_color" href="#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set" href="#albow.core.Widget.Widget.set">set</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_is_gl_container" href="#albow.core.Widget.Widget.set_is_gl_container">set_is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_menu_bar" href="#albow.core.Widget.Widget.set_menu_bar">set_menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_parent" href="#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_rect" href="#albow.core.Widget.Widget.set_rect">set_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_resizing" href="#albow.core.Widget.Widget.set_resizing">set_resizing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_visible" href="#albow.core.Widget.Widget.set_visible">set_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.setup_cursor" href="#albow.core.Widget.Widget.setup_cursor">setup_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.shrink_wrap" href="#albow.core.Widget.Widget.shrink_wrap">shrink_wrap</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.size" href="#albow.core.Widget.Widget.size">size</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.subwidgets" href="#albow.core.Widget.Widget.subwidgets">subwidgets</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_stop" href="#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_to_first" href="#albow.core.Widget.Widget.tab_to_first">tab_to_first</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_to_next" href="#albow.core.Widget.Widget.tab_to_next">tab_to_next</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.top" href="#albow.core.Widget.Widget.top">top</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.topleft" href="#albow.core.Widget.Widget.topleft">topleft</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.topright" href="#albow.core.Widget.Widget.topright">topright</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.visible" href="#albow.core.Widget.Widget.visible">visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.width" href="#albow.core.Widget.Widget.width">width</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.menu.MenuBar API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.menu.MenuBar</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from typing import List
+
+from pygame import Rect
+
+from albow.utils import overridable_property
+
+from albow.core.Widget import Widget
+
+from albow.menu.Menu import Menu
+
+
+class MenuBar(Widget):
+    &#34;&#34;&#34;
+    The MenuBar class works in conjunction with the Menu class to provide a set of drop-down menus.
+
+    A menu bar displays the titles of its attached menus in a horizontal row. Clicking on a menu title causes
+    the associated menu to be displayed, allowing an item to be selected from it.
+
+    Menu items are linked to handler methods via command names. When a menu item is invoked, a search is made
+    for a method whose name is the item&#39;s command name with ``_cmd`` appended. The search starts at the widget
+    having the keyboard focus and proceeds up towards to the root widget.
+
+    Menu items can be enabled or disabled. Whether an item is enabled is determined by searching for an enabling
+    method whose name is the command name with ``_enabled`` appended. The search is made along the same path as
+    the search for a handler method. If an enabling method is found, it is called and its boolean result
+    determines whether the item is enabled. If no enabling method is found, the item defaults to being enabled.
+
+    A menu item can also be associated with a key combination that includes the platform&#39;s standard menu
+    command modifier key (Command on Mac, Control on other platforms). For this to work, the MenuBar must be
+    attached to the menu_bar property of another widget and that widget must be somewhere on the path from
+    the root widget to the widget having the keyboard focus.
+
+    .. Note::
+        Menu command key events are intercepted while being dispatched from the root down to the
+        focus widget.  Thus, menu commands will take precedence over any handling of the same events in key_down
+        methods.
+
+
+    .. Tip:: See Also
+        - Menu for details of creating menu items and associating them with command names and key combinations.
+        - `albow.core.Widget.menu_bar` for attaching the menu bar to a widget.
+
+    &#34;&#34;&#34;
+    menus: List[Menu] = overridable_property(&#39;menus&#39;, &#34;List of Menu instances&#34;)
+    &#34;&#34;&#34;
+    A list of `albow.menu.Menu` instances
+    &#34;&#34;&#34;
+
+    def __init__(self, menus: List[Menu]=None, width=0, **kwds):
+        &#34;&#34;&#34;
+        Creates a menu bar. The height defaults to the font height.
+
+        Args:
+            menus:  The list of menus to include in the menubar
+
+            width:  If you don&#39;t specify a width, it will be set automatically when the menu bar is assigned to
+            the menu_bar property of a widget.
+
+            **kwds:
+        &#34;&#34;&#34;
+        font = self.predict_font(kwds)
+        height = font.get_linesize()
+
+        super().__init__(Rect(0, 0, width, height), **kwds)
+
+        self._menus = menus or []
+        self._hilited_menu = None
+
+    def get_menus(self):
+        return self._menus
+
+    def set_menus(self, x):
+        self._menus = x
+
+    def draw(self, surf):
+        fg = self.fg_color
+        bg = self.bg_color
+        font = self.font
+        hilited = self._hilited_menu
+        x = 0
+        for menu in self._menus:
+            text = &#34; %s &#34; % menu.title
+            if menu is hilited:
+                buf = font.render(text, True, bg, fg)
+            else:
+                buf = font.render(text, True, fg, bg)
+            surf.blit(buf, (x, 0))
+            x += buf.get_width()
+
+    def mouse_down(self, e):
+        mx = e.local[0]
+        font = self.font
+        x = 0
+        for menu in self._menus:
+            text = &#34; %s &#34; % menu.title
+            w = font.size(text)[0]
+            if x &lt;= mx &lt; x + w:
+                self.show_menu(menu, x)
+                return
+            x += w
+
+    def show_menu(self, menu, x):
+        self._hilited_menu = menu
+        try:
+            i = menu.show(self, (x, self.height))
+        finally:
+            self._hilited_menu = None
+        menu.invoke_item(i)
+
+    def handle_command_key(self, e):
+
+        menus = self.menus
+        #
+        # Python 3 update -- hasii
+        #
+        # for m in xrange(len(menus)-1, -1, -1):
+        for m in range(len(menus) - 1, -1, -1):
+            menu = menus[m]
+            i = menu.find_item_for_key(e)
+            if i &gt;= 0:
+                menu.invoke_item(i)
+                return True
+        return False</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.menu.MenuBar.MenuBar"><code class="flex name class">
+<span>class <span class="ident">MenuBar</span></span>
+<span>(</span><span>menus=None, width=0, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The MenuBar class works in conjunction with the Menu class to provide a set of drop-down menus.</p>
+<p>A menu bar displays the titles of its attached menus in a horizontal row. Clicking on a menu title causes
+the associated menu to be displayed, allowing an item to be selected from it.</p>
+<p>Menu items are linked to handler methods via command names. When a menu item is invoked, a search is made
+for a method whose name is the item's command name with <code>_cmd</code> appended. The search starts at the widget
+having the keyboard focus and proceeds up towards to the root widget.</p>
+<p>Menu items can be enabled or disabled. Whether an item is enabled is determined by searching for an enabling
+method whose name is the command name with <code>_enabled</code> appended. The search is made along the same path as
+the search for a handler method. If an enabling method is found, it is called and its boolean result
+determines whether the item is enabled. If no enabling method is found, the item defaults to being enabled.</p>
+<p>A menu item can also be associated with a key combination that includes the platform's standard menu
+command modifier key (Command on Mac, Control on other platforms). For this to work, the MenuBar must be
+attached to the menu_bar property of another widget and that widget must be somewhere on the path from
+the root widget to the widget having the keyboard focus.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Menu command key events are intercepted while being dispatched from the root down to the
+focus widget.
+Thus, menu commands will take precedence over any handling of the same events in key_down
+methods.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;See Also</p>
+<ul>
+<li>Menu for details of creating menu items and associating them with command names and key combinations.</li>
+<li><code>albow.core.Widget.menu_bar</code> for attaching the menu bar to a widget.</li>
+</ul>
+</div>
+<p>Creates a menu bar. The height defaults to the font height.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>menus</code></strong></dt>
+<dd>The list of menus to include in the menubar</dd>
+<dt><strong><code>width</code></strong></dt>
+<dd>If you don't specify a width, it will be set automatically when the menu bar is assigned to</dd>
+</dl>
+<p>the menu_bar property of a widget.</p>
+<p>**kwds:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class MenuBar(Widget):
+    &#34;&#34;&#34;
+    The MenuBar class works in conjunction with the Menu class to provide a set of drop-down menus.
+
+    A menu bar displays the titles of its attached menus in a horizontal row. Clicking on a menu title causes
+    the associated menu to be displayed, allowing an item to be selected from it.
+
+    Menu items are linked to handler methods via command names. When a menu item is invoked, a search is made
+    for a method whose name is the item&#39;s command name with ``_cmd`` appended. The search starts at the widget
+    having the keyboard focus and proceeds up towards to the root widget.
+
+    Menu items can be enabled or disabled. Whether an item is enabled is determined by searching for an enabling
+    method whose name is the command name with ``_enabled`` appended. The search is made along the same path as
+    the search for a handler method. If an enabling method is found, it is called and its boolean result
+    determines whether the item is enabled. If no enabling method is found, the item defaults to being enabled.
+
+    A menu item can also be associated with a key combination that includes the platform&#39;s standard menu
+    command modifier key (Command on Mac, Control on other platforms). For this to work, the MenuBar must be
+    attached to the menu_bar property of another widget and that widget must be somewhere on the path from
+    the root widget to the widget having the keyboard focus.
+
+    .. Note::
+        Menu command key events are intercepted while being dispatched from the root down to the
+        focus widget.  Thus, menu commands will take precedence over any handling of the same events in key_down
+        methods.
+
+
+    .. Tip:: See Also
+        - Menu for details of creating menu items and associating them with command names and key combinations.
+        - `albow.core.Widget.menu_bar` for attaching the menu bar to a widget.
+
+    &#34;&#34;&#34;
+    menus: List[Menu] = overridable_property(&#39;menus&#39;, &#34;List of Menu instances&#34;)
+    &#34;&#34;&#34;
+    A list of `albow.menu.Menu` instances
+    &#34;&#34;&#34;
+
+    def __init__(self, menus: List[Menu]=None, width=0, **kwds):
+        &#34;&#34;&#34;
+        Creates a menu bar. The height defaults to the font height.
+
+        Args:
+            menus:  The list of menus to include in the menubar
+
+            width:  If you don&#39;t specify a width, it will be set automatically when the menu bar is assigned to
+            the menu_bar property of a widget.
+
+            **kwds:
+        &#34;&#34;&#34;
+        font = self.predict_font(kwds)
+        height = font.get_linesize()
+
+        super().__init__(Rect(0, 0, width, height), **kwds)
+
+        self._menus = menus or []
+        self._hilited_menu = None
+
+    def get_menus(self):
+        return self._menus
+
+    def set_menus(self, x):
+        self._menus = x
+
+    def draw(self, surf):
+        fg = self.fg_color
+        bg = self.bg_color
+        font = self.font
+        hilited = self._hilited_menu
+        x = 0
+        for menu in self._menus:
+            text = &#34; %s &#34; % menu.title
+            if menu is hilited:
+                buf = font.render(text, True, bg, fg)
+            else:
+                buf = font.render(text, True, fg, bg)
+            surf.blit(buf, (x, 0))
+            x += buf.get_width()
+
+    def mouse_down(self, e):
+        mx = e.local[0]
+        font = self.font
+        x = 0
+        for menu in self._menus:
+            text = &#34; %s &#34; % menu.title
+            w = font.size(text)[0]
+            if x &lt;= mx &lt; x + w:
+                self.show_menu(menu, x)
+                return
+            x += w
+
+    def show_menu(self, menu, x):
+        self._hilited_menu = menu
+        try:
+            i = menu.show(self, (x, self.height))
+        finally:
+            self._hilited_menu = None
+        menu.invoke_item(i)
+
+    def handle_command_key(self, e):
+
+        menus = self.menus
+        #
+        # Python 3 update -- hasii
+        #
+        # for m in xrange(len(menus)-1, -1, -1):
+        for m in range(len(menus) - 1, -1, -1):
+            menu = menus[m]
+            i = menu.find_item_for_key(e)
+            if i &gt;= 0:
+                menu.invoke_item(i)
+                return True
+        return False</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.menu.MenuBar.MenuBar.menus"><code class="name">var <span class="ident">menus</span></code></dt>
+<dd>
+<section class="desc"><p>A list of <a title="albow.menu.Menu" href="Menu.html"><code>albow.menu.Menu</code></a> instances</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.menu.MenuBar.MenuBar.get_menus"><code class="name flex">
+<span>def <span class="ident">get_menus</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_menus(self):
+    return self._menus</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.MenuBar.MenuBar.handle_command_key"><code class="name flex">
+<span>def <span class="ident">handle_command_key</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def handle_command_key(self, e):
+
+    menus = self.menus
+    #
+    # Python 3 update -- hasii
+    #
+    # for m in xrange(len(menus)-1, -1, -1):
+    for m in range(len(menus) - 1, -1, -1):
+        menu = menus[m]
+        i = menu.find_item_for_key(e)
+        if i &gt;= 0:
+            menu.invoke_item(i)
+            return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.MenuBar.MenuBar.mouse_down"><code class="name flex">
+<span>def <span class="ident">mouse_down</span></span>(<span>self, e)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_down(self, e):
+    mx = e.local[0]
+    font = self.font
+    x = 0
+    for menu in self._menus:
+        text = &#34; %s &#34; % menu.title
+        w = font.size(text)[0]
+        if x &lt;= mx &lt; x + w:
+            self.show_menu(menu, x)
+            return
+        x += w</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.MenuBar.MenuBar.set_menus"><code class="name flex">
+<span>def <span class="ident">set_menus</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_menus(self, x):
+    self._menus = x</code></pre>
+</details>
+</dd>
+<dt id="albow.menu.MenuBar.MenuBar.show_menu"><code class="name flex">
+<span>def <span class="ident">show_menu</span></span>(<span>self, menu, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def show_menu(self, menu, x):
+    self._hilited_menu = menu
+    try:
+        i = menu.show(self, (x, self.height))
+    finally:
+        self._hilited_menu = None
+    menu.invoke_item(i)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.core.Widget.Widget.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.menu" href="index.html">albow.menu</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.menu.MenuBar.MenuBar" href="#albow.menu.MenuBar.MenuBar">MenuBar</a></code></h4>
+<ul class="two-column">
+<li><code><a title="albow.menu.MenuBar.MenuBar.get_menus" href="#albow.menu.MenuBar.MenuBar.get_menus">get_menus</a></code></li>
+<li><code><a title="albow.menu.MenuBar.MenuBar.handle_command_key" href="#albow.menu.MenuBar.MenuBar.handle_command_key">handle_command_key</a></code></li>
+<li><code><a title="albow.menu.MenuBar.MenuBar.menus" href="#albow.menu.MenuBar.MenuBar.menus">menus</a></code></li>
+<li><code><a title="albow.menu.MenuBar.MenuBar.mouse_down" href="#albow.menu.MenuBar.MenuBar.mouse_down">mouse_down</a></code></li>
+<li><code><a title="albow.menu.MenuBar.MenuBar.set_menus" href="#albow.menu.MenuBar.MenuBar.set_menus">set_menus</a></code></li>
+<li><code><a title="albow.menu.MenuBar.MenuBar.show_menu" href="#albow.menu.MenuBar.MenuBar.show_menu">show_menu</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

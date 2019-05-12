@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.core.Scheduler API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.core.Scheduler</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from typing import List
+
+import logging
+
+from time import time
+
+from bisect import insort
+
+from pygame.locals import USEREVENT
+
+from pygame.event import Event
+
+from albow.core.CoreUtilities import CoreUtilities
+from albow.core.CoreUtilities import time_base
+
+from albow.core.ScheduledCall import ScheduledCall
+
+FIRST_DUE_CALL_IDX = 0
+
+
+class Scheduler:
+
+    ourLogger = logging.getLogger(__name__)
+
+    ourScheduledCalls: List[ScheduledCall] = []
+
+    &#34;&#34;&#34;
+    A static class to avoid using module functions
+    &#34;&#34;&#34;
+    @staticmethod
+    def schedule(delay, func):
+        &#34;&#34;&#34;
+        .. WARNING::
+            Deprecated, use `schedule_call` or `schedule_event` instead.
+
+        &#34;&#34;&#34;
+        Scheduler.schedule_call(delay * 1000.0, func)
+
+    @staticmethod
+    def schedule_call(delay, func, repeat=False):
+        &#34;&#34;&#34;
+        Arrange for the given function to be called after the specified
+        delay in milliseconds. Scheduled functions are called synchronously from
+        the event loop, and only when the frame timer is running. If repeat is
+        true, call will be made repeatedly at the specified interval, otherwise
+        it will only be made once.
+
+        Args:
+            delay:  The scheduled delay in milliseconds
+
+            func:  The function to call
+
+            repeat: Set to _True_ to repeat, else _False_
+
+        Returns:   Returns a token that can be passed to `Scheduler.cancel_call()`.
+
+        &#34;&#34;&#34;
+        t = Scheduler.timestamp() + delay
+        if repeat:
+            r = delay
+        else:
+            r = 0.0
+        item = ScheduledCall(t, func, r)
+        insort(Scheduler.ourScheduledCalls, item)
+        return item
+
+    @staticmethod
+    def schedule_event(delay, func, repeat=False):
+        &#34;&#34;&#34;
+        Like `Scheduler.schedule_call` except that the function is passed an event containing the current timestamp and
+        the state of the modifier keys.
+
+        Args:
+            delay:  The scheduled delay in milliseconds
+
+            func:  The function to call
+
+            repeat: Set to _True_ to repeat, else _False_
+        &#34;&#34;&#34;
+        def thunk():
+            # TODO:  Fix to include the time attribute
+            #
+            # Pygame 1.9 update
+            #
+            # event = Event(USEREVENT, time = timestamp())
+            event = Event(USEREVENT, dict=None)
+            CoreUtilities.add_modifiers(event)
+            func(event)
+
+        Scheduler.schedule_call(delay, thunk, repeat)
+
+    @staticmethod
+    def timestamp():
+        return time() * 1000.0 - time_base
+
+    @staticmethod
+    def cancel_call(token):
+        &#34;&#34;&#34;
+        Cancel a previously scheduled call, given a token returned by
+        `Scheduler.schedule_call` or `Scheduler.schedule_event`.
+
+        Args:
+            token:  The token that represents the call to cancel
+
+        &#34;&#34;&#34;
+        try:
+            Scheduler.ourScheduledCalls.remove(token)
+        except ValueError as ve:
+            # pass
+            Scheduler.ourLogger.error(&#34;Cancel call exception: %s&#34;, ve)
+
+    @staticmethod
+    def make_scheduled_calls():
+        &#34;&#34;&#34;
+        Legacy - Still used by `RootWidget.run_mode`;  A simpler way to call what is due
+
+        &#34;&#34;&#34;
+        callList = Scheduler.ourScheduledCalls
+        t = Scheduler.timestamp()
+        while len(callList) !=0  and callList[0].time &lt;= t:
+
+            scheduledCall: ScheduledCall = callList.pop(FIRST_DUE_CALL_IDX)
+            scheduledCall.func()
+
+    @staticmethod
+    def make_due_calls(time_now, until_time):
+        &#34;&#34;&#34;
+        Call all functions scheduled at or before time_now.
+
+        Args:
+            time_now:  When to make the call
+
+            until_time:  Until time ?
+
+        Returns:    The time remaining until the next scheduled call or `until_time`, whichever is sooner.
+
+        &#34;&#34;&#34;
+        Scheduler.ourLogger.debug(&#34;make_due_calls - time_now: %s, until_time: %s&#34;, time_now, until_time)
+
+        callList = Scheduler.ourScheduledCalls
+        while len(callList) != 0 and callList[FIRST_DUE_CALL_IDX].time &lt;= time_now:
+
+            Scheduler.ourLogger.debug(&#34;scheduled time is less or equal to time_now&#34;)
+            scheduledCall: ScheduledCall = callList.pop(0)
+
+            Scheduler.ourLogger.debug(&#34;Call function: %s&#34;, scheduledCall.func.__name__)
+            scheduledCall.func()
+            delay = scheduledCall.interval
+
+            if delay:
+                next_time = scheduledCall.time + delay
+
+                if next_time &lt; time_now:
+                    next_time = time_now + delay
+                Scheduler.ourLogger.debug(&#34;make_due_calls: rescheduling at: %s&#34;, next_time)
+                scheduledCall.time = next_time
+                insort(callList, scheduledCall)
+
+        if len(callList) != 0:
+            next_time = min(until_time, callList[FIRST_DUE_CALL_IDX].time)
+        else:
+            next_time = until_time
+
+        return next_time - time_now</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.core.Scheduler.Scheduler"><code class="flex name class">
+<span>class <span class="ident">Scheduler</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Scheduler:
+
+    ourLogger = logging.getLogger(__name__)
+
+    ourScheduledCalls: List[ScheduledCall] = []
+
+    &#34;&#34;&#34;
+    A static class to avoid using module functions
+    &#34;&#34;&#34;
+    @staticmethod
+    def schedule(delay, func):
+        &#34;&#34;&#34;
+        .. WARNING::
+            Deprecated, use `schedule_call` or `schedule_event` instead.
+
+        &#34;&#34;&#34;
+        Scheduler.schedule_call(delay * 1000.0, func)
+
+    @staticmethod
+    def schedule_call(delay, func, repeat=False):
+        &#34;&#34;&#34;
+        Arrange for the given function to be called after the specified
+        delay in milliseconds. Scheduled functions are called synchronously from
+        the event loop, and only when the frame timer is running. If repeat is
+        true, call will be made repeatedly at the specified interval, otherwise
+        it will only be made once.
+
+        Args:
+            delay:  The scheduled delay in milliseconds
+
+            func:  The function to call
+
+            repeat: Set to _True_ to repeat, else _False_
+
+        Returns:   Returns a token that can be passed to `Scheduler.cancel_call()`.
+
+        &#34;&#34;&#34;
+        t = Scheduler.timestamp() + delay
+        if repeat:
+            r = delay
+        else:
+            r = 0.0
+        item = ScheduledCall(t, func, r)
+        insort(Scheduler.ourScheduledCalls, item)
+        return item
+
+    @staticmethod
+    def schedule_event(delay, func, repeat=False):
+        &#34;&#34;&#34;
+        Like `Scheduler.schedule_call` except that the function is passed an event containing the current timestamp and
+        the state of the modifier keys.
+
+        Args:
+            delay:  The scheduled delay in milliseconds
+
+            func:  The function to call
+
+            repeat: Set to _True_ to repeat, else _False_
+        &#34;&#34;&#34;
+        def thunk():
+            # TODO:  Fix to include the time attribute
+            #
+            # Pygame 1.9 update
+            #
+            # event = Event(USEREVENT, time = timestamp())
+            event = Event(USEREVENT, dict=None)
+            CoreUtilities.add_modifiers(event)
+            func(event)
+
+        Scheduler.schedule_call(delay, thunk, repeat)
+
+    @staticmethod
+    def timestamp():
+        return time() * 1000.0 - time_base
+
+    @staticmethod
+    def cancel_call(token):
+        &#34;&#34;&#34;
+        Cancel a previously scheduled call, given a token returned by
+        `Scheduler.schedule_call` or `Scheduler.schedule_event`.
+
+        Args:
+            token:  The token that represents the call to cancel
+
+        &#34;&#34;&#34;
+        try:
+            Scheduler.ourScheduledCalls.remove(token)
+        except ValueError as ve:
+            # pass
+            Scheduler.ourLogger.error(&#34;Cancel call exception: %s&#34;, ve)
+
+    @staticmethod
+    def make_scheduled_calls():
+        &#34;&#34;&#34;
+        Legacy - Still used by `RootWidget.run_mode`;  A simpler way to call what is due
+
+        &#34;&#34;&#34;
+        callList = Scheduler.ourScheduledCalls
+        t = Scheduler.timestamp()
+        while len(callList) !=0  and callList[0].time &lt;= t:
+
+            scheduledCall: ScheduledCall = callList.pop(FIRST_DUE_CALL_IDX)
+            scheduledCall.func()
+
+    @staticmethod
+    def make_due_calls(time_now, until_time):
+        &#34;&#34;&#34;
+        Call all functions scheduled at or before time_now.
+
+        Args:
+            time_now:  When to make the call
+
+            until_time:  Until time ?
+
+        Returns:    The time remaining until the next scheduled call or `until_time`, whichever is sooner.
+
+        &#34;&#34;&#34;
+        Scheduler.ourLogger.debug(&#34;make_due_calls - time_now: %s, until_time: %s&#34;, time_now, until_time)
+
+        callList = Scheduler.ourScheduledCalls
+        while len(callList) != 0 and callList[FIRST_DUE_CALL_IDX].time &lt;= time_now:
+
+            Scheduler.ourLogger.debug(&#34;scheduled time is less or equal to time_now&#34;)
+            scheduledCall: ScheduledCall = callList.pop(0)
+
+            Scheduler.ourLogger.debug(&#34;Call function: %s&#34;, scheduledCall.func.__name__)
+            scheduledCall.func()
+            delay = scheduledCall.interval
+
+            if delay:
+                next_time = scheduledCall.time + delay
+
+                if next_time &lt; time_now:
+                    next_time = time_now + delay
+                Scheduler.ourLogger.debug(&#34;make_due_calls: rescheduling at: %s&#34;, next_time)
+                scheduledCall.time = next_time
+                insort(callList, scheduledCall)
+
+        if len(callList) != 0:
+            next_time = min(until_time, callList[FIRST_DUE_CALL_IDX].time)
+        else:
+            next_time = until_time
+
+        return next_time - time_now</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.core.Scheduler.Scheduler.ourLogger"><code class="name">var <span class="ident">ourLogger</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.ourScheduledCalls"><code class="name">var <span class="ident">ourScheduledCalls</span></code></dt>
+<dd>
+<section class="desc"><p>A static class to avoid using module functions</p></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="albow.core.Scheduler.Scheduler.cancel_call"><code class="name flex">
+<span>def <span class="ident">cancel_call</span></span>(<span>token)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Cancel a previously scheduled call, given a token returned by
+<a title="albow.core.Scheduler.Scheduler.schedule_call" href="#albow.core.Scheduler.Scheduler.schedule_call"><code>Scheduler.schedule_call()</code></a> or <a title="albow.core.Scheduler.Scheduler.schedule_event" href="#albow.core.Scheduler.Scheduler.schedule_event"><code>Scheduler.schedule_event()</code></a>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>token</code></strong></dt>
+<dd>The token that represents the call to cancel</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def cancel_call(token):
+    &#34;&#34;&#34;
+    Cancel a previously scheduled call, given a token returned by
+    `Scheduler.schedule_call` or `Scheduler.schedule_event`.
+
+    Args:
+        token:  The token that represents the call to cancel
+
+    &#34;&#34;&#34;
+    try:
+        Scheduler.ourScheduledCalls.remove(token)
+    except ValueError as ve:
+        # pass
+        Scheduler.ourLogger.error(&#34;Cancel call exception: %s&#34;, ve)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.make_due_calls"><code class="name flex">
+<span>def <span class="ident">make_due_calls</span></span>(<span>time_now, until_time)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Call all functions scheduled at or before time_now.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>time_now</code></strong></dt>
+<dd>When to make the call</dd>
+<dt><strong><code>until_time</code></strong></dt>
+<dd>Until time ?</dd>
+</dl>
+<p>Returns:
+The time remaining until the next scheduled call or <code>until_time</code>, whichever is sooner.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def make_due_calls(time_now, until_time):
+    &#34;&#34;&#34;
+    Call all functions scheduled at or before time_now.
+
+    Args:
+        time_now:  When to make the call
+
+        until_time:  Until time ?
+
+    Returns:    The time remaining until the next scheduled call or `until_time`, whichever is sooner.
+
+    &#34;&#34;&#34;
+    Scheduler.ourLogger.debug(&#34;make_due_calls - time_now: %s, until_time: %s&#34;, time_now, until_time)
+
+    callList = Scheduler.ourScheduledCalls
+    while len(callList) != 0 and callList[FIRST_DUE_CALL_IDX].time &lt;= time_now:
+
+        Scheduler.ourLogger.debug(&#34;scheduled time is less or equal to time_now&#34;)
+        scheduledCall: ScheduledCall = callList.pop(0)
+
+        Scheduler.ourLogger.debug(&#34;Call function: %s&#34;, scheduledCall.func.__name__)
+        scheduledCall.func()
+        delay = scheduledCall.interval
+
+        if delay:
+            next_time = scheduledCall.time + delay
+
+            if next_time &lt; time_now:
+                next_time = time_now + delay
+            Scheduler.ourLogger.debug(&#34;make_due_calls: rescheduling at: %s&#34;, next_time)
+            scheduledCall.time = next_time
+            insort(callList, scheduledCall)
+
+    if len(callList) != 0:
+        next_time = min(until_time, callList[FIRST_DUE_CALL_IDX].time)
+    else:
+        next_time = until_time
+
+    return next_time - time_now</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.make_scheduled_calls"><code class="name flex">
+<span>def <span class="ident">make_scheduled_calls</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Legacy - Still used by <code>RootWidget.run_mode</code>;
+A simpler way to call what is due</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def make_scheduled_calls():
+    &#34;&#34;&#34;
+    Legacy - Still used by `RootWidget.run_mode`;  A simpler way to call what is due
+
+    &#34;&#34;&#34;
+    callList = Scheduler.ourScheduledCalls
+    t = Scheduler.timestamp()
+    while len(callList) !=0  and callList[0].time &lt;= t:
+
+        scheduledCall: ScheduledCall = callList.pop(FIRST_DUE_CALL_IDX)
+        scheduledCall.func()</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.schedule"><code class="name flex">
+<span>def <span class="ident">schedule</span></span>(<span>delay, func)</span>
+</code></dt>
+<dd>
+<section class="desc"><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Deprecated, use <code>schedule_call</code> or <code>schedule_event</code> instead.</p>
+</div></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def schedule(delay, func):
+    &#34;&#34;&#34;
+    .. WARNING::
+        Deprecated, use `schedule_call` or `schedule_event` instead.
+
+    &#34;&#34;&#34;
+    Scheduler.schedule_call(delay * 1000.0, func)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.schedule_call"><code class="name flex">
+<span>def <span class="ident">schedule_call</span></span>(<span>delay, func, repeat=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Arrange for the given function to be called after the specified
+delay in milliseconds. Scheduled functions are called synchronously from
+the event loop, and only when the frame timer is running. If repeat is
+true, call will be made repeatedly at the specified interval, otherwise
+it will only be made once.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>delay</code></strong></dt>
+<dd>The scheduled delay in milliseconds</dd>
+<dt><strong><code>func</code></strong></dt>
+<dd>The function to call</dd>
+<dt><strong><code>repeat</code></strong></dt>
+<dd>Set to <em>True</em> to repeat, else <em>False</em></dd>
+</dl>
+<p>Returns:
+Returns a token that can be passed to <a title="albow.core.Scheduler.Scheduler.cancel_call" href="#albow.core.Scheduler.Scheduler.cancel_call"><code>Scheduler.cancel_call()</code></a>.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def schedule_call(delay, func, repeat=False):
+    &#34;&#34;&#34;
+    Arrange for the given function to be called after the specified
+    delay in milliseconds. Scheduled functions are called synchronously from
+    the event loop, and only when the frame timer is running. If repeat is
+    true, call will be made repeatedly at the specified interval, otherwise
+    it will only be made once.
+
+    Args:
+        delay:  The scheduled delay in milliseconds
+
+        func:  The function to call
+
+        repeat: Set to _True_ to repeat, else _False_
+
+    Returns:   Returns a token that can be passed to `Scheduler.cancel_call()`.
+
+    &#34;&#34;&#34;
+    t = Scheduler.timestamp() + delay
+    if repeat:
+        r = delay
+    else:
+        r = 0.0
+    item = ScheduledCall(t, func, r)
+    insort(Scheduler.ourScheduledCalls, item)
+    return item</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.schedule_event"><code class="name flex">
+<span>def <span class="ident">schedule_event</span></span>(<span>delay, func, repeat=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Like <a title="albow.core.Scheduler.Scheduler.schedule_call" href="#albow.core.Scheduler.Scheduler.schedule_call"><code>Scheduler.schedule_call()</code></a> except that the function is passed an event containing the current timestamp and
+the state of the modifier keys.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>delay</code></strong></dt>
+<dd>The scheduled delay in milliseconds</dd>
+<dt><strong><code>func</code></strong></dt>
+<dd>The function to call</dd>
+<dt><strong><code>repeat</code></strong></dt>
+<dd>Set to <em>True</em> to repeat, else <em>False</em></dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def schedule_event(delay, func, repeat=False):
+    &#34;&#34;&#34;
+    Like `Scheduler.schedule_call` except that the function is passed an event containing the current timestamp and
+    the state of the modifier keys.
+
+    Args:
+        delay:  The scheduled delay in milliseconds
+
+        func:  The function to call
+
+        repeat: Set to _True_ to repeat, else _False_
+    &#34;&#34;&#34;
+    def thunk():
+        # TODO:  Fix to include the time attribute
+        #
+        # Pygame 1.9 update
+        #
+        # event = Event(USEREVENT, time = timestamp())
+        event = Event(USEREVENT, dict=None)
+        CoreUtilities.add_modifiers(event)
+        func(event)
+
+    Scheduler.schedule_call(delay, thunk, repeat)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.Scheduler.Scheduler.timestamp"><code class="name flex">
+<span>def <span class="ident">timestamp</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def timestamp():
+    return time() * 1000.0 - time_base</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.core.Scheduler.Scheduler" href="#albow.core.Scheduler.Scheduler">Scheduler</a></code></h4>
+<ul class="">
+<li><code><a title="albow.core.Scheduler.Scheduler.cancel_call" href="#albow.core.Scheduler.Scheduler.cancel_call">cancel_call</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.make_due_calls" href="#albow.core.Scheduler.Scheduler.make_due_calls">make_due_calls</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.make_scheduled_calls" href="#albow.core.Scheduler.Scheduler.make_scheduled_calls">make_scheduled_calls</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.ourLogger" href="#albow.core.Scheduler.Scheduler.ourLogger">ourLogger</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.ourScheduledCalls" href="#albow.core.Scheduler.Scheduler.ourScheduledCalls">ourScheduledCalls</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.schedule" href="#albow.core.Scheduler.Scheduler.schedule">schedule</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.schedule_call" href="#albow.core.Scheduler.Scheduler.schedule_call">schedule_call</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.schedule_event" href="#albow.core.Scheduler.Scheduler.schedule_event">schedule_event</a></code></li>
+<li><code><a title="albow.core.Scheduler.Scheduler.timestamp" href="#albow.core.Scheduler.Scheduler.timestamp">timestamp</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

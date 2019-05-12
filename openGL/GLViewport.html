@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.openGL.GLViewport API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.openGL.GLViewport</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from pygame import Rect
+
+from pygame.display import get_surface as get_display
+
+from OpenGL import GL
+from OpenGL import GLU
+
+from albow.core.Widget import Widget
+
+
+class GLViewport(Widget):
+    &#34;&#34;&#34;
+    A `GLViewport` provides basic OpenGL drawing and input handling facilities.
+
+    When using &#39;GLViewport&#39; you are responsible for setting up the projection matrix. For most applications
+    you will probably find it more convenient to use `albow.openGL.GLOrtho` or `albow.openGL.GLPerspective`.
+
+    **Mouse Event Handling**
+
+    Mouse events passed to the mouse handling methods of a GLViewport have an additional attribute called
+    ray. This is a pair of points __((x1, y1, z1), (x2, y2, z2))__ obtained by projecting the mouse coordinates
+    onto the near and far planes respectively.
+
+    The following methods implement the default drawing mechanism.
+
+    - `gl_draw_viewport`
+    - `setup_matrices`
+
+    You can optionally override them to gain more control over the process.
+
+    &#34;&#34;&#34;
+    is_gl_container = True
+
+    def __init__(self, rect: Rect = None, **kwds):
+        &#34;&#34;&#34;
+
+
+        &#34;&#34;&#34;
+        super().__init__(rect, **kwds)
+
+    # Looks obsolete -- hasii
+    # def gl_draw_self(self, root, offset):
+    #     rect = self.rect.move(offset)
+
+    def gl_draw_self(self, gl_surface):
+        &#34;&#34;&#34;
+
+        Args:
+            gl_surface:
+
+        Returns:
+
+        &#34;&#34;&#34;
+        #
+        # GL_CLIENT_ALL_ATTRIB_BITS is borked: defined as -1 but
+        # glPushClientAttrib insists on an unsigned long.
+        #
+        GL.glPushClientAttrib(0xffffffff)
+        GL.glPushAttrib(GL.GL_ALL_ATTRIB_BITS)
+        # GL.glViewport(rect.left, root.height - rect.bottom, rect.width, rect.height)
+        self.gl_draw_viewport()
+        GL.glPopAttrib()
+        GL.glPopClientAttrib()
+
+    def gl_draw_viewport(self):
+        &#34;&#34;&#34;
+        This method is called after the viewport has been set up. It is responsible for establishing the
+        projection and modelview matrices and performing the drawing. All OpenGL attributes are saved
+        and restored around calls to this method. The default implementation calls `setup_matrices()` and `gl_draw()`.
+
+        &#34;&#34;&#34;
+        self.setup_matrices()
+        self.gl_draw()
+
+    def setup_matrices(self):
+        &#34;&#34;&#34;
+        This method is called from the default implementation of `gl_draw_viewport()`. It is responsible for setting
+        up the projection and modelview matrices. The default implementation calls `setup_projection()` and
+        `setup_modelview()`.
+
+        &#34;&#34;&#34;
+        rect = self.get_global_rect()
+        win_height = get_display().get_height()
+        GL.glViewport(rect.left, win_height - rect.bottom, rect.width, rect.height)
+        GL.glMatrixMode(GL.GL_PROJECTION)
+        GL.glLoadIdentity()
+        self.setup_projection()
+        GL.glMatrixMode(GL.GL_MODELVIEW)
+        GL.glLoadIdentity()
+        self.setup_modelview()
+
+    def augment_mouse_event(self, event):
+        &#34;&#34;&#34;
+        This method is used to add the ray attribute to a mouse event before calling the corresponding handler.
+        Usually it is called automatically, but you may want to call it yourself if you receive a mouse event by
+        some means other than the usual channels. Note: This method calls the matrix setup methods, and changes
+        the projection and modelview matrices as a side effect.
+
+        Args:
+            event:  The event to augment
+
+        Returns:  a modified event
+
+        &#34;&#34;&#34;
+        Widget.augment_mouse_event(self, event)
+        w, h = self.size
+        viewport = (0, 0, w, h)
+        self.setup_matrices()
+        # gf = GL.glGetFloatv
+        gf = GL.glGetDoublev
+        pr_mat = gf(GL.GL_PROJECTION_MATRIX)
+        mv_mat = gf(GL.GL_MODELVIEW_MATRIX)
+        x, y = event.local
+        y = h - y
+        up = GLU.gluUnProject
+        p0 = up(x, y, 0.0, mv_mat, pr_mat, viewport)
+        p1 = up(x, y, 1.0, mv_mat, pr_mat, viewport)
+        event.dict[&#39;ray&#39;] = (p0, p1)
+
+    #
+    # Abstract methods follow
+    #
+    def setup_projection(self):
+        &#34;&#34;&#34;
+        This method is called during drawing and mouse event handling to establish the projection matrix. When
+        called, the projection matrix is selected and has been initialized to an identity matrix.
+        &#34;&#34;&#34;
+        pass
+
+    def setup_modelview(self):
+        &#34;&#34;&#34;
+        This method is called during drawing and mouse event handling to establish the _modelview_ matrix. When
+        called, the _modelview_ matrix is selected and has been initialized to an identity matrix.
+        &#34;&#34;&#34;
+        pass
+
+    def gl_draw(self):
+        &#34;&#34;&#34;
+        This method is called after the projection and model-view matrices have been set up. All OpenGL attributes
+        are saved before calling this method and restored afterwards, so you can freely change OpenGL state here
+        without affecting any other `GLViewport`s.
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.openGL.GLViewport.GLViewport"><code class="flex name class">
+<span>class <span class="ident">GLViewport</span></span>
+<span>(</span><span>rect=None, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A <a title="albow.openGL.GLViewport.GLViewport" href="#albow.openGL.GLViewport.GLViewport"><code>GLViewport</code></a> provides basic OpenGL drawing and input handling facilities.</p>
+<p>When using 'GLViewport' you are responsible for setting up the projection matrix. For most applications
+you will probably find it more convenient to use <a title="albow.openGL.GLOrtho" href="GLOrtho.html"><code>albow.openGL.GLOrtho</code></a> or <a title="albow.openGL.GLPerspective" href="GLPerspective.html"><code>albow.openGL.GLPerspective</code></a>.</p>
+<p><strong>Mouse Event Handling</strong></p>
+<p>Mouse events passed to the mouse handling methods of a GLViewport have an additional attribute called
+ray. This is a pair of points <strong>((x1, y1, z1), (x2, y2, z2))</strong> obtained by projecting the mouse coordinates
+onto the near and far planes respectively.</p>
+<p>The following methods implement the default drawing mechanism.</p>
+<ul>
+<li><code>gl_draw_viewport</code></li>
+<li><code>setup_matrices</code></li>
+</ul>
+<p>You can optionally override them to gain more control over the process.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class GLViewport(Widget):
+    &#34;&#34;&#34;
+    A `GLViewport` provides basic OpenGL drawing and input handling facilities.
+
+    When using &#39;GLViewport&#39; you are responsible for setting up the projection matrix. For most applications
+    you will probably find it more convenient to use `albow.openGL.GLOrtho` or `albow.openGL.GLPerspective`.
+
+    **Mouse Event Handling**
+
+    Mouse events passed to the mouse handling methods of a GLViewport have an additional attribute called
+    ray. This is a pair of points __((x1, y1, z1), (x2, y2, z2))__ obtained by projecting the mouse coordinates
+    onto the near and far planes respectively.
+
+    The following methods implement the default drawing mechanism.
+
+    - `gl_draw_viewport`
+    - `setup_matrices`
+
+    You can optionally override them to gain more control over the process.
+
+    &#34;&#34;&#34;
+    is_gl_container = True
+
+    def __init__(self, rect: Rect = None, **kwds):
+        &#34;&#34;&#34;
+
+
+        &#34;&#34;&#34;
+        super().__init__(rect, **kwds)
+
+    # Looks obsolete -- hasii
+    # def gl_draw_self(self, root, offset):
+    #     rect = self.rect.move(offset)
+
+    def gl_draw_self(self, gl_surface):
+        &#34;&#34;&#34;
+
+        Args:
+            gl_surface:
+
+        Returns:
+
+        &#34;&#34;&#34;
+        #
+        # GL_CLIENT_ALL_ATTRIB_BITS is borked: defined as -1 but
+        # glPushClientAttrib insists on an unsigned long.
+        #
+        GL.glPushClientAttrib(0xffffffff)
+        GL.glPushAttrib(GL.GL_ALL_ATTRIB_BITS)
+        # GL.glViewport(rect.left, root.height - rect.bottom, rect.width, rect.height)
+        self.gl_draw_viewport()
+        GL.glPopAttrib()
+        GL.glPopClientAttrib()
+
+    def gl_draw_viewport(self):
+        &#34;&#34;&#34;
+        This method is called after the viewport has been set up. It is responsible for establishing the
+        projection and modelview matrices and performing the drawing. All OpenGL attributes are saved
+        and restored around calls to this method. The default implementation calls `setup_matrices()` and `gl_draw()`.
+
+        &#34;&#34;&#34;
+        self.setup_matrices()
+        self.gl_draw()
+
+    def setup_matrices(self):
+        &#34;&#34;&#34;
+        This method is called from the default implementation of `gl_draw_viewport()`. It is responsible for setting
+        up the projection and modelview matrices. The default implementation calls `setup_projection()` and
+        `setup_modelview()`.
+
+        &#34;&#34;&#34;
+        rect = self.get_global_rect()
+        win_height = get_display().get_height()
+        GL.glViewport(rect.left, win_height - rect.bottom, rect.width, rect.height)
+        GL.glMatrixMode(GL.GL_PROJECTION)
+        GL.glLoadIdentity()
+        self.setup_projection()
+        GL.glMatrixMode(GL.GL_MODELVIEW)
+        GL.glLoadIdentity()
+        self.setup_modelview()
+
+    def augment_mouse_event(self, event):
+        &#34;&#34;&#34;
+        This method is used to add the ray attribute to a mouse event before calling the corresponding handler.
+        Usually it is called automatically, but you may want to call it yourself if you receive a mouse event by
+        some means other than the usual channels. Note: This method calls the matrix setup methods, and changes
+        the projection and modelview matrices as a side effect.
+
+        Args:
+            event:  The event to augment
+
+        Returns:  a modified event
+
+        &#34;&#34;&#34;
+        Widget.augment_mouse_event(self, event)
+        w, h = self.size
+        viewport = (0, 0, w, h)
+        self.setup_matrices()
+        # gf = GL.glGetFloatv
+        gf = GL.glGetDoublev
+        pr_mat = gf(GL.GL_PROJECTION_MATRIX)
+        mv_mat = gf(GL.GL_MODELVIEW_MATRIX)
+        x, y = event.local
+        y = h - y
+        up = GLU.gluUnProject
+        p0 = up(x, y, 0.0, mv_mat, pr_mat, viewport)
+        p1 = up(x, y, 1.0, mv_mat, pr_mat, viewport)
+        event.dict[&#39;ray&#39;] = (p0, p1)
+
+    #
+    # Abstract methods follow
+    #
+    def setup_projection(self):
+        &#34;&#34;&#34;
+        This method is called during drawing and mouse event handling to establish the projection matrix. When
+        called, the projection matrix is selected and has been initialized to an identity matrix.
+        &#34;&#34;&#34;
+        pass
+
+    def setup_modelview(self):
+        &#34;&#34;&#34;
+        This method is called during drawing and mouse event handling to establish the _modelview_ matrix. When
+        called, the _modelview_ matrix is selected and has been initialized to an identity matrix.
+        &#34;&#34;&#34;
+        pass
+
+    def gl_draw(self):
+        &#34;&#34;&#34;
+        This method is called after the projection and model-view matrices have been set up. All OpenGL attributes
+        are saved before calling this method and restored afterwards, so you can freely change OpenGL state here
+        without affecting any other `GLViewport`s.
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.openGL.GLOrtho.GLOrtho" href="GLOrtho.html#albow.openGL.GLOrtho.GLOrtho">GLOrtho</a></li>
+<li><a title="albow.openGL.GLPerspective.GLPerspective" href="GLPerspective.html#albow.openGL.GLPerspective.GLPerspective">GLPerspective</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.openGL.GLViewport.GLViewport.augment_mouse_event"><code class="name flex">
+<span>def <span class="ident">augment_mouse_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is used to add the ray attribute to a mouse event before calling the corresponding handler.
+Usually it is called automatically, but you may want to call it yourself if you receive a mouse event by
+some means other than the usual channels. Note: This method calls the matrix setup methods, and changes
+the projection and modelview matrices as a side effect.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>event</code></strong></dt>
+<dd>The event to augment</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>a</code> <code>modified</code> <code>event</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def augment_mouse_event(self, event):
+    &#34;&#34;&#34;
+    This method is used to add the ray attribute to a mouse event before calling the corresponding handler.
+    Usually it is called automatically, but you may want to call it yourself if you receive a mouse event by
+    some means other than the usual channels. Note: This method calls the matrix setup methods, and changes
+    the projection and modelview matrices as a side effect.
+
+    Args:
+        event:  The event to augment
+
+    Returns:  a modified event
+
+    &#34;&#34;&#34;
+    Widget.augment_mouse_event(self, event)
+    w, h = self.size
+    viewport = (0, 0, w, h)
+    self.setup_matrices()
+    # gf = GL.glGetFloatv
+    gf = GL.glGetDoublev
+    pr_mat = gf(GL.GL_PROJECTION_MATRIX)
+    mv_mat = gf(GL.GL_MODELVIEW_MATRIX)
+    x, y = event.local
+    y = h - y
+    up = GLU.gluUnProject
+    p0 = up(x, y, 0.0, mv_mat, pr_mat, viewport)
+    p1 = up(x, y, 1.0, mv_mat, pr_mat, viewport)
+    event.dict[&#39;ray&#39;] = (p0, p1)</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.gl_draw"><code class="name flex">
+<span>def <span class="ident">gl_draw</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is called after the projection and model-view matrices have been set up. All OpenGL attributes
+are saved before calling this method and restored afterwards, so you can freely change OpenGL state here
+without affecting any other <a title="albow.openGL.GLViewport.GLViewport" href="#albow.openGL.GLViewport.GLViewport"><code>GLViewport</code></a>s.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_draw(self):
+    &#34;&#34;&#34;
+    This method is called after the projection and model-view matrices have been set up. All OpenGL attributes
+    are saved before calling this method and restored afterwards, so you can freely change OpenGL state here
+    without affecting any other `GLViewport`s.
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.gl_draw_self"><code class="name flex">
+<span>def <span class="ident">gl_draw_self</span></span>(<span>self, gl_surface)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<p>gl_surface:
+Returns:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_draw_self(self, gl_surface):
+    &#34;&#34;&#34;
+
+    Args:
+        gl_surface:
+
+    Returns:
+
+    &#34;&#34;&#34;
+    #
+    # GL_CLIENT_ALL_ATTRIB_BITS is borked: defined as -1 but
+    # glPushClientAttrib insists on an unsigned long.
+    #
+    GL.glPushClientAttrib(0xffffffff)
+    GL.glPushAttrib(GL.GL_ALL_ATTRIB_BITS)
+    # GL.glViewport(rect.left, root.height - rect.bottom, rect.width, rect.height)
+    self.gl_draw_viewport()
+    GL.glPopAttrib()
+    GL.glPopClientAttrib()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.gl_draw_viewport"><code class="name flex">
+<span>def <span class="ident">gl_draw_viewport</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is called after the viewport has been set up. It is responsible for establishing the
+projection and modelview matrices and performing the drawing. All OpenGL attributes are saved
+and restored around calls to this method. The default implementation calls <code>setup_matrices()</code> and <code>gl_draw()</code>.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_draw_viewport(self):
+    &#34;&#34;&#34;
+    This method is called after the viewport has been set up. It is responsible for establishing the
+    projection and modelview matrices and performing the drawing. All OpenGL attributes are saved
+    and restored around calls to this method. The default implementation calls `setup_matrices()` and `gl_draw()`.
+
+    &#34;&#34;&#34;
+    self.setup_matrices()
+    self.gl_draw()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.setup_matrices"><code class="name flex">
+<span>def <span class="ident">setup_matrices</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is called from the default implementation of <code>gl_draw_viewport()</code>. It is responsible for setting
+up the projection and modelview matrices. The default implementation calls <code>setup_projection()</code> and
+<code>setup_modelview()</code>.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def setup_matrices(self):
+    &#34;&#34;&#34;
+    This method is called from the default implementation of `gl_draw_viewport()`. It is responsible for setting
+    up the projection and modelview matrices. The default implementation calls `setup_projection()` and
+    `setup_modelview()`.
+
+    &#34;&#34;&#34;
+    rect = self.get_global_rect()
+    win_height = get_display().get_height()
+    GL.glViewport(rect.left, win_height - rect.bottom, rect.width, rect.height)
+    GL.glMatrixMode(GL.GL_PROJECTION)
+    GL.glLoadIdentity()
+    self.setup_projection()
+    GL.glMatrixMode(GL.GL_MODELVIEW)
+    GL.glLoadIdentity()
+    self.setup_modelview()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.setup_modelview"><code class="name flex">
+<span>def <span class="ident">setup_modelview</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is called during drawing and mouse event handling to establish the <em>modelview</em> matrix. When
+called, the <em>modelview</em> matrix is selected and has been initialized to an identity matrix.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def setup_modelview(self):
+    &#34;&#34;&#34;
+    This method is called during drawing and mouse event handling to establish the _modelview_ matrix. When
+    called, the _modelview_ matrix is selected and has been initialized to an identity matrix.
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLViewport.GLViewport.setup_projection"><code class="name flex">
+<span>def <span class="ident">setup_projection</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method is called during drawing and mouse event handling to establish the projection matrix. When
+called, the projection matrix is selected and has been initialized to an identity matrix.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def setup_projection(self):
+    &#34;&#34;&#34;
+    This method is called during drawing and mouse event handling to establish the projection matrix. When
+    called, the projection matrix is selected and has been initialized to an identity matrix.
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.core.Widget.Widget.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.openGL" href="index.html">albow.openGL</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.openGL.GLViewport.GLViewport" href="#albow.openGL.GLViewport.GLViewport">GLViewport</a></code></h4>
+<ul class="two-column">
+<li><code><a title="albow.openGL.GLViewport.GLViewport.augment_mouse_event" href="#albow.openGL.GLViewport.GLViewport.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.gl_draw" href="#albow.openGL.GLViewport.GLViewport.gl_draw">gl_draw</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.gl_draw_self" href="#albow.openGL.GLViewport.GLViewport.gl_draw_self">gl_draw_self</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.gl_draw_viewport" href="#albow.openGL.GLViewport.GLViewport.gl_draw_viewport">gl_draw_viewport</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.setup_matrices" href="#albow.openGL.GLViewport.GLViewport.setup_matrices">setup_matrices</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.setup_modelview" href="#albow.openGL.GLViewport.GLViewport.setup_modelview">setup_modelview</a></code></li>
+<li><code><a title="albow.openGL.GLViewport.GLViewport.setup_projection" href="#albow.openGL.GLViewport.GLViewport.setup_projection">setup_projection</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

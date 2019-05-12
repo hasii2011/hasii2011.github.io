@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.dialog.LookForFileDialog API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.dialog.LookForFileDialog</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import os
+
+from albow.dialog.FileOpenDialog import FileOpenDialog
+
+
+class LookForFileDialog(FileOpenDialog):
+
+    target = None
+
+    def __init__(self, target, **kwds):
+
+        super().__init__(**kwds)
+        self.target = target
+
+    def item_is_choosable(self, path):
+        return path and os.path.basename(path) == self.target
+
+    def filter(self, name):
+        return name and os.path.basename(name) == self.target</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.dialog.LookForFileDialog.LookForFileDialog"><code class="flex name class">
+<span>class <span class="ident">LookForFileDialog</span></span>
+<span>(</span><span>target, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The Dialog class provides a convenient container for implementing modal dialogs. Pressing Return or
+Enter dismisses the dialog with the value True, and pressing Escape dismisses it with the value False.</p>
+<p>See the <a title="albow.core.Widget" href="../core/Widget.html"><code>albow.core.Widget</code></a> <code>dismiss()</code> and <code>present()</code> methods</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>client</code></strong></dt>
+<dd>The widget the dialog is on top of</dd>
+<dt><strong><code>responses</code></strong></dt>
+<dd>A list of responses</dd>
+<dt><strong><code>default</code></strong></dt>
+<dd>The index to the default response; Default is the first</dd>
+<dt><strong><code>cancel</code></strong></dt>
+<dd>The index to the cancel response; Default is None</dd>
+</dl>
+<p>**kwds:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class LookForFileDialog(FileOpenDialog):
+
+    target = None
+
+    def __init__(self, target, **kwds):
+
+        super().__init__(**kwds)
+        self.target = target
+
+    def item_is_choosable(self, path):
+        return path and os.path.basename(path) == self.target
+
+    def filter(self, name):
+        return name and os.path.basename(name) == self.target</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.dialog.FileOpenDialog.FileOpenDialog" href="FileOpenDialog.html#albow.dialog.FileOpenDialog.FileOpenDialog">FileOpenDialog</a></li>
+<li><a title="albow.dialog.FileDialog.FileDialog" href="FileDialog.html#albow.dialog.FileDialog.FileDialog">FileDialog</a></li>
+<li><a title="albow.dialog.Dialog.Dialog" href="Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
+<li><a title="albow.dialog.Modal.Modal" href="Modal.html#albow.dialog.Modal.Modal">Modal</a></li>
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.dialog.LookForFileDialog.LookForFileDialog.target"><code class="name">var <span class="ident">target</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.dialog.LookForFileDialog.LookForFileDialog.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def filter(self, name):
+    return name and os.path.basename(name) == self.target</code></pre>
+</details>
+</dd>
+<dt id="albow.dialog.LookForFileDialog.LookForFileDialog.item_is_choosable"><code class="name flex">
+<span>def <span class="ident">item_is_choosable</span></span>(<span>self, path)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def item_is_choosable(self, path):
+    return path and os.path.basename(path) == self.target</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.dialog.FileOpenDialog.FileOpenDialog" href="FileOpenDialog.html#albow.dialog.FileOpenDialog.FileOpenDialog">FileOpenDialog</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.cancel_response" href="Modal.html#albow.dialog.Modal.Modal.cancel_response">cancel_response</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.click_outside_response" href="Dialog.html#albow.dialog.Dialog.Dialog.click_outside_response">click_outside_response</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.enter_response" href="Modal.html#albow.dialog.Modal.Modal.enter_response">enter_response</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.up_button_text" href="FileDialog.html#albow.dialog.FileDialog.FileDialog.up_button_text">up_button_text</a></code></li>
+<li><code><a title="albow.dialog.FileOpenDialog.FileOpenDialog.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.dialog" href="index.html">albow.dialog</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.dialog.LookForFileDialog.LookForFileDialog" href="#albow.dialog.LookForFileDialog.LookForFileDialog">LookForFileDialog</a></code></h4>
+<ul class="">
+<li><code><a title="albow.dialog.LookForFileDialog.LookForFileDialog.filter" href="#albow.dialog.LookForFileDialog.LookForFileDialog.filter">filter</a></code></li>
+<li><code><a title="albow.dialog.LookForFileDialog.LookForFileDialog.item_is_choosable" href="#albow.dialog.LookForFileDialog.LookForFileDialog.item_is_choosable">item_is_choosable</a></code></li>
+<li><code><a title="albow.dialog.LookForFileDialog.LookForFileDialog.target" href="#albow.dialog.LookForFileDialog.LookForFileDialog.target">target</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.media.MusicUtilities API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.media.MusicUtilities</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import os
+
+import logging
+
+from albow.core.Scheduler import Scheduler
+
+from albow.core.ResourceUtility import ResourceUtility
+
+from albow.media.PlayList import PlayList
+
+musicLogger = logging.getLogger(__name__)
+
+try:
+    from pygame.mixer import music
+except ImportError:
+    music = None
+    musicLogger.error(&#34;Music not available&#34;)
+
+
+music_enabled: bool = True
+current_music = None
+current_playlist: PlayList = None
+
+change_delay:       int = 2
+&#34;&#34;&#34;
+Time in seconds between stopping the previously playing music and starting the next piece of music.
+&#34;&#34;&#34;
+next_change_delay:  int = 0
+fadeout_time:       int = 1
+&#34;&#34;&#34;
+Time in seconds over which the currently playing music is faded out when stopping or changing to a different
+piece of music.
+&#34;&#34;&#34;
+
+
+class MusicUtilities:
+
+    @staticmethod
+    def jog_music():
+        &#34;&#34;&#34;
+        If no music is currently playing, start playing the next item
+        from the current playlist.
+        &#34;&#34;&#34;
+        if music_enabled and not music.get_busy():
+            MusicUtilities.start_next_music()
+
+    @staticmethod
+    def get_music_enabled():
+        &#34;&#34;&#34;
+
+        Returns:  Returns `True` if music is currently enabled, else `False`
+
+        &#34;&#34;&#34;
+        return music_enabled
+
+    @staticmethod
+    def set_music_enabled(state: bool):
+        &#34;&#34;&#34;
+        Enables or disables music.
+
+        .. Note::
+            To work around a bug in the pygame music system, disabling music will cause the currently playing
+            music to be started again from the beginning when music is re-enabled.
+
+        Args:
+            state:   The new state
+        &#34;&#34;&#34;
+        global music_enabled
+        if music_enabled != state:
+            music_enabled = state
+            if state:
+                if current_music:
+                    # After stopping and restarting currently loaded music,
+                    # fadeout no longer works.
+                    # print &#34;albow.music: reloading&#34;, repr(current_music) ###
+                    music.load(current_music)
+                    music.play()
+                else:
+                    MusicUtilities.jog_music()
+            else:
+                music.stop()
+
+    @staticmethod
+    def get_current_playlist() -&gt; PlayList:
+        return current_playlist
+
+    @staticmethod
+    def change_playlist(new_playlist: PlayList):
+        &#34;&#34;&#34;
+        Fade out any currently playing music and start playing from the given
+        playlist.
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;change_playlist&#34;)
+
+        global current_music, current_playlist, next_change_delay
+
+        if music and new_playlist is not current_playlist:
+            current_playlist = new_playlist
+            if music_enabled:
+                music.fadeout(fadeout_time * 1000)
+                next_change_delay = max(0, change_delay - fadeout_time)
+                MusicUtilities.jog_music()
+            else:
+                current_music = None
+
+    @staticmethod
+    def get_music(*names, **kwds) -&gt; str:
+        &#34;&#34;&#34;
+
+        Args:
+            *names:
+
+            **kwds: Keyword/Value pairs passed along
+
+        Returns:  The full pathname of a music file from the `music` resource subdirectory.
+        &#34;&#34;&#34;
+        prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+        return ResourceUtility.resource_path(prefix, *names)
+
+    @staticmethod
+    def start_next_music():
+        &#34;&#34;&#34;
+        Start playing the next item from the current playlist immediately.
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;start_next_music&#34;)
+        global current_music, next_change_delay
+        if music_enabled and current_playlist:
+            next_music = current_playlist.next()
+            if next_music:
+                musicLogger.info(&#34;albow.music: loading %s&#34;, repr(next_music))
+                music.load(next_music)
+                music.play()
+                next_change_delay = change_delay
+            current_music = next_music
+
+    @staticmethod
+    def get_playlist(*names, **kwds) -&gt; PlayList:
+        &#34;&#34;&#34;
+
+        Args:
+            *names:
+
+            **kwds: The _random_ and _repeat_ keyword/value pairs are passed on to the `PlayList` constructor.
+
+        Returns: Returns a `PlayList` constructed from a resource consisting of a directory of music files.
+        &#34;&#34;&#34;
+        prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+
+        directoryPath = MusicUtilities.get_music(*names, **{&#39;prefix&#39;: prefix})
+        items = [os.path.join(directoryPath, filename)
+
+                 for filename in os.listdir(directoryPath)
+                 if not filename.startswith(&#34;.&#34;)]
+
+        items.sort()
+
+        return PlayList(items, **kwds)
+
+    @staticmethod
+    def music_end():
+
+        musicLogger.info(&#34;music_end&#34;)
+        &#34;&#34;&#34;
+        .. Note::
+            `schedule_call()` or `schedule_event()` instead.
+        &#34;&#34;&#34;
+        Scheduler.schedule(next_change_delay, MusicUtilities.jog_music)
+
+    @staticmethod
+    def change_music(new_music, repeat=False):
+        &#34;&#34;&#34;
+        Fade out any currently playing music and start playing the given
+        music file
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;change_music&#34;)
+        if music and new_music is not current_music:
+            if new_music:
+                new_playlist = PlayList([new_music], repeat=repeat)
+            else:
+                new_playlist = None
+            MusicUtilities.change_playlist(new_playlist)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="albow.media.MusicUtilities.change_delay"><code class="name">var <span class="ident">change_delay</span></code></dt>
+<dd>
+<section class="desc"><p>Time in seconds between stopping the previously playing music and starting the next piece of music.</p></section>
+</dd>
+<dt id="albow.media.MusicUtilities.fadeout_time"><code class="name">var <span class="ident">fadeout_time</span></code></dt>
+<dd>
+<section class="desc"><p>Time in seconds over which the currently playing music is faded out when stopping or changing to a different
+piece of music.</p></section>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.media.MusicUtilities.MusicUtilities"><code class="flex name class">
+<span>class <span class="ident">MusicUtilities</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class MusicUtilities:
+
+    @staticmethod
+    def jog_music():
+        &#34;&#34;&#34;
+        If no music is currently playing, start playing the next item
+        from the current playlist.
+        &#34;&#34;&#34;
+        if music_enabled and not music.get_busy():
+            MusicUtilities.start_next_music()
+
+    @staticmethod
+    def get_music_enabled():
+        &#34;&#34;&#34;
+
+        Returns:  Returns `True` if music is currently enabled, else `False`
+
+        &#34;&#34;&#34;
+        return music_enabled
+
+    @staticmethod
+    def set_music_enabled(state: bool):
+        &#34;&#34;&#34;
+        Enables or disables music.
+
+        .. Note::
+            To work around a bug in the pygame music system, disabling music will cause the currently playing
+            music to be started again from the beginning when music is re-enabled.
+
+        Args:
+            state:   The new state
+        &#34;&#34;&#34;
+        global music_enabled
+        if music_enabled != state:
+            music_enabled = state
+            if state:
+                if current_music:
+                    # After stopping and restarting currently loaded music,
+                    # fadeout no longer works.
+                    # print &#34;albow.music: reloading&#34;, repr(current_music) ###
+                    music.load(current_music)
+                    music.play()
+                else:
+                    MusicUtilities.jog_music()
+            else:
+                music.stop()
+
+    @staticmethod
+    def get_current_playlist() -&gt; PlayList:
+        return current_playlist
+
+    @staticmethod
+    def change_playlist(new_playlist: PlayList):
+        &#34;&#34;&#34;
+        Fade out any currently playing music and start playing from the given
+        playlist.
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;change_playlist&#34;)
+
+        global current_music, current_playlist, next_change_delay
+
+        if music and new_playlist is not current_playlist:
+            current_playlist = new_playlist
+            if music_enabled:
+                music.fadeout(fadeout_time * 1000)
+                next_change_delay = max(0, change_delay - fadeout_time)
+                MusicUtilities.jog_music()
+            else:
+                current_music = None
+
+    @staticmethod
+    def get_music(*names, **kwds) -&gt; str:
+        &#34;&#34;&#34;
+
+        Args:
+            *names:
+
+            **kwds: Keyword/Value pairs passed along
+
+        Returns:  The full pathname of a music file from the `music` resource subdirectory.
+        &#34;&#34;&#34;
+        prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+        return ResourceUtility.resource_path(prefix, *names)
+
+    @staticmethod
+    def start_next_music():
+        &#34;&#34;&#34;
+        Start playing the next item from the current playlist immediately.
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;start_next_music&#34;)
+        global current_music, next_change_delay
+        if music_enabled and current_playlist:
+            next_music = current_playlist.next()
+            if next_music:
+                musicLogger.info(&#34;albow.music: loading %s&#34;, repr(next_music))
+                music.load(next_music)
+                music.play()
+                next_change_delay = change_delay
+            current_music = next_music
+
+    @staticmethod
+    def get_playlist(*names, **kwds) -&gt; PlayList:
+        &#34;&#34;&#34;
+
+        Args:
+            *names:
+
+            **kwds: The _random_ and _repeat_ keyword/value pairs are passed on to the `PlayList` constructor.
+
+        Returns: Returns a `PlayList` constructed from a resource consisting of a directory of music files.
+        &#34;&#34;&#34;
+        prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+
+        directoryPath = MusicUtilities.get_music(*names, **{&#39;prefix&#39;: prefix})
+        items = [os.path.join(directoryPath, filename)
+
+                 for filename in os.listdir(directoryPath)
+                 if not filename.startswith(&#34;.&#34;)]
+
+        items.sort()
+
+        return PlayList(items, **kwds)
+
+    @staticmethod
+    def music_end():
+
+        musicLogger.info(&#34;music_end&#34;)
+        &#34;&#34;&#34;
+        .. Note::
+            `schedule_call()` or `schedule_event()` instead.
+        &#34;&#34;&#34;
+        Scheduler.schedule(next_change_delay, MusicUtilities.jog_music)
+
+    @staticmethod
+    def change_music(new_music, repeat=False):
+        &#34;&#34;&#34;
+        Fade out any currently playing music and start playing the given
+        music file
+        &#34;&#34;&#34;
+
+        musicLogger.info(&#34;change_music&#34;)
+        if music and new_music is not current_music:
+            if new_music:
+                new_playlist = PlayList([new_music], repeat=repeat)
+            else:
+                new_playlist = None
+            MusicUtilities.change_playlist(new_playlist)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="albow.media.MusicUtilities.MusicUtilities.change_music"><code class="name flex">
+<span>def <span class="ident">change_music</span></span>(<span>new_music, repeat=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fade out any currently playing music and start playing the given
+music file</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def change_music(new_music, repeat=False):
+    &#34;&#34;&#34;
+    Fade out any currently playing music and start playing the given
+    music file
+    &#34;&#34;&#34;
+
+    musicLogger.info(&#34;change_music&#34;)
+    if music and new_music is not current_music:
+        if new_music:
+            new_playlist = PlayList([new_music], repeat=repeat)
+        else:
+            new_playlist = None
+        MusicUtilities.change_playlist(new_playlist)</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.change_playlist"><code class="name flex">
+<span>def <span class="ident">change_playlist</span></span>(<span>new_playlist)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fade out any currently playing music and start playing from the given
+playlist.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def change_playlist(new_playlist: PlayList):
+    &#34;&#34;&#34;
+    Fade out any currently playing music and start playing from the given
+    playlist.
+    &#34;&#34;&#34;
+
+    musicLogger.info(&#34;change_playlist&#34;)
+
+    global current_music, current_playlist, next_change_delay
+
+    if music and new_playlist is not current_playlist:
+        current_playlist = new_playlist
+        if music_enabled:
+            music.fadeout(fadeout_time * 1000)
+            next_change_delay = max(0, change_delay - fadeout_time)
+            MusicUtilities.jog_music()
+        else:
+            current_music = None</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.get_current_playlist"><code class="name flex">
+<span>def <span class="ident">get_current_playlist</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def get_current_playlist() -&gt; PlayList:
+    return current_playlist</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.get_music"><code class="name flex">
+<span>def <span class="ident">get_music</span></span>(<span>*names, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<p>*names:</p>
+<dl>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Keyword/Value pairs passed along</dd>
+</dl>
+<p>Returns:
+The full pathname of a music file from the <code>music</code> resource subdirectory.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def get_music(*names, **kwds) -&gt; str:
+    &#34;&#34;&#34;
+
+    Args:
+        *names:
+
+        **kwds: Keyword/Value pairs passed along
+
+    Returns:  The full pathname of a music file from the `music` resource subdirectory.
+    &#34;&#34;&#34;
+    prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+    return ResourceUtility.resource_path(prefix, *names)</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.get_music_enabled"><code class="name flex">
+<span>def <span class="ident">get_music_enabled</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>Returns</code> <code>True</code> <code>if</code> <code>music</code> <code>is</code> <code>currently</code> <code>enabled</code>, <code>else</code> <code>False</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def get_music_enabled():
+    &#34;&#34;&#34;
+
+    Returns:  Returns `True` if music is currently enabled, else `False`
+
+    &#34;&#34;&#34;
+    return music_enabled</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.get_playlist"><code class="name flex">
+<span>def <span class="ident">get_playlist</span></span>(<span>*names, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<p>*names:</p>
+<dl>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>The <em>random</em> and <em>repeat</em> keyword/value pairs are passed on to the <code>PlayList</code> constructor.</dd>
+</dl>
+<p>Returns: Returns a <code>PlayList</code> constructed from a resource consisting of a directory of music files.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def get_playlist(*names, **kwds) -&gt; PlayList:
+    &#34;&#34;&#34;
+
+    Args:
+        *names:
+
+        **kwds: The _random_ and _repeat_ keyword/value pairs are passed on to the `PlayList` constructor.
+
+    Returns: Returns a `PlayList` constructed from a resource consisting of a directory of music files.
+    &#34;&#34;&#34;
+    prefix = kwds.pop(&#39;prefix&#39;, &#34;music&#34;)
+
+    directoryPath = MusicUtilities.get_music(*names, **{&#39;prefix&#39;: prefix})
+    items = [os.path.join(directoryPath, filename)
+
+             for filename in os.listdir(directoryPath)
+             if not filename.startswith(&#34;.&#34;)]
+
+    items.sort()
+
+    return PlayList(items, **kwds)</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.jog_music"><code class="name flex">
+<span>def <span class="ident">jog_music</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>If no music is currently playing, start playing the next item
+from the current playlist.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def jog_music():
+    &#34;&#34;&#34;
+    If no music is currently playing, start playing the next item
+    from the current playlist.
+    &#34;&#34;&#34;
+    if music_enabled and not music.get_busy():
+        MusicUtilities.start_next_music()</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.music_end"><code class="name flex">
+<span>def <span class="ident">music_end</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def music_end():
+
+    musicLogger.info(&#34;music_end&#34;)
+    &#34;&#34;&#34;
+    .. Note::
+        `schedule_call()` or `schedule_event()` instead.
+    &#34;&#34;&#34;
+    Scheduler.schedule(next_change_delay, MusicUtilities.jog_music)</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.set_music_enabled"><code class="name flex">
+<span>def <span class="ident">set_music_enabled</span></span>(<span>state)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Enables or disables music.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To work around a bug in the pygame music system, disabling music will cause the currently playing
+music to be started again from the beginning when music is re-enabled.</p>
+</div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>state</code></strong></dt>
+<dd>The new state</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def set_music_enabled(state: bool):
+    &#34;&#34;&#34;
+    Enables or disables music.
+
+    .. Note::
+        To work around a bug in the pygame music system, disabling music will cause the currently playing
+        music to be started again from the beginning when music is re-enabled.
+
+    Args:
+        state:   The new state
+    &#34;&#34;&#34;
+    global music_enabled
+    if music_enabled != state:
+        music_enabled = state
+        if state:
+            if current_music:
+                # After stopping and restarting currently loaded music,
+                # fadeout no longer works.
+                # print &#34;albow.music: reloading&#34;, repr(current_music) ###
+                music.load(current_music)
+                music.play()
+            else:
+                MusicUtilities.jog_music()
+        else:
+            music.stop()</code></pre>
+</details>
+</dd>
+<dt id="albow.media.MusicUtilities.MusicUtilities.start_next_music"><code class="name flex">
+<span>def <span class="ident">start_next_music</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Start playing the next item from the current playlist immediately.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def start_next_music():
+    &#34;&#34;&#34;
+    Start playing the next item from the current playlist immediately.
+    &#34;&#34;&#34;
+
+    musicLogger.info(&#34;start_next_music&#34;)
+    global current_music, next_change_delay
+    if music_enabled and current_playlist:
+        next_music = current_playlist.next()
+        if next_music:
+            musicLogger.info(&#34;albow.music: loading %s&#34;, repr(next_music))
+            music.load(next_music)
+            music.play()
+            next_change_delay = change_delay
+        current_music = next_music</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.media" href="index.html">albow.media</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="albow.media.MusicUtilities.change_delay" href="#albow.media.MusicUtilities.change_delay">change_delay</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.fadeout_time" href="#albow.media.MusicUtilities.fadeout_time">fadeout_time</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.media.MusicUtilities.MusicUtilities" href="#albow.media.MusicUtilities.MusicUtilities">MusicUtilities</a></code></h4>
+<ul class="">
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.change_music" href="#albow.media.MusicUtilities.MusicUtilities.change_music">change_music</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.change_playlist" href="#albow.media.MusicUtilities.MusicUtilities.change_playlist">change_playlist</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.get_current_playlist" href="#albow.media.MusicUtilities.MusicUtilities.get_current_playlist">get_current_playlist</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.get_music" href="#albow.media.MusicUtilities.MusicUtilities.get_music">get_music</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.get_music_enabled" href="#albow.media.MusicUtilities.MusicUtilities.get_music_enabled">get_music_enabled</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.get_playlist" href="#albow.media.MusicUtilities.MusicUtilities.get_playlist">get_playlist</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.jog_music" href="#albow.media.MusicUtilities.MusicUtilities.jog_music">jog_music</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.music_end" href="#albow.media.MusicUtilities.MusicUtilities.music_end">music_end</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.set_music_enabled" href="#albow.media.MusicUtilities.MusicUtilities.set_music_enabled">set_music_enabled</a></code></li>
+<li><code><a title="albow.media.MusicUtilities.MusicUtilities.start_next_music" href="#albow.media.MusicUtilities.MusicUtilities.start_next_music">start_next_music</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

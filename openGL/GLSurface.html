@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.openGL.GLSurface API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.openGL.GLSurface</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from pygame import Rect
+from pygame import image
+
+from OpenGL import GL
+from OpenGL import GLU
+
+
+class GLSurface:
+
+    def __init__(self, display, rect):
+        self.display = display
+        self.rect = rect
+
+    def gl_set_viewport(self):
+        r = self.rect
+        w = r.width
+        h = r.height
+
+    def gl_enter(self):
+        r = self.rect
+        w = r.width
+        h = r.height
+        gl = GL
+        win_height = self.display.get_height()
+        gl.glViewport(r.left, win_height - r.bottom, r.width, r.height)
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glLoadIdentity()
+        GLU.gluOrtho2D(0, w, h, 0)
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glLoadIdentity()
+        gl.glPushAttrib(gl.GL_COLOR_BUFFER_BIT)
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        gl.glEnable(gl.GL_BLEND)
+        gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
+
+    def gl_exit(self):
+        GL.glPopAttrib()
+
+    def gl_clear(self, bg):
+        if bg:
+            r = bg[0] / 255.0
+            g = bg[1] / 255.0
+            b = bg[2] / 255.0
+            GL.glClearColor(r, g, b, 0.0)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT
+                   | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)
+
+    def gl_flush(self):
+        GL.glFlush()
+
+    def get_size(self):
+        return self.rect.size
+
+    def get_width(self):
+        return self.rect.width
+
+    def get_height(self):
+        return self.rect.height
+
+    def get_rect(self):
+        return Rect(self.rect)
+
+    def blit(self, src, dst=(0, 0), area=None, flags=0):
+        #
+        # TODO: flags
+        # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+        if isinstance(dst, Rect):
+            dst = dst.topleft
+        x, y = dst
+        if area is not None:
+            area = area.clip(src.get_rect())
+            src = src.subsurface(area)
+            x += area.left
+            y += area.top
+        w, h = src.get_size()
+        data = image.tostring(src, &#39;RGBA&#39;, 1)
+        #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+        gl = GL
+        gl.glRasterPos2i(x, y + h)
+        gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)
+
+    def fill(self, color, rect=None, flags=0):
+        # TODO: flags
+        if rect:
+            x, y, w, h = rect
+        else:
+            x = y = 0
+            w, h = self.rect.size
+        gl = GL
+        gl.glColor4ubv(color)
+        gl.glBegin(GL.GL_QUADS)
+        v = GL.glVertex2i
+        v(x, y)
+        v(x+w, y)
+        v(x+w, y+h)
+        v(x, y+h)
+        gl.glEnd()
+
+    def subsurface(self, rect):
+        r = self.rect
+        subrect = rect.move(r.left, r.top)
+        return GLSurface(self.display, r.clip(subrect))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.openGL.GLSurface.GLSurface"><code class="flex name class">
+<span>class <span class="ident">GLSurface</span></span>
+<span>(</span><span>display, rect)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class GLSurface:
+
+    def __init__(self, display, rect):
+        self.display = display
+        self.rect = rect
+
+    def gl_set_viewport(self):
+        r = self.rect
+        w = r.width
+        h = r.height
+
+    def gl_enter(self):
+        r = self.rect
+        w = r.width
+        h = r.height
+        gl = GL
+        win_height = self.display.get_height()
+        gl.glViewport(r.left, win_height - r.bottom, r.width, r.height)
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glLoadIdentity()
+        GLU.gluOrtho2D(0, w, h, 0)
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glLoadIdentity()
+        gl.glPushAttrib(gl.GL_COLOR_BUFFER_BIT)
+        gl.glDisable(gl.GL_DEPTH_TEST)
+        gl.glEnable(gl.GL_BLEND)
+        gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
+
+    def gl_exit(self):
+        GL.glPopAttrib()
+
+    def gl_clear(self, bg):
+        if bg:
+            r = bg[0] / 255.0
+            g = bg[1] / 255.0
+            b = bg[2] / 255.0
+            GL.glClearColor(r, g, b, 0.0)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT
+                   | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)
+
+    def gl_flush(self):
+        GL.glFlush()
+
+    def get_size(self):
+        return self.rect.size
+
+    def get_width(self):
+        return self.rect.width
+
+    def get_height(self):
+        return self.rect.height
+
+    def get_rect(self):
+        return Rect(self.rect)
+
+    def blit(self, src, dst=(0, 0), area=None, flags=0):
+        #
+        # TODO: flags
+        # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+        if isinstance(dst, Rect):
+            dst = dst.topleft
+        x, y = dst
+        if area is not None:
+            area = area.clip(src.get_rect())
+            src = src.subsurface(area)
+            x += area.left
+            y += area.top
+        w, h = src.get_size()
+        data = image.tostring(src, &#39;RGBA&#39;, 1)
+        #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+        gl = GL
+        gl.glRasterPos2i(x, y + h)
+        gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)
+
+    def fill(self, color, rect=None, flags=0):
+        # TODO: flags
+        if rect:
+            x, y, w, h = rect
+        else:
+            x = y = 0
+            w, h = self.rect.size
+        gl = GL
+        gl.glColor4ubv(color)
+        gl.glBegin(GL.GL_QUADS)
+        v = GL.glVertex2i
+        v(x, y)
+        v(x+w, y)
+        v(x+w, y+h)
+        v(x, y+h)
+        gl.glEnd()
+
+    def subsurface(self, rect):
+        r = self.rect
+        subrect = rect.move(r.left, r.top)
+        return GLSurface(self.display, r.clip(subrect))</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.openGL.GLSurface.GLSurface.blit"><code class="name flex">
+<span>def <span class="ident">blit</span></span>(<span>self, src, dst=(0, 0), area=None, flags=0)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def blit(self, src, dst=(0, 0), area=None, flags=0):
+    #
+    # TODO: flags
+    # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+    if isinstance(dst, Rect):
+        dst = dst.topleft
+    x, y = dst
+    if area is not None:
+        area = area.clip(src.get_rect())
+        src = src.subsurface(area)
+        x += area.left
+        y += area.top
+    w, h = src.get_size()
+    data = image.tostring(src, &#39;RGBA&#39;, 1)
+    #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+    gl = GL
+    gl.glRasterPos2i(x, y + h)
+    gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.fill"><code class="name flex">
+<span>def <span class="ident">fill</span></span>(<span>self, color, rect=None, flags=0)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def fill(self, color, rect=None, flags=0):
+    # TODO: flags
+    if rect:
+        x, y, w, h = rect
+    else:
+        x = y = 0
+        w, h = self.rect.size
+    gl = GL
+    gl.glColor4ubv(color)
+    gl.glBegin(GL.GL_QUADS)
+    v = GL.glVertex2i
+    v(x, y)
+    v(x+w, y)
+    v(x+w, y+h)
+    v(x, y+h)
+    gl.glEnd()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.get_height"><code class="name flex">
+<span>def <span class="ident">get_height</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_height(self):
+    return self.rect.height</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.get_rect"><code class="name flex">
+<span>def <span class="ident">get_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_rect(self):
+    return Rect(self.rect)</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.get_size"><code class="name flex">
+<span>def <span class="ident">get_size</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_size(self):
+    return self.rect.size</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.get_width"><code class="name flex">
+<span>def <span class="ident">get_width</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_width(self):
+    return self.rect.width</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.gl_clear"><code class="name flex">
+<span>def <span class="ident">gl_clear</span></span>(<span>self, bg)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_clear(self, bg):
+    if bg:
+        r = bg[0] / 255.0
+        g = bg[1] / 255.0
+        b = bg[2] / 255.0
+        GL.glClearColor(r, g, b, 0.0)
+    GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT
+               | GL.GL_ACCUM_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT)</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.gl_enter"><code class="name flex">
+<span>def <span class="ident">gl_enter</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_enter(self):
+    r = self.rect
+    w = r.width
+    h = r.height
+    gl = GL
+    win_height = self.display.get_height()
+    gl.glViewport(r.left, win_height - r.bottom, r.width, r.height)
+    gl.glMatrixMode(gl.GL_PROJECTION)
+    gl.glLoadIdentity()
+    GLU.gluOrtho2D(0, w, h, 0)
+    gl.glMatrixMode(gl.GL_MODELVIEW)
+    gl.glLoadIdentity()
+    gl.glPushAttrib(gl.GL_COLOR_BUFFER_BIT)
+    gl.glDisable(gl.GL_DEPTH_TEST)
+    gl.glEnable(gl.GL_BLEND)
+    gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.gl_exit"><code class="name flex">
+<span>def <span class="ident">gl_exit</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_exit(self):
+    GL.glPopAttrib()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.gl_flush"><code class="name flex">
+<span>def <span class="ident">gl_flush</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_flush(self):
+    GL.glFlush()</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.gl_set_viewport"><code class="name flex">
+<span>def <span class="ident">gl_set_viewport</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def gl_set_viewport(self):
+    r = self.rect
+    w = r.width
+    h = r.height</code></pre>
+</details>
+</dd>
+<dt id="albow.openGL.GLSurface.GLSurface.subsurface"><code class="name flex">
+<span>def <span class="ident">subsurface</span></span>(<span>self, rect)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def subsurface(self, rect):
+    r = self.rect
+    subrect = rect.move(r.left, r.top)
+    return GLSurface(self.display, r.clip(subrect))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.openGL" href="index.html">albow.openGL</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.openGL.GLSurface.GLSurface" href="#albow.openGL.GLSurface.GLSurface">GLSurface</a></code></h4>
+<ul class="two-column">
+<li><code><a title="albow.openGL.GLSurface.GLSurface.blit" href="#albow.openGL.GLSurface.GLSurface.blit">blit</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.fill" href="#albow.openGL.GLSurface.GLSurface.fill">fill</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.get_height" href="#albow.openGL.GLSurface.GLSurface.get_height">get_height</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.get_rect" href="#albow.openGL.GLSurface.GLSurface.get_rect">get_rect</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.get_size" href="#albow.openGL.GLSurface.GLSurface.get_size">get_size</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.get_width" href="#albow.openGL.GLSurface.GLSurface.get_width">get_width</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_clear" href="#albow.openGL.GLSurface.GLSurface.gl_clear">gl_clear</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_enter" href="#albow.openGL.GLSurface.GLSurface.gl_enter">gl_enter</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_exit" href="#albow.openGL.GLSurface.GLSurface.gl_exit">gl_exit</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_flush" href="#albow.openGL.GLSurface.GLSurface.gl_flush">gl_flush</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_set_viewport" href="#albow.openGL.GLSurface.GLSurface.gl_set_viewport">gl_set_viewport</a></code></li>
+<li><code><a title="albow.openGL.GLSurface.GLSurface.subsurface" href="#albow.openGL.GLSurface.GLSurface.subsurface">subsurface</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

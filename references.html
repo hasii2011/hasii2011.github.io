@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow.References API documentation</title>
+<meta name="description" content="Class `Ref` is the basis of a system for dynamically linking `albow.widgets.Control` classes with values to be
+displayed and
+edited. An instance of …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.References</code></h1>
+</header>
+<section id="section-intro">
+<p>Class <a title="albow.References.Ref" href="#albow.References.Ref"><code>Ref</code></a> is the basis of a system for dynamically linking <a title="albow.widgets.Control" href="widgets/Control.html"><code>albow.widgets.Control</code></a> classes with values to be
+displayed and
+edited. An instance of Ref is used as a starting point for constructing reference objects. There are a number of
+different kinds of reference objects, depending on whether the underlying value is accessed through an</p>
+<ul>
+<li>attribute,</li>
+<li>item index or</li>
+<li>method call</li>
+</ul>
+<p>All of these reference objects present a common interface, consisting of <code>get()</code> and
+<code>set()</code> methods, that the <a title="albow.widgets.Control" href="widgets/Control.html"><code>albow.widgets.Control</code></a> uses to access the value whenever it needs to display or update it.</p>
+<p>The simplest way of using Ref is illustrated by the following example.</p>
+<p><strong>Example 1</strong></p>
+<hr>
+<pre><code class="python">testVehicle = TestVehicle()
+
+velocityRef = AttrRef(base=testVehicle, name=&quot;velocity&quot;)
+self.logger.info(&quot;Created a velocity reference: %s&quot;, velocityRef)
+
+velocityControl = DummyControl(ref=velocityRef)
+self.logger.info(&quot;Created velocity control %s&quot;, velocityControl)
+#
+# Change the data model
+#
+testVehicle.velocity = 100
+
+self.assertTrue(velocityControl.get_value() == testVehicle.velocity, &quot;Reference did not update control&quot;)
+#
+# Change the control
+#
+velocityControl.set_value(500)
+self.assertTrue(velocityControl.get_value() == testVehicle.velocity, &quot;Control did not update reference&quot;)
+
+</code></pre>
+<p>Here, the expression <em>AttrRef(base=testVehicle, _name="velocity")</em> creates a reference source object from which
+reference objects can be derived.</p>
+<p>Accessing the velocity attribute of this object creates an attribute reference object that refers to
+the velocity attribute of the vehicle. This attribute reference object is then attached to a
+<code>DummyControl</code>. The result is that the <code>DummyControl</code> will always display the current value of the
+vehicle's velocity attribute.</p>
+<p>Additionally, if the user enters a new value into the field, the vehicle's velocity attribute is updated.</p>
+<p>As well as attribute access, indexing and calling can also be performed on a reference source:</p>
+<p><strong>Example 2</strong></p>
+<hr>
+<p><em>itemRef[TEST_ITEM_INDEX]</em> produces an item reference object that accesses an item of a sequence or mapping.</p>
+<pre><code class="python">    vehicleList = self.getVehicleList()
+
+    itemRef = ItemRef(base=vehicleList, index=TEST_ITEM_INDEX)
+    self.logger.info(&quot;Created: %s&quot;, itemRef)
+
+    testItem = itemRef[TEST_ITEM_INDEX]
+    self.logger.info(&quot;Retrieved: %s&quot;, testItem)
+    self.assertEqual(first=vehicleList[TEST_ITEM_INDEX],
+                     second=testItem,
+                     msg=&quot;Did not retrieve the correct item.&quot;)
+
+</code></pre>
+<p><strong>Example 3</strong></p>
+<hr>
+<p><em>ref_source(args)</em> produces a call reference object that performs a call when its get() method is called. This kind
+of reference object is read-only.
+However, it can be used as a source of further reference objects that are
+<em>read-write</em>.</p>
+<pre><code class="python">    # More code to follow
+</code></pre>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Class `Ref` is the basis of a system for dynamically linking `albow.widgets.Control` classes with values to be
+displayed and
+edited. An instance of Ref is used as a starting point for constructing reference objects. There are a number of
+different kinds of reference objects, depending on whether the underlying value is accessed through an
+
+- attribute,
+- item index or
+- method call
+
+All of these reference objects present a common interface, consisting of `get()` and
+`set()` methods, that the `albow.widgets.Control` uses to access the value whenever it needs to display or update it.
+
+The simplest way of using Ref is illustrated by the following example.
+
+**Example 1**
+
+------
+
+```python
+testVehicle = TestVehicle()
+
+velocityRef = AttrRef(base=testVehicle, name=&#34;velocity&#34;)
+self.logger.info(&#34;Created a velocity reference: %s&#34;, velocityRef)
+
+velocityControl = DummyControl(ref=velocityRef)
+self.logger.info(&#34;Created velocity control %s&#34;, velocityControl)
+#
+# Change the data model
+#
+testVehicle.velocity = 100
+
+self.assertTrue(velocityControl.get_value() == testVehicle.velocity, &#34;Reference did not update control&#34;)
+#
+# Change the control
+#
+velocityControl.set_value(500)
+self.assertTrue(velocityControl.get_value() == testVehicle.velocity, &#34;Control did not update reference&#34;)
+
+```
+
+
+Here, the expression _AttrRef(base=testVehicle, _name=&#34;velocity&#34;)_ creates a reference source object from which
+reference objects can be derived.
+
+Accessing the velocity attribute of this object creates an attribute reference object that refers to
+the velocity attribute of the vehicle. This attribute reference object is then attached to a
+`DummyControl`. The result is that the `DummyControl` will always display the current value of the
+vehicle&#39;s velocity attribute.
+
+Additionally, if the user enters a new value into the field, the vehicle&#39;s velocity attribute is updated.
+
+As well as attribute access, indexing and calling can also be performed on a reference source:
+
+**Example 2**
+
+------
+
+
+_itemRef[TEST_ITEM_INDEX]_ produces an item reference object that accesses an item of a sequence or mapping.
+
+```python
+    vehicleList = self.getVehicleList()
+
+    itemRef = ItemRef(base=vehicleList, index=TEST_ITEM_INDEX)
+    self.logger.info(&#34;Created: %s&#34;, itemRef)
+
+    testItem = itemRef[TEST_ITEM_INDEX]
+    self.logger.info(&#34;Retrieved: %s&#34;, testItem)
+    self.assertEqual(first=vehicleList[TEST_ITEM_INDEX],
+                     second=testItem,
+                     msg=&#34;Did not retrieve the correct item.&#34;)
+
+```
+
+**Example 3**
+
+------
+
+_ref_source(args)_ produces a call reference object that performs a call when its get() method is called. This kind
+of reference object is read-only.  However, it can be used as a source of further reference objects that are
+_read-write_.
+
+
+```python
+    # More code to follow
+```
+
+&#34;&#34;&#34;
+
+from albow.ItemRefInsertionException import ItemRefInsertionException
+
+
+class Ref:
+
+    def __init__(self, base):
+        &#34;&#34;&#34;
+         Creates a reference source object based on the given object. Reference objects can be derived from
+         this reference source using the operations listed below.
+
+        Args:
+            base:  Derive from?
+        &#34;&#34;&#34;
+        self.base = base
+
+    def __getattr__(self, name):
+        return AttrRef(self, name)
+
+    def __getitem__(self, index):
+        return self.base[index]
+        # return ItemRef(self, index)
+
+    def __call__(self, *args, **kwds):
+        return CallRef(self, args, kwds)
+
+    def __pos__(self):
+        return RefCaller(self)
+
+    def __repr__(self):
+        return &#34;Ref(%r)&#34; % self.base
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base
+
+
+class AttrRef(Ref):
+
+    def __init__(self, base, name):
+
+        super().__init__(base)
+        self.name = name
+
+    def __repr__(self):
+        return &#34;AttrRef(%r, %r)&#34; % (self.base, self.name)
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        # Python 3 update
+        # return getattr(self.base.get(), self.name)
+        val = getattr(self.base, self.name)
+        return val
+
+    def set(self, value):
+        # Python 3 update
+        # setattr(self.base.get(), self.name, value)
+        setattr(self.base, self.name, value)
+
+
+class ItemRef(Ref):
+
+    def __init__(self, base, index):
+
+        super().__init__(base)
+        self.index = index
+
+    def __repr__(self):
+        return f&#34;ItemRef({self.index}, {self.base})&#34;
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base[self.index]
+
+    def set(self, value):
+        if isinstance(value, self.__class__):
+            self.base[self.index] = value
+            print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
+        else:
+            ex: ItemRefInsertionException = ItemRefInsertionException(
+                theIndex=self.index,
+                theMessage=&#34;Type of insertion object does not match&#34;)
+            raise ex
+
+
+class CallRef(Ref):
+    &#34;&#34;&#34;
+    TODO:  This is broken figure out how to fix it
+    &#34;&#34;&#34;
+    def __init__(self, base, args, kwds):
+
+        super().__init__(base)
+        self.args = args
+        self.kwds = kwds
+
+    def __repr__(self):
+        return &#34;CallRef(%r)&#34; % self.base
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base.get()(*self.args, **self.kwds)
+
+
+class RefCaller:
+
+    def __init__(self, base):
+        self.base = base
+
+    def __call__(self, *args, **kwds):
+        return self.base.get()(*args, **kwds)
+
+    def __repr__(self):
+        return &#34;+%s&#34; % repr(self.base)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.References.AttrRef"><code class="flex name class">
+<span>class <span class="ident">AttrRef</span></span>
+<span>(</span><span>base, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a reference source object based on the given object. Reference objects can be derived from
+this reference source using the operations listed below.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>base</code></strong></dt>
+<dd>Derive from?</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class AttrRef(Ref):
+
+    def __init__(self, base, name):
+
+        super().__init__(base)
+        self.name = name
+
+    def __repr__(self):
+        return &#34;AttrRef(%r, %r)&#34; % (self.base, self.name)
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        # Python 3 update
+        # return getattr(self.base.get(), self.name)
+        val = getattr(self.base, self.name)
+        return val
+
+    def set(self, value):
+        # Python 3 update
+        # setattr(self.base.get(), self.name, value)
+        setattr(self.base, self.name, value)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.References.Ref" href="#albow.References.Ref">Ref</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.References.AttrRef.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    print(&#34;%r.get()&#34; % self)
+    # Python 3 update
+    # return getattr(self.base.get(), self.name)
+    val = getattr(self.base, self.name)
+    return val</code></pre>
+</details>
+</dd>
+<dt id="albow.References.AttrRef.set"><code class="name flex">
+<span>def <span class="ident">set</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set(self, value):
+    # Python 3 update
+    # setattr(self.base.get(), self.name, value)
+    setattr(self.base, self.name, value)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="albow.References.CallRef"><code class="flex name class">
+<span>class <span class="ident">CallRef</span></span>
+<span>(</span><span>base, args, kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>TODO</code></strong> :&ensp; <code>This</code> <code>is</code> <code>broken</code> <code>figure</code> <code>out</code> <code>how</code> <code>to</code> <code>fix</code> <code>it</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>Creates a reference source object based on the given object. Reference objects can be derived from
+this reference source using the operations listed below.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>base</code></strong></dt>
+<dd>Derive from?</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class CallRef(Ref):
+    &#34;&#34;&#34;
+    TODO:  This is broken figure out how to fix it
+    &#34;&#34;&#34;
+    def __init__(self, base, args, kwds):
+
+        super().__init__(base)
+        self.args = args
+        self.kwds = kwds
+
+    def __repr__(self):
+        return &#34;CallRef(%r)&#34; % self.base
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base.get()(*self.args, **self.kwds)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.References.Ref" href="#albow.References.Ref">Ref</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.References.CallRef.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    print(&#34;%r.get()&#34; % self)
+    return self.base.get()(*self.args, **self.kwds)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="albow.References.ItemRef"><code class="flex name class">
+<span>class <span class="ident">ItemRef</span></span>
+<span>(</span><span>base, index)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a reference source object based on the given object. Reference objects can be derived from
+this reference source using the operations listed below.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>base</code></strong></dt>
+<dd>Derive from?</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ItemRef(Ref):
+
+    def __init__(self, base, index):
+
+        super().__init__(base)
+        self.index = index
+
+    def __repr__(self):
+        return f&#34;ItemRef({self.index}, {self.base})&#34;
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base[self.index]
+
+    def set(self, value):
+        if isinstance(value, self.__class__):
+            self.base[self.index] = value
+            print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
+        else:
+            ex: ItemRefInsertionException = ItemRefInsertionException(
+                theIndex=self.index,
+                theMessage=&#34;Type of insertion object does not match&#34;)
+            raise ex</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.References.Ref" href="#albow.References.Ref">Ref</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.References.ItemRef.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    print(&#34;%r.get()&#34; % self)
+    return self.base[self.index]</code></pre>
+</details>
+</dd>
+<dt id="albow.References.ItemRef.set"><code class="name flex">
+<span>def <span class="ident">set</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set(self, value):
+    if isinstance(value, self.__class__):
+        self.base[self.index] = value
+        print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
+    else:
+        ex: ItemRefInsertionException = ItemRefInsertionException(
+            theIndex=self.index,
+            theMessage=&#34;Type of insertion object does not match&#34;)
+        raise ex</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="albow.References.Ref"><code class="flex name class">
+<span>class <span class="ident">Ref</span></span>
+<span>(</span><span>base)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a reference source object based on the given object. Reference objects can be derived from
+this reference source using the operations listed below.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>base</code></strong></dt>
+<dd>Derive from?</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Ref:
+
+    def __init__(self, base):
+        &#34;&#34;&#34;
+         Creates a reference source object based on the given object. Reference objects can be derived from
+         this reference source using the operations listed below.
+
+        Args:
+            base:  Derive from?
+        &#34;&#34;&#34;
+        self.base = base
+
+    def __getattr__(self, name):
+        return AttrRef(self, name)
+
+    def __getitem__(self, index):
+        return self.base[index]
+        # return ItemRef(self, index)
+
+    def __call__(self, *args, **kwds):
+        return CallRef(self, args, kwds)
+
+    def __pos__(self):
+        return RefCaller(self)
+
+    def __repr__(self):
+        return &#34;Ref(%r)&#34; % self.base
+
+    def get(self):
+        print(&#34;%r.get()&#34; % self)
+        return self.base</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.References.AttrRef" href="#albow.References.AttrRef">AttrRef</a></li>
+<li><a title="albow.References.ItemRef" href="#albow.References.ItemRef">ItemRef</a></li>
+<li><a title="albow.References.CallRef" href="#albow.References.CallRef">CallRef</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.References.Ref.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    print(&#34;%r.get()&#34; % self)
+    return self.base</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="albow.References.RefCaller"><code class="flex name class">
+<span>class <span class="ident">RefCaller</span></span>
+<span>(</span><span>base)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class RefCaller:
+
+    def __init__(self, base):
+        self.base = base
+
+    def __call__(self, *args, **kwds):
+        return self.base.get()(*args, **kwds)
+
+    def __repr__(self):
+        return &#34;+%s&#34; % repr(self.base)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow" href="index.html">albow</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.References.AttrRef" href="#albow.References.AttrRef">AttrRef</a></code></h4>
+<ul class="">
+<li><code><a title="albow.References.AttrRef.get" href="#albow.References.AttrRef.get">get</a></code></li>
+<li><code><a title="albow.References.AttrRef.set" href="#albow.References.AttrRef.set">set</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="albow.References.CallRef" href="#albow.References.CallRef">CallRef</a></code></h4>
+<ul class="">
+<li><code><a title="albow.References.CallRef.get" href="#albow.References.CallRef.get">get</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="albow.References.ItemRef" href="#albow.References.ItemRef">ItemRef</a></code></h4>
+<ul class="">
+<li><code><a title="albow.References.ItemRef.get" href="#albow.References.ItemRef.get">get</a></code></li>
+<li><code><a title="albow.References.ItemRef.set" href="#albow.References.ItemRef.set">set</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="albow.References.Ref" href="#albow.References.Ref">Ref</a></code></h4>
+<ul class="">
+<li><code><a title="albow.References.Ref.get" href="#albow.References.Ref.get">get</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="albow.References.RefCaller" href="#albow.References.RefCaller">RefCaller</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
