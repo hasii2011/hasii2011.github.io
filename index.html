@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.0" />
+<title>albow API documentation</title>
+<meta name="description" content="ALBOW - A Little Bit of Widgetry for PyGame
+by Gregory Ewing
+greg.ewing@canterbury.ac.nz …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow</code></h1>
+</header>
+<section id="section-intro">
+<p>ALBOW - A Little Bit of Widgetry for PyGame
+by Gregory Ewing
+greg.ewing@canterbury.ac.nz</p>
+<p>Ported to Python 3 and extended by <a href="https://www.linkedin.com/in/hasii/">Humberto A. Sanchez II</a></p>
+<h2 id="usage">Usage</h2>
+<p>Typical usage of the widget system is as follows:</p>
+<ol>
+<li>Initialize the PyGame display surface.</li>
+<li>Create an instance of RootWidget or subclass thereof (such as Shell), passing it the display surface.</li>
+<li>Create additional widgets if needed and add them as subwidgets of the root widget. If using Shell, create
+the screens you will be using and display your main screen.</li>
+<li>Start the frame timer if you will be using it (see RootWidget.set_timer()).</li>
+<li>Call the run() method of the root widget.</li>
+</ol>
+<h2 id="constructors">Constructors</h2>
+<p>There is a convention used by the constructors of Widget and its subclasses. As well as the arguments
+listed in the documentation for the class's constructor, you can also pass initial values for any
+other attributes of the class as keyword arguments.</p>
+<p>You can do this for attributes of your own Widget subclasses as well, if you pass on any extra
+keyword arguments to the base class <strong>init</strong> method. The only requirement is that the attribute
+already exist as an instance or class attribute, or as a property. This ensures that mistaken
+keyword arguments are diagnosed rather than silently creating a new attribute.</p>
+<h2 id="events">Events</h2>
+<p>In addition to the usual PyGame event attributes, some events have extra attributes: :smile:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Event type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time</td>
+<td>All events</td>
+<td>Time of occurrence of the event, in milliseconds since pygame.init() was called.</td>
+</tr>
+<tr>
+<td>POS</td>
+<td>Mouse events</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>local</td>
+<td>Mouse events</td>
+<td>Position of the mouse in the local coordinate system of the widget to which it is delivered.</td>
+</tr>
+<tr>
+<td>ray</td>
+<td>OpenGL mouse events</td>
+<td>A pair of points representing the projection of the mouse position onto the near and far clipping planes</td>
+</tr>
+</tbody>
+</table>
+<p>Mouse events are classified into mouse_down, mouse_drag, mouse_up and mouse_move, and are delivered by
+calling the corresponding method of the relevant widget. Mouse-down events are delivered to the widget in
+which the event occurs. Mouse-drag and mouse-up events are delivered to the widget that received the last
+mouse-down event. Mouse-move events (with no mouse button pressed) are delivered to the widget in which
+they occur.</p>
+<p>Keyboard events are delivered by calling the key_down or key_up methods of the widget having the current
+keyboard focus. A widget is given the keyboard focus by calling its focus() method. If the focus widget
+does not handle a key event, it is passed up the widget hierarchy until a handler is found.</p>
+<p>Both mouse and keyboard events have a set of boolean attributes indicating the state of the modifier keys
+at the time of the event.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shift</td>
+<td>True if one of the Shift keys is down.</td>
+</tr>
+<tr>
+<td>ctrl</td>
+<td>True if the Control key is down.</td>
+</tr>
+<tr>
+<td>alt</td>
+<td>True if the Alt key (Option key on Macintosh) is down.</td>
+</tr>
+<tr>
+<td>meta</td>
+<td>True if the Meta key (Command key on Macintosh, Windows key on PC keyboards) is down.</td>
+</tr>
+<tr>
+<td>cmd</td>
+<td>True if either the Control or Meta key is down. This can be used to implement command keys that work according to either Macintosh or Linux/Windows conventions.</td>
+</tr>
+</tbody>
+</table>
+<p>Albow also provides timer events that are delivered to the root widget by calling its timer_event() method.
+If you use the Shell and Screen classes, timer events are dispatched to the currently active Screen. The
+timer_event() method returns a boolean indicating whether to update the display.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+    ALBOW - A Little Bit of Widgetry for PyGame
+    by Gregory Ewing
+    greg.ewing@canterbury.ac.nz
+
+    Ported to Python 3 and extended by [Humberto A. Sanchez II](https://www.linkedin.com/in/hasii/)
+
+
+    Usage
+    -----
+
+    Typical usage of the widget system is as follows:
+
+    1. Initialize the PyGame display surface.
+    2. Create an instance of RootWidget or subclass thereof (such as Shell), passing it the display surface.
+    3. Create additional widgets if needed and add them as subwidgets of the root widget. If using Shell, create
+    the screens you will be using and display your main screen.
+    4. Start the frame timer if you will be using it (see RootWidget.set_timer()).
+    5. Call the run() method of the root widget.
+
+
+    Constructors
+    ------------
+
+    There is a convention used by the constructors of Widget and its subclasses. As well as the arguments
+    listed in the documentation for the class&#39;s constructor, you can also pass initial values for any
+    other attributes of the class as keyword arguments.
+
+    You can do this for attributes of your own Widget subclasses as well, if you pass on any extra
+    keyword arguments to the base class __init__ method. The only requirement is that the attribute
+    already exist as an instance or class attribute, or as a property. This ensures that mistaken
+    keyword arguments are diagnosed rather than silently creating a new attribute.
+
+    Events
+    ------
+
+    In addition to the usual PyGame event attributes, some events have extra attributes: :smile:
+
+    | Attribute  | Event type          | Description                                                                                              |
+    |------------|---------------------|----------------------------------------------------------------------------------------------------------|
+    | time       | All events          | Time of occurrence of the event, in milliseconds since pygame.init() was called.                         |
+    | POS        | Mouse events        | TBD                                                                                                      |
+    | local      | Mouse events        | Position of the mouse in the local coordinate system of the widget to which it is delivered.             |
+    | ray        | OpenGL mouse events | A pair of points representing the projection of the mouse position onto the near and far clipping planes |
+
+
+    Mouse events are classified into mouse_down, mouse_drag, mouse_up and mouse_move, and are delivered by
+    calling the corresponding method of the relevant widget. Mouse-down events are delivered to the widget in
+    which the event occurs. Mouse-drag and mouse-up events are delivered to the widget that received the last
+    mouse-down event. Mouse-move events (with no mouse button pressed) are delivered to the widget in which
+    they occur.
+
+    Keyboard events are delivered by calling the key_down or key_up methods of the widget having the current
+    keyboard focus. A widget is given the keyboard focus by calling its focus() method. If the focus widget
+    does not handle a key event, it is passed up the widget hierarchy until a handler is found.
+
+    Both mouse and keyboard events have a set of boolean attributes indicating the state of the modifier keys
+    at the time of the event.
+
+    | Attribute| State                                                     |
+    | -------- | ------------------------------------------------------------ |
+    | shift | True if one of the Shift keys is down.                       |
+    | ctrl  | True if the Control key is down.                             |
+    | alt   | True if the Alt key (Option key on Macintosh) is down.       |
+    | meta  | True if the Meta key (Command key on Macintosh, Windows key on PC keyboards) is down. |
+    | cmd   | True if either the Control or Meta key is down. This can be used to implement command keys that work according to either Macintosh or Linux/Windows conventions. |
+
+
+    Albow also provides timer events that are delivered to the root widget by calling its timer_event() method.
+    If you use the Shell and Screen classes, timer events are dispatched to the currently active Screen. The
+    timer_event() method returns a boolean indicating whether to update the display.
+
+&#34;&#34;&#34;
+
+from albow.version import version</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="albow.ItemRefInsertionException" href="ItemRefInsertionException.html">albow.ItemRefInsertionException</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.References" href="References.html">albow.References</a></code></dt>
+<dd>
+<section class="desc"><p>Class <code>Ref</code> is the basis of a system for dynamically linking <a title="albow.widgets.Control" href="widgets/Control.html"><code>albow.widgets.Control</code></a> classes with values to be
+displayed and
+edited. An instance of …</p></section>
+</dd>
+<dt><code class="name"><a title="albow.choices" href="choices/index.html">albow.choices</a></code></dt>
+<dd>
+<section class="desc"><p>this package contains the 'choice" widgets</p></section>
+</dd>
+<dt><code class="name"><a title="albow.containers" href="containers/index.html">albow.containers</a></code></dt>
+<dd>
+<section class="desc"><p>"
+This package contains the Albow containers</p></section>
+</dd>
+<dt><code class="name"><a title="albow.core" href="core/index.html">albow.core</a></code></dt>
+<dd>
+<section class="desc"><p>This package contains the core Albow classes</p></section>
+</dd>
+<dt><code class="name"><a title="albow.demo" href="demo/index.html">albow.demo</a></code></dt>
+<dd>
+<section class="desc"><p>"
+This package contains the demonstration programs and the supporting classes</p></section>
+</dd>
+<dt><code class="name"><a title="albow.dialog" href="dialog/index.html">albow.dialog</a></code></dt>
+<dd>
+<section class="desc"><p>This package contains the base dialog classes as well as the 'File' dialogs</p></section>
+</dd>
+<dt><code class="name"><a title="albow.input" href="input/index.html">albow.input</a></code></dt>
+<dd>
+<section class="desc"><p>"
+This package contains the basic text input widgets.
+It supports integer and float input</p></section>
+</dd>
+<dt><code class="name"><a title="albow.layout" href="layout/index.html">albow.layout</a></code></dt>
+<dd>
+<section class="desc"><p>"
+this package contains the main and support classes for the layout widgets</p></section>
+</dd>
+<dt><code class="name"><a title="albow.legacyReferences" href="legacyReferences.html">albow.legacyReferences</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.media" href="media/index.html">albow.media</a></code></dt>
+<dd>
+<section class="desc"><p>The media module provides some facilities for handling music. Individual pieces of music can be …</p></section>
+</dd>
+<dt><code class="name"><a title="albow.menu" href="menu/index.html">albow.menu</a></code></dt>
+<dd>
+<section class="desc"><p>This package contains the main and support classes for the Menu widgets</p></section>
+</dd>
+<dt><code class="name"><a title="albow.openGL" href="openGL/index.html">albow.openGL</a></code></dt>
+<dd>
+<section class="desc"><p>Albow can be used in an OpenGL environment. To do this, create an OpenGL display surface
+(using pygame.display.set_mode() with OPENGL in the flags) …</p></section>
+</dd>
+<dt><code class="name"><a title="albow.profiling" href="profiling.html">albow.profiling</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.table" href="table/index.html">albow.table</a></code></dt>
+<dd>
+<section class="desc"><p>This package contains the classes to support and implement the Table widget</p></section>
+</dd>
+<dt><code class="name"><a title="albow.text" href="text/index.html">albow.text</a></code></dt>
+<dd>
+<section class="desc"><p>"
+This package supports the display of text</p></section>
+</dd>
+<dt><code class="name"><a title="albow.themes" href="themes/index.html">albow.themes</a></code></dt>
+<dd>
+<section class="desc"><p>Themes provide a centralized way of customising the appearance of Albow widgets on a per-class basis. There
+are three parts to the theme system: …</p></section>
+</dd>
+<dt><code class="name"><a title="albow.utils" href="utils.html">albow.utils</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.vectors" href="vectors.html">albow.vectors</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.version" href="version.html">albow.version</a></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt><code class="name"><a title="albow.widgets" href="widgets/index.html">albow.widgets</a></code></dt>
+<dd>
+<section class="desc"><p>This package contains the basic Albow widgets</p></section>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#constructors">Constructors</a></li>
+<li><a href="#events">Events</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="albow.ItemRefInsertionException" href="ItemRefInsertionException.html">albow.ItemRefInsertionException</a></code></li>
+<li><code><a title="albow.References" href="References.html">albow.References</a></code></li>
+<li><code><a title="albow.choices" href="choices/index.html">albow.choices</a></code></li>
+<li><code><a title="albow.containers" href="containers/index.html">albow.containers</a></code></li>
+<li><code><a title="albow.core" href="core/index.html">albow.core</a></code></li>
+<li><code><a title="albow.demo" href="demo/index.html">albow.demo</a></code></li>
+<li><code><a title="albow.dialog" href="dialog/index.html">albow.dialog</a></code></li>
+<li><code><a title="albow.input" href="input/index.html">albow.input</a></code></li>
+<li><code><a title="albow.layout" href="layout/index.html">albow.layout</a></code></li>
+<li><code><a title="albow.legacyReferences" href="legacyReferences.html">albow.legacyReferences</a></code></li>
+<li><code><a title="albow.media" href="media/index.html">albow.media</a></code></li>
+<li><code><a title="albow.menu" href="menu/index.html">albow.menu</a></code></li>
+<li><code><a title="albow.openGL" href="openGL/index.html">albow.openGL</a></code></li>
+<li><code><a title="albow.profiling" href="profiling.html">albow.profiling</a></code></li>
+<li><code><a title="albow.table" href="table/index.html">albow.table</a></code></li>
+<li><code><a title="albow.text" href="text/index.html">albow.text</a></code></li>
+<li><code><a title="albow.themes" href="themes/index.html">albow.themes</a></code></li>
+<li><code><a title="albow.utils" href="utils.html">albow.utils</a></code></li>
+<li><code><a title="albow.vectors" href="vectors.html">albow.vectors</a></code></li>
+<li><code><a title="albow.version" href="version.html">albow.version</a></code></li>
+<li><code><a title="albow.widgets" href="widgets/index.html">albow.widgets</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
