@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.0" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>albow.themes.ThemeLoader API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/far.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
 <style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
@@ -22,37 +22,42 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">import os
-
-import logging
+<pre><code class="python">import logging
 
 import configparser
 from configparser import ConfigParser
 
 from ast import literal_eval as make_tuple
 
-from albow.themes.Theme import Theme
+from pkg_resources import resource_filename
 
-DEFAULT_THEME_FILENAME = &#34;default-theme.ini&#34;
-ROOT_THEME_NAME = &#34;root&#34;
+from albow.themes.Theme import Theme
 
 
 class ThemeLoader:
 
-    def __init__(self, themeFilename: str = DEFAULT_THEME_FILENAME):
+    DEFAULT_PKG = &#34;albow.themes.resources&#34;
+    DEFAULT_THEME_FILENAME = &#34;default-theme.ini&#34;
+    ROOT_THEME_NAME = &#34;root&#34;
+
+    def __init__(self, themePkg: str = DEFAULT_PKG,  themeFilename: str = DEFAULT_THEME_FILENAME):
         &#34;&#34;&#34;
 
         &#34;&#34;&#34;
         self.logger = logging.getLogger(__name__)
+
+        self.themePkg = themePkg
         self.themeFilename = themeFilename
+        self.themeFullFilename = self.findThemeFile()
         self.topLevelClassThemes = []
         self.themeRoot = None
 
     def load(self):
-        config = configparser.ConfigParser()
-        config.read(self.themeFilename)
 
-        self.themeRoot = self.loadAClass(config[ROOT_THEME_NAME])
+        config = configparser.ConfigParser()
+        config.read(self.themeFullFilename)
+
+        self.themeRoot = self.loadAClass(config[ThemeLoader.ROOT_THEME_NAME])
 
         self.logger.debug(f&#34;Initial themeRoot: {self.themeRoot}&#34;)
 
@@ -73,26 +78,11 @@ class ThemeLoader:
                     setattr(embeddedTheme, &#34;base&#34;, baseTheme)
                     self.logger.debug(f&#34;Theme {embeddedTheme} has new base {baseTheme}&#34;)
 
-    def findConfigFile(self) -&gt; str:
-        &#34;&#34;&#34;
-        Call this before `.load`
+    def findThemeFile(self):
 
-        Changes current working directory
+        fileName = resource_filename(self.themePkg, self.themeFilename)
 
-        Returns:  The current directory we wound up in
-
-        Raises:  FileNotFoundError if we wind up in the root directory
-        &#34;&#34;&#34;
-        if os.path.isfile(self.themeFilename):
-            return os.getcwd()
-        else:
-            os.chdir(&#34;../&#34;)
-            currentDirectory = os.getcwd()
-            if &#34;/&#34; == currentDirectory:
-                raise FileNotFoundError(f&#34;Can&#39;t find theme config file: {self.themeFilename}&#34;)
-            self.findConfigFile()
-
-        return os.getcwd()
+        return fileName
 
     def loadAClass(self, classDict: dict) -&gt; Theme:
 
@@ -140,7 +130,7 @@ class ThemeLoader:
 
         for idx in range(len(sections)):
             sectionName = sections[idx]
-            if sectionName == ROOT_THEME_NAME:
+            if sectionName == ThemeLoader.ROOT_THEME_NAME:
                 continue
             else:
                 self.logger.debug(&#34;sectionName: &#39;%s&#39;&#34;, sectionName)
@@ -192,7 +182,7 @@ class ThemeLoader:
 <dl>
 <dt id="albow.themes.ThemeLoader.ThemeLoader"><code class="flex name class">
 <span>class <span class="ident">ThemeLoader</span></span>
-<span>(</span><span>themeFilename='default-theme.ini')</span>
+<span>(</span><span>themePkg='albow.themes.resources', themeFilename='default-theme.ini')</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
@@ -200,20 +190,28 @@ class ThemeLoader:
 <summary>Source code</summary>
 <pre><code class="python">class ThemeLoader:
 
-    def __init__(self, themeFilename: str = DEFAULT_THEME_FILENAME):
+    DEFAULT_PKG = &#34;albow.themes.resources&#34;
+    DEFAULT_THEME_FILENAME = &#34;default-theme.ini&#34;
+    ROOT_THEME_NAME = &#34;root&#34;
+
+    def __init__(self, themePkg: str = DEFAULT_PKG,  themeFilename: str = DEFAULT_THEME_FILENAME):
         &#34;&#34;&#34;
 
         &#34;&#34;&#34;
         self.logger = logging.getLogger(__name__)
+
+        self.themePkg = themePkg
         self.themeFilename = themeFilename
+        self.themeFullFilename = self.findThemeFile()
         self.topLevelClassThemes = []
         self.themeRoot = None
 
     def load(self):
-        config = configparser.ConfigParser()
-        config.read(self.themeFilename)
 
-        self.themeRoot = self.loadAClass(config[ROOT_THEME_NAME])
+        config = configparser.ConfigParser()
+        config.read(self.themeFullFilename)
+
+        self.themeRoot = self.loadAClass(config[ThemeLoader.ROOT_THEME_NAME])
 
         self.logger.debug(f&#34;Initial themeRoot: {self.themeRoot}&#34;)
 
@@ -234,26 +232,11 @@ class ThemeLoader:
                     setattr(embeddedTheme, &#34;base&#34;, baseTheme)
                     self.logger.debug(f&#34;Theme {embeddedTheme} has new base {baseTheme}&#34;)
 
-    def findConfigFile(self) -&gt; str:
-        &#34;&#34;&#34;
-        Call this before `.load`
+    def findThemeFile(self):
 
-        Changes current working directory
+        fileName = resource_filename(self.themePkg, self.themeFilename)
 
-        Returns:  The current directory we wound up in
-
-        Raises:  FileNotFoundError if we wind up in the root directory
-        &#34;&#34;&#34;
-        if os.path.isfile(self.themeFilename):
-            return os.getcwd()
-        else:
-            os.chdir(&#34;../&#34;)
-            currentDirectory = os.getcwd()
-            if &#34;/&#34; == currentDirectory:
-                raise FileNotFoundError(f&#34;Can&#39;t find theme config file: {self.themeFilename}&#34;)
-            self.findConfigFile()
-
-        return os.getcwd()
+        return fileName
 
     def loadAClass(self, classDict: dict) -&gt; Theme:
 
@@ -301,7 +284,7 @@ class ThemeLoader:
 
         for idx in range(len(sections)):
             sectionName = sections[idx]
-            if sectionName == ROOT_THEME_NAME:
+            if sectionName == ThemeLoader.ROOT_THEME_NAME:
                 continue
             else:
                 self.logger.debug(&#34;sectionName: &#39;%s&#39;&#34;, sectionName)
@@ -341,6 +324,21 @@ class ThemeLoader:
         else:
             return True</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.themes.ThemeLoader.ThemeLoader.DEFAULT_PKG"><code class="name">var <span class="ident">DEFAULT_PKG</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.themes.ThemeLoader.ThemeLoader.DEFAULT_THEME_FILENAME"><code class="name">var <span class="ident">DEFAULT_THEME_FILENAME</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.themes.ThemeLoader.ThemeLoader.ROOT_THEME_NAME"><code class="name">var <span class="ident">ROOT_THEME_NAME</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="albow.themes.ThemeLoader.ThemeLoader.isFloat"><code class="name flex">
@@ -417,7 +415,7 @@ Assumes it has been set</p>
 
     for idx in range(len(sections)):
         sectionName = sections[idx]
-        if sectionName == ROOT_THEME_NAME:
+        if sectionName == ThemeLoader.ROOT_THEME_NAME:
             continue
         else:
             self.logger.debug(&#34;sectionName: &#39;%s&#39;&#34;, sectionName)
@@ -430,40 +428,18 @@ Assumes it has been set</p>
             setattr(self.themeRoot, sectionName, theme)</code></pre>
 </details>
 </dd>
-<dt id="albow.themes.ThemeLoader.ThemeLoader.findConfigFile"><code class="name flex">
-<span>def <span class="ident">findConfigFile</span></span>(<span>self)</span>
+<dt id="albow.themes.ThemeLoader.ThemeLoader.findThemeFile"><code class="name flex">
+<span>def <span class="ident">findThemeFile</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Call this before <code>.load</code></p>
-<p>Changes current working directory</p>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>current</code> <code>directory</code> <code>we</code> <code>wound</code> <code>up</code> <code>in</code></dt>
-<dd>&nbsp;</dd>
-<dt><strong><code>Raises</code></strong> :&ensp; <code>FileNotFoundError</code> <code>if</code> <code>we</code> <code>wind</code> <code>up</code> <code>in</code> <code>the</code> <code>root</code> <code>directory</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def findConfigFile(self) -&gt; str:
-    &#34;&#34;&#34;
-    Call this before `.load`
+<pre><code class="python">def findThemeFile(self):
 
-    Changes current working directory
+    fileName = resource_filename(self.themePkg, self.themeFilename)
 
-    Returns:  The current directory we wound up in
-
-    Raises:  FileNotFoundError if we wind up in the root directory
-    &#34;&#34;&#34;
-    if os.path.isfile(self.themeFilename):
-        return os.getcwd()
-    else:
-        os.chdir(&#34;../&#34;)
-        currentDirectory = os.getcwd()
-        if &#34;/&#34; == currentDirectory:
-            raise FileNotFoundError(f&#34;Can&#39;t find theme config file: {self.themeFilename}&#34;)
-        self.findConfigFile()
-
-    return os.getcwd()</code></pre>
+    return fileName</code></pre>
 </details>
 </dd>
 <dt id="albow.themes.ThemeLoader.ThemeLoader.ignoreAttribute"><code class="name flex">
@@ -509,10 +485,11 @@ themes in a separate loop</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def load(self):
-    config = configparser.ConfigParser()
-    config.read(self.themeFilename)
 
-    self.themeRoot = self.loadAClass(config[ROOT_THEME_NAME])
+    config = configparser.ConfigParser()
+    config.read(self.themeFullFilename)
+
+    self.themeRoot = self.loadAClass(config[ThemeLoader.ROOT_THEME_NAME])
 
     self.logger.debug(f&#34;Initial themeRoot: {self.themeRoot}&#34;)
 
@@ -579,9 +556,12 @@ themes in a separate loop</p>
 <li>
 <h4><code><a title="albow.themes.ThemeLoader.ThemeLoader" href="#albow.themes.ThemeLoader.ThemeLoader">ThemeLoader</a></code></h4>
 <ul class="">
+<li><code><a title="albow.themes.ThemeLoader.ThemeLoader.DEFAULT_PKG" href="#albow.themes.ThemeLoader.ThemeLoader.DEFAULT_PKG">DEFAULT_PKG</a></code></li>
+<li><code><a title="albow.themes.ThemeLoader.ThemeLoader.DEFAULT_THEME_FILENAME" href="#albow.themes.ThemeLoader.ThemeLoader.DEFAULT_THEME_FILENAME">DEFAULT_THEME_FILENAME</a></code></li>
+<li><code><a title="albow.themes.ThemeLoader.ThemeLoader.ROOT_THEME_NAME" href="#albow.themes.ThemeLoader.ThemeLoader.ROOT_THEME_NAME">ROOT_THEME_NAME</a></code></li>
 <li><code><a title="albow.themes.ThemeLoader.ThemeLoader.augmentInstancesWithBase" href="#albow.themes.ThemeLoader.ThemeLoader.augmentInstancesWithBase">augmentInstancesWithBase</a></code></li>
 <li><code><a title="albow.themes.ThemeLoader.ThemeLoader.extractThemeInstances" href="#albow.themes.ThemeLoader.ThemeLoader.extractThemeInstances">extractThemeInstances</a></code></li>
-<li><code><a title="albow.themes.ThemeLoader.ThemeLoader.findConfigFile" href="#albow.themes.ThemeLoader.ThemeLoader.findConfigFile">findConfigFile</a></code></li>
+<li><code><a title="albow.themes.ThemeLoader.ThemeLoader.findThemeFile" href="#albow.themes.ThemeLoader.ThemeLoader.findThemeFile">findThemeFile</a></code></li>
 <li><code><a title="albow.themes.ThemeLoader.ThemeLoader.ignoreAttribute" href="#albow.themes.ThemeLoader.ThemeLoader.ignoreAttribute">ignoreAttribute</a></code></li>
 <li><code><a title="albow.themes.ThemeLoader.ThemeLoader.isFloat" href="#albow.themes.ThemeLoader.ThemeLoader.isFloat">isFloat</a></code></li>
 <li><code><a title="albow.themes.ThemeLoader.ThemeLoader.load" href="#albow.themes.ThemeLoader.ThemeLoader.load">load</a></code></li>
@@ -594,8 +574,7 @@ themes in a separate loop</p>
 </nav>
 </main>
 <footer id="footer">
-Ported to Python 3 and extended by Humberto A. Sanchez II
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

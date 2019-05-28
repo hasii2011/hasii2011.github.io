@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.0" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>albow.core.Widget API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/far.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
 <style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
@@ -52,39 +52,9 @@ from albow.utils import overridable_property
 from albow.themes.ThemeProperty import ThemeProperty
 from albow.themes.FontProperty import FontProperty
 
-from albow.themes.Theme import themeRoot
+from albow.themes.Theme import Theme
 
-debug_rect = False
-lastDebugRectTime = datetime.now() + timedelta(seconds=4)
-
-debug_tab = True
-
-root_widget = None
-current_cursor = None
-
-
-def rect_property(name):
-
-    def get(self):
-        return getattr(self._rect, name)
-
-    def set(self, value):
-
-        r = self._rect
-        old_size = r.size
-        setattr(r, name, value)
-        new_size = r.size
-        #
-        # Python 3 update
-        # i f old_size &lt;&gt; new_size:
-        if old_size != new_size:
-            #
-            # Method signature changed since tuples not allowed to be passed
-            #
-            # self._resized(old_size)
-            self._resized(old_size[0], old_size[1])
-
-    return property(get, set)
+from albow.core.RectUtility import RectUtility
 
 
 class Widget:
@@ -114,24 +84,30 @@ class Widget:
 
     &#34;&#34;&#34;
 
-    left = rect_property(&#39;left&#39;)
-    right = rect_property(&#39;right&#39;)
-    top = rect_property(&#39;top&#39;)
-    bottom = rect_property(&#39;bottom&#39;)
-    width = rect_property(&#39;width&#39;)
-    height = rect_property(&#39;height&#39;)
-    size = rect_property(&#39;size&#39;)
-    topleft = rect_property(&#39;topleft&#39;)
-    topright = rect_property(&#39;topright&#39;)
-    bottomleft = rect_property(&#39;bottomleft&#39;)
-    bottomright = rect_property(&#39;bottomright&#39;)
-    midleft = rect_property(&#39;midleft&#39;)
-    midright = rect_property(&#39;midright&#39;)
-    midtop = rect_property(&#39;midtop&#39;)
-    midbottom = rect_property(&#39;midbottom&#39;)
-    center = rect_property(&#39;center&#39;)
-    centerx = rect_property(&#39;centerx&#39;)
-    centery = rect_property(&#39;centery&#39;)
+    lastDebugRectTime = datetime.now() + timedelta(seconds=4)
+    debug_rect = False
+
+    current_cursor = None
+    root_widget = None
+
+    left = RectUtility.rect_property(&#39;left&#39;)
+    right = RectUtility.rect_property(&#39;right&#39;)
+    top = RectUtility.rect_property(&#39;top&#39;)
+    bottom = RectUtility.rect_property(&#39;bottom&#39;)
+    width = RectUtility.rect_property(&#39;width&#39;)
+    height = RectUtility.rect_property(&#39;height&#39;)
+    size = RectUtility.rect_property(&#39;size&#39;)
+    topleft = RectUtility.rect_property(&#39;topleft&#39;)
+    topright = RectUtility.rect_property(&#39;topright&#39;)
+    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
+    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
+    midleft = RectUtility.rect_property(&#39;midleft&#39;)
+    midright = RectUtility.rect_property(&#39;midright&#39;)
+    midtop = RectUtility.rect_property(&#39;midtop&#39;)
+    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
+    center = RectUtility.rect_property(&#39;center&#39;)
+    centerx = RectUtility.rect_property(&#39;centerx&#39;)
+    centery = RectUtility.rect_property(&#39;centery&#39;)
 
     font = FontProperty(&#39;font&#39;)
     &#34;&#34;&#34;
@@ -249,7 +225,6 @@ class Widget:
     &#34;&#34;&#34;
     debug_resize = False
 
-
     def __init__(self, rect: Rect = None, **kwds):
         &#34;&#34;&#34;
         Creates a new widget, initially without any parent. If a rect is given, it specifies the new widget&#39;s initial s
@@ -271,6 +246,7 @@ class Widget:
         self.subwidgets = []
         self.focus_switch = None
         self.is_modal = False
+        self.modal_result = None
 
         self.set(**kwds)
 
@@ -345,14 +321,14 @@ class Widget:
         &#34;&#34;&#34;
         if arg:
 
-            self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
             #
             # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
             #
-            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39;):
                 arg.set_parent(self)
             else:
-                self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+                self.logger.debug(f&#34;arg is container: {arg.__str__}&#34;)
                 for item in arg:
                     self.add(item)
 
@@ -454,17 +430,13 @@ class Widget:
 
     def debugSubWidgetDraws(self, sub_rect, widget):
 
-        global lastDebugRectTime
-
-        if debug_rect:
+        if Widget.debug_rect:
             currentTime = datetime.now()
-            if currentTime &gt;= lastDebugRectTime:
+            if currentTime &gt;= Widget.lastDebugRectTime:
 
-                # print(f&#34;Drawing subwidget &#39;{www}&#39; of &#39;{sss}&#39; with &#39;{sub_rect}&#39;&#34;)
                 print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
-                lastDebugRectTime = currentTime + timedelta(seconds=4)
-
+                Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)
 
     def diagnose_subsurface_problem(self, surface, widget):
         mess = &#34;Widget %s %s outside parent surface %s %s&#34; % (
@@ -505,11 +477,11 @@ class Widget:
         event.dict[&#39;local&#39;] = list(posMap)
 
     def setup_cursor(self, event):
-        global current_cursor
+
         cursor = self.get_cursor(event) or arrow_cursor
-        if cursor is not current_cursor:
+        if cursor is not Widget.current_cursor:
             set_cursor(*cursor)
-            current_cursor = cursor
+            Widget.current_cursor = cursor
 
     def dispatch_key(self, name, event):
         if self.visible:
@@ -687,7 +659,6 @@ class Widget:
         # TODO  Something about my re-packaging caused me to lose
         # visibility to the root widget;  Figure it out later
         #
-        global root_widget
         # print &#34;Widget: presenting with rect&#34;, self.rect
         # root = self.get_root()
         root = Widget.root_widget
@@ -718,12 +689,12 @@ class Widget:
         &#34;&#34;&#34;
         Returns the root widget (whether this widget is contained within it or not).
 
-            Deprecated, use root.get_root()
+            Deprecated, use RootWidget.getRoot()
 
         Returns:  The root widget
 
         &#34;&#34;&#34;
-        return root_widget
+        return Widget.root_widget
 
     def get_top_widget(self) -&gt; &#34;Widget&#34;:
         &#34;&#34;&#34;
@@ -795,7 +766,7 @@ class Widget:
         Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
         Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
 
-        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return
         to the event loop. Future versions may be more selective.
 
         &#34;&#34;&#34;
@@ -807,7 +778,7 @@ class Widget:
         try:
             return kwds[name]
         except KeyError:
-            return themeRoot.get(self.__class__, name)
+            return Theme.getThemeRoot().get(self.__class__, name)
 
     def predict_attr(self, kwds, name):
         try:
@@ -822,7 +793,7 @@ class Widget:
             return getattr(self, name)
 
     def predict_font(self, kwds, name=&#39;font&#39;):
-        return kwds.get(name) or themeRoot.get_font(self.__class__, name)
+        return kwds.get(name) or Theme.getThemeRoot().get_font(self.__class__, name)
 
     def get_margin_rect(self) -&gt; Rect:
         &#34;&#34;&#34;
@@ -844,7 +815,7 @@ class Widget:
         piece of sample text.
 
         Args:
-            width:  The number of pixes or some sample text
+            width:  The number of pixels or some sample text
 
             nLines: The number of lines in the text;  Defaults to 1
 
@@ -996,8 +967,8 @@ class Widget:
 
         answer: bool = False
         try:
-            p      = self.global_to_local(event.pos)
-            pList  = list(p)
+            p = self.global_to_local(event.pos)
+            pList = list(p)
             answer = r.collidepoint(pList[0], pList[1])
         except AttributeError as ae:
             self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
@@ -1015,21 +986,24 @@ class Widget:
     def _resized(self, old_width, old_height):
         &#34;&#34;&#34;
 
-        :param old_width:
-        :param old_height:
-        :return:
+        Args:
+            old_width:
+            old_height:
+
+        Returns:
+
         &#34;&#34;&#34;
         new_width, new_height = self._rect.size
         dw = new_width - old_width
         dh = new_height - old_height
         if dw or dh:
             self.resized(dw, dh)
-
     #
     #
     #   Abstract methods follow
     #
     #
+
     def draw(self, surface: Surface):
         &#34;&#34;&#34;
         Called whenever the widget&#39;s contents need to be drawn. The surface is a subsurface the same size as the
@@ -1058,7 +1032,7 @@ class Widget:
         Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
         focus but did not handle the event.
 
-        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited
         key_down() method to pass the event to the parent widget.
 
         Args:
@@ -1199,40 +1173,6 @@ class Widget:
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
-<dl>
-<dt id="albow.core.Widget.rect_property"><code class="name flex">
-<span>def <span class="ident">rect_property</span></span>(<span>name)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def rect_property(name):
-
-    def get(self):
-        return getattr(self._rect, name)
-
-    def set(self, value):
-
-        r = self._rect
-        old_size = r.size
-        setattr(r, name, value)
-        new_size = r.size
-        #
-        # Python 3 update
-        # i f old_size &lt;&gt; new_size:
-        if old_size != new_size:
-            #
-            # Method signature changed since tuples not allowed to be passed
-            #
-            # self._resized(old_size)
-            self._resized(old_size[0], old_size[1])
-
-    return property(get, set)</code></pre>
-</details>
-</dd>
-</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -1304,24 +1244,30 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
     &#34;&#34;&#34;
 
-    left = rect_property(&#39;left&#39;)
-    right = rect_property(&#39;right&#39;)
-    top = rect_property(&#39;top&#39;)
-    bottom = rect_property(&#39;bottom&#39;)
-    width = rect_property(&#39;width&#39;)
-    height = rect_property(&#39;height&#39;)
-    size = rect_property(&#39;size&#39;)
-    topleft = rect_property(&#39;topleft&#39;)
-    topright = rect_property(&#39;topright&#39;)
-    bottomleft = rect_property(&#39;bottomleft&#39;)
-    bottomright = rect_property(&#39;bottomright&#39;)
-    midleft = rect_property(&#39;midleft&#39;)
-    midright = rect_property(&#39;midright&#39;)
-    midtop = rect_property(&#39;midtop&#39;)
-    midbottom = rect_property(&#39;midbottom&#39;)
-    center = rect_property(&#39;center&#39;)
-    centerx = rect_property(&#39;centerx&#39;)
-    centery = rect_property(&#39;centery&#39;)
+    lastDebugRectTime = datetime.now() + timedelta(seconds=4)
+    debug_rect = False
+
+    current_cursor = None
+    root_widget = None
+
+    left = RectUtility.rect_property(&#39;left&#39;)
+    right = RectUtility.rect_property(&#39;right&#39;)
+    top = RectUtility.rect_property(&#39;top&#39;)
+    bottom = RectUtility.rect_property(&#39;bottom&#39;)
+    width = RectUtility.rect_property(&#39;width&#39;)
+    height = RectUtility.rect_property(&#39;height&#39;)
+    size = RectUtility.rect_property(&#39;size&#39;)
+    topleft = RectUtility.rect_property(&#39;topleft&#39;)
+    topright = RectUtility.rect_property(&#39;topright&#39;)
+    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
+    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
+    midleft = RectUtility.rect_property(&#39;midleft&#39;)
+    midright = RectUtility.rect_property(&#39;midright&#39;)
+    midtop = RectUtility.rect_property(&#39;midtop&#39;)
+    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
+    center = RectUtility.rect_property(&#39;center&#39;)
+    centerx = RectUtility.rect_property(&#39;centerx&#39;)
+    centery = RectUtility.rect_property(&#39;centery&#39;)
 
     font = FontProperty(&#39;font&#39;)
     &#34;&#34;&#34;
@@ -1439,7 +1385,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
     &#34;&#34;&#34;
     debug_resize = False
 
-
     def __init__(self, rect: Rect = None, **kwds):
         &#34;&#34;&#34;
         Creates a new widget, initially without any parent. If a rect is given, it specifies the new widget&#39;s initial s
@@ -1461,6 +1406,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         self.subwidgets = []
         self.focus_switch = None
         self.is_modal = False
+        self.modal_result = None
 
         self.set(**kwds)
 
@@ -1535,14 +1481,14 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         &#34;&#34;&#34;
         if arg:
 
-            self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
             #
             # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
             #
-            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+            if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39;):
                 arg.set_parent(self)
             else:
-                self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+                self.logger.debug(f&#34;arg is container: {arg.__str__}&#34;)
                 for item in arg:
                     self.add(item)
 
@@ -1644,17 +1590,13 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
     def debugSubWidgetDraws(self, sub_rect, widget):
 
-        global lastDebugRectTime
-
-        if debug_rect:
+        if Widget.debug_rect:
             currentTime = datetime.now()
-            if currentTime &gt;= lastDebugRectTime:
+            if currentTime &gt;= Widget.lastDebugRectTime:
 
-                # print(f&#34;Drawing subwidget &#39;{www}&#39; of &#39;{sss}&#39; with &#39;{sub_rect}&#39;&#34;)
                 print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
-                lastDebugRectTime = currentTime + timedelta(seconds=4)
-
+                Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)
 
     def diagnose_subsurface_problem(self, surface, widget):
         mess = &#34;Widget %s %s outside parent surface %s %s&#34; % (
@@ -1695,11 +1637,11 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         event.dict[&#39;local&#39;] = list(posMap)
 
     def setup_cursor(self, event):
-        global current_cursor
+
         cursor = self.get_cursor(event) or arrow_cursor
-        if cursor is not current_cursor:
+        if cursor is not Widget.current_cursor:
             set_cursor(*cursor)
-            current_cursor = cursor
+            Widget.current_cursor = cursor
 
     def dispatch_key(self, name, event):
         if self.visible:
@@ -1877,7 +1819,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         # TODO  Something about my re-packaging caused me to lose
         # visibility to the root widget;  Figure it out later
         #
-        global root_widget
         # print &#34;Widget: presenting with rect&#34;, self.rect
         # root = self.get_root()
         root = Widget.root_widget
@@ -1908,12 +1849,12 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         &#34;&#34;&#34;
         Returns the root widget (whether this widget is contained within it or not).
 
-            Deprecated, use root.get_root()
+            Deprecated, use RootWidget.getRoot()
 
         Returns:  The root widget
 
         &#34;&#34;&#34;
-        return root_widget
+        return Widget.root_widget
 
     def get_top_widget(self) -&gt; &#34;Widget&#34;:
         &#34;&#34;&#34;
@@ -1985,7 +1926,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
         Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
 
-        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+        NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return
         to the event loop. Future versions may be more selective.
 
         &#34;&#34;&#34;
@@ -1997,7 +1938,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         try:
             return kwds[name]
         except KeyError:
-            return themeRoot.get(self.__class__, name)
+            return Theme.getThemeRoot().get(self.__class__, name)
 
     def predict_attr(self, kwds, name):
         try:
@@ -2012,7 +1953,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             return getattr(self, name)
 
     def predict_font(self, kwds, name=&#39;font&#39;):
-        return kwds.get(name) or themeRoot.get_font(self.__class__, name)
+        return kwds.get(name) or Theme.getThemeRoot().get_font(self.__class__, name)
 
     def get_margin_rect(self) -&gt; Rect:
         &#34;&#34;&#34;
@@ -2034,7 +1975,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         piece of sample text.
 
         Args:
-            width:  The number of pixes or some sample text
+            width:  The number of pixels or some sample text
 
             nLines: The number of lines in the text;  Defaults to 1
 
@@ -2186,8 +2127,8 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
         answer: bool = False
         try:
-            p      = self.global_to_local(event.pos)
-            pList  = list(p)
+            p = self.global_to_local(event.pos)
+            pList = list(p)
             answer = r.collidepoint(pList[0], pList[1])
         except AttributeError as ae:
             self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
@@ -2205,21 +2146,24 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
     def _resized(self, old_width, old_height):
         &#34;&#34;&#34;
 
-        :param old_width:
-        :param old_height:
-        :return:
+        Args:
+            old_width:
+            old_height:
+
+        Returns:
+
         &#34;&#34;&#34;
         new_width, new_height = self._rect.size
         dw = new_width - old_width
         dh = new_height - old_height
         if dw or dh:
             self.resized(dw, dh)
-
     #
     #
     #   Abstract methods follow
     #
     #
+
     def draw(self, surface: Surface):
         &#34;&#34;&#34;
         Called whenever the widget&#39;s contents need to be drawn. The surface is a subsurface the same size as the
@@ -2248,7 +2192,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
         focus but did not handle the event.
 
-        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+        NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited
         key_down() method to pass the event to the parent widget.
 
         Args:
@@ -2387,9 +2331,10 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 <ul class="hlist">
 <li><a title="albow.core.RootWidget.RootWidget" href="RootWidget.html#albow.core.RootWidget.RootWidget">RootWidget</a></li>
 <li><a title="albow.layout.RowOrColumn.RowOrColumn" href="../layout/RowOrColumn.html#albow.layout.RowOrColumn.RowOrColumn">RowOrColumn</a></li>
+<li><a title="albow.widgets.TextBox.TextBox" href="../widgets/TextBox.html#albow.widgets.TextBox.TextBox">TextBox</a></li>
 <li><a title="albow.widgets.Label.Label" href="../widgets/Label.html#albow.widgets.Label.Label">Label</a></li>
-<li><a title="albow.containers.GridView.GridView" href="../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
 <li><a title="albow.core.Screen.Screen" href="Screen.html#albow.core.Screen.Screen">Screen</a></li>
+<li><a title="albow.containers.GridView.GridView" href="../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
 <li><a title="albow.input.TextEditor.TextEditor" href="../input/TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
 <li><a title="albow.layout.Grid.Grid" href="../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
 <li><a title="albow.widgets.Image.Image" href="../widgets/Image.html#albow.widgets.Image.Image">Image</a></li>
@@ -2435,6 +2380,14 @@ no border is drawn.</p></section>
 <dd>
 <section class="desc"></section>
 </dd>
+<dt id="albow.core.Widget.Widget.current_cursor"><code class="name">var <span class="ident">current_cursor</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.debug_rect"><code class="name">var <span class="ident">debug_rect</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
 <dt id="albow.core.Widget.Widget.debug_resize"><code class="name">var <span class="ident">debug_resize</span></code></dt>
 <dd>
 <section class="desc"></section>
@@ -2470,6 +2423,10 @@ additional font properties for specific parts of the widget.</p></section>
 using glDrawPixels() with blending. No 3D drawing is performed for any of its subwidgets.</p>
 <p>In either case, input events are handled in the usual way.</p>
 <p>This property has no effect on widgets in a non-OpenGL window.</p></section>
+</dd>
+<dt id="albow.core.Widget.Widget.lastDebugRectTime"><code class="name">var <span class="ident">lastDebugRectTime</span></code></dt>
+<dd>
+<section class="desc"></section>
 </dd>
 <dt id="albow.core.Widget.Widget.margin"><code class="name">var <span class="ident">margin</span></code></dt>
 <dd>
@@ -2507,6 +2464,10 @@ widget. A widget must ultimately be contained in the root widget in order to be 
 <section class="desc"></section>
 </dd>
 <dt id="albow.core.Widget.Widget.resizing_values"><code class="name">var <span class="ident">resizing_values</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.Widget.Widget.root_widget"><code class="name">var <span class="ident">root_widget</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
@@ -2731,14 +2692,14 @@ Defaults to true. The behaviour of this property can be customized by overriding
     &#34;&#34;&#34;
     if arg:
 
-        self.logger.debug(&#34;arg: &#39;%s&#39; is Widget %s&#34;, arg.__str__(), isinstance(arg, Widget))
+        self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
         #
         # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
         #
-        if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39; ):
+        if isinstance(arg, Widget) or not hasattr(arg, &#39;__iter__&#39;):
             arg.set_parent(self)
         else:
-            self.logger.debug(&#34;arg is container: %s&#34;, arg.__str__)
+            self.logger.debug(f&#34;arg is container: {arg.__str__}&#34;)
             for item in arg:
                 self.add(item)</code></pre>
 </details>
@@ -2937,16 +2898,13 @@ parent widget if you don't want to handle it.</p>
 <summary>Source code</summary>
 <pre><code class="python">def debugSubWidgetDraws(self, sub_rect, widget):
 
-    global lastDebugRectTime
-
-    if debug_rect:
+    if Widget.debug_rect:
         currentTime = datetime.now()
-        if currentTime &gt;= lastDebugRectTime:
+        if currentTime &gt;= Widget.lastDebugRectTime:
 
-            # print(f&#34;Drawing subwidget &#39;{www}&#39; of &#39;{sss}&#39; with &#39;{sub_rect}&#39;&#34;)
             print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
-            lastDebugRectTime = currentTime + timedelta(seconds=4)</code></pre>
+            Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)</code></pre>
 </details>
 </dd>
 <dt id="albow.core.Widget.Widget.defer_drawing"><code class="name flex">
@@ -3278,10 +3236,8 @@ The ResourceUtility.get_cursor() function returns a suitable tuple.</p>
 <dd>
 <section class="desc"><p>If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
 the widget that would have the keyboard focus if this widget were on the focus path.</p>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>A</code> <code>widget</code> <code>with</code> <code>the</code> <code>focus</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<p>Returns:
+A widget with the focus</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get_focus(self):
@@ -3340,10 +3296,7 @@ the widget that would have the keyboard focus if this widget were on the focus p
 <dd>
 <section class="desc"><p>Returns a Rect in local coordinates representing the content area of the widget, as determined
 by its margin property.</p>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> <code>rect</code> of <code>the</code> <code>content</code> <code>area</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<p>Returns: The rect of the content area</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get_margin_rect(self) -&gt; Rect:
@@ -3399,24 +3352,22 @@ by its margin property.</p>
 </code></dt>
 <dd>
 <section class="desc"><p>Returns the root widget (whether this widget is contained within it or not).</p>
-<pre><code>Deprecated, use root.get_root()
+<pre><code>Deprecated, use RootWidget.getRoot()
 </code></pre>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>root</code> <code>widget</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<p>Returns:
+The root widget</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get_root(self):
     &#34;&#34;&#34;
     Returns the root widget (whether this widget is contained within it or not).
 
-        Deprecated, use root.get_root()
+        Deprecated, use RootWidget.getRoot()
 
     Returns:  The root widget
 
     &#34;&#34;&#34;
-    return root_widget</code></pre>
+    return Widget.root_widget</code></pre>
 </details>
 </dd>
 <dt id="albow.core.Widget.Widget.get_tab_order"><code class="name flex">
@@ -3438,10 +3389,8 @@ by its margin property.</p>
 <dd>
 <section class="desc"><p>Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
 dialog is in progress, the modal dialog widget is the top widget, otherwise it is the root widget.</p>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>top</code> <code>level</code> <code>widget</code> <code>in</code> <code>a</code> <code>containment</code> <code>hierarchy</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<p>Returns:
+The top level widget in a containment hierarchy</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get_top_widget(self) -&gt; &#34;Widget&#34;:
@@ -3464,10 +3413,7 @@ dialog is in progress, the modal dialog widget is the top widget, otherwise it i
 <dd>
 <section class="desc"><p>Called to determine the value of the visible property. By overriding this, you can make the visibility of the
 widget dependent on some external condition.</p>
-<dl>
-<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> <code>widget</code> <code>visibility</code> <code>state</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
+<p>Returns: The widget visibility state</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get_visible(self):
@@ -3679,7 +3625,7 @@ to the event loop. Future versions may be more selective.</p></section>
     Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
     Shell or Screen if you have the redraw_every_frame attribute of the root widget set to False.
 
-    NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return\
+    NOTE: Currently, calling this method on any widget will cause all widgets to be redrawn on the next return
     to the event loop. Future versions may be more selective.
 
     &#34;&#34;&#34;
@@ -3724,7 +3670,7 @@ key_down() method to pass the event to the parent widget.</p>
     Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
     focus but did not handle the event.
 
-    NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited\
+    NOTE: If you override this method and don&#39;t want to handle a key_down event, be sure to call the inherited
     key_down() method to pass the event to the parent widget.
 
     Args:
@@ -3926,7 +3872,7 @@ the widget according to its anchor attribute.</p>
     try:
         return kwds[name]
     except KeyError:
-        return themeRoot.get(self.__class__, name)</code></pre>
+        return Theme.getThemeRoot().get(self.__class__, name)</code></pre>
 </details>
 </dd>
 <dt id="albow.core.Widget.Widget.predict_attr"><code class="name flex">
@@ -3951,7 +3897,7 @@ the widget according to its anchor attribute.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def predict_font(self, kwds, name=&#39;font&#39;):
-    return kwds.get(name) or themeRoot.get_font(self.__class__, name)</code></pre>
+    return kwds.get(name) or Theme.getThemeRoot().get_font(self.__class__, name)</code></pre>
 </details>
 </dd>
 <dt id="albow.core.Widget.Widget.present"><code class="name flex">
@@ -3990,7 +3936,6 @@ default is True</dd>
     # TODO  Something about my re-packaging caused me to lose
     # visibility to the root widget;  Figure it out later
     #
-    global root_widget
     # print &#34;Widget: presenting with rect&#34;, self.rect
     # root = self.get_root()
     root = Widget.root_widget
@@ -4247,7 +4192,7 @@ piece of sample text.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>width</code></strong></dt>
-<dd>The number of pixes or some sample text</dd>
+<dd>The number of pixels or some sample text</dd>
 <dt><strong><code>nLines</code></strong></dt>
 <dd>The number of lines in the text;
 Defaults to 1</dd>
@@ -4261,7 +4206,7 @@ Defaults to 1</dd>
     piece of sample text.
 
     Args:
-        width:  The number of pixes or some sample text
+        width:  The number of pixels or some sample text
 
         nLines: The number of lines in the text;  Defaults to 1
 
@@ -4300,11 +4245,11 @@ Defaults to 1</dd>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def setup_cursor(self, event):
-    global current_cursor
+
     cursor = self.get_cursor(event) or arrow_cursor
-    if cursor is not current_cursor:
+    if cursor is not Widget.current_cursor:
         set_cursor(*cursor)
-        current_cursor = cursor</code></pre>
+        Widget.current_cursor = cursor</code></pre>
 </details>
 </dd>
 <dt id="albow.core.Widget.Widget.shrink_wrap"><code class="name flex">
@@ -4376,11 +4321,6 @@ Defaults to 1</dd>
 <li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
-<ul class="">
-<li><code><a title="albow.core.Widget.rect_property" href="#albow.core.Widget.rect_property">rect_property</a></code></li>
-</ul>
-</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
@@ -4406,7 +4346,9 @@ Defaults to 1</dd>
 <li><code><a title="albow.core.Widget.Widget.centerx" href="#albow.core.Widget.Widget.centerx">centerx</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.centery" href="#albow.core.Widget.Widget.centery">centery</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.collect_tab_order" href="#albow.core.Widget.Widget.collect_tab_order">collect_tab_order</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.current_cursor" href="#albow.core.Widget.Widget.current_cursor">current_cursor</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.debugSubWidgetDraws" href="#albow.core.Widget.Widget.debugSubWidgetDraws">debugSubWidgetDraws</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.debug_rect" href="#albow.core.Widget.Widget.debug_rect">debug_rect</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.debug_resize" href="#albow.core.Widget.Widget.debug_resize">debug_resize</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.defer_drawing" href="#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.diagnose_subsurface_problem" href="#albow.core.Widget.Widget.diagnose_subsurface_problem">diagnose_subsurface_problem</a></code></li>
@@ -4452,6 +4394,7 @@ Defaults to 1</dd>
 <li><code><a title="albow.core.Widget.Widget.is_inside" href="#albow.core.Widget.Widget.is_inside">is_inside</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.key_down" href="#albow.core.Widget.Widget.key_down">key_down</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.key_up" href="#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.lastDebugRectTime" href="#albow.core.Widget.Widget.lastDebugRectTime">lastDebugRectTime</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.left" href="#albow.core.Widget.Widget.left">left</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.local_to_global" href="#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.local_to_global_offset" href="#albow.core.Widget.Widget.local_to_global_offset">local_to_global_offset</a></code></li>
@@ -4478,6 +4421,7 @@ Defaults to 1</dd>
 <li><code><a title="albow.core.Widget.Widget.resizing_axes" href="#albow.core.Widget.Widget.resizing_axes">resizing_axes</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.resizing_values" href="#albow.core.Widget.Widget.resizing_values">resizing_values</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.right" href="#albow.core.Widget.Widget.right">right</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.root_widget" href="#albow.core.Widget.Widget.root_widget">root_widget</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.scale_bg" href="#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.sel_color" href="#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
 <li><code><a title="albow.core.Widget.Widget.set" href="#albow.core.Widget.Widget.set">set</a></code></li>
@@ -4508,8 +4452,7 @@ Defaults to 1</dd>
 </nav>
 </main>
 <footer id="footer">
-Ported to Python 3 and extended by Humberto A. Sanchez II
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

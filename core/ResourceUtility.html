@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.0" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>albow.core.ResourceUtility API documentation</title>
 <meta name="description" content="The resource module exports some utility functions for finding, loading and caching various types of
 resources.
 By default, resource files are looked …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/far.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
 <style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
@@ -109,32 +109,23 @@ import logging
 import pygame
 from pygame.locals import RLEACCEL
 from pygame import Surface
+from pygame import mixer
 
 from albow.core.DummySound import DummySound
 
-DEFAULT_SOUND_DIRECTORY   = &#34;sounds&#34;
+DEFAULT_SOUND_DIRECTORY  = &#34;sounds&#34;
+DEFAULT_IMAGES_DIRECTORY = &#34;images&#34;
+DEFAULT_FONTS_DIRECTORY  = &#34;fonts&#34;
+DEFAULT_TEXT_DIRECTORY   = &#34;text&#34;
 DEFAULT_CURSORS_DIRECTORY = &#34;cursors&#34;
-DEFAULT_IMAGES_DIRECTORY  = &#34;images&#34;
-DEFAULT_FONTS_DIRECTORY   = &#34;fonts&#34;
-DEFAULT_TEXT_DIRECTORY    = &#34;text&#34;
 
-optimize_images   = True
+DEFAULT_RESOURCE_DIRECTORY_NAMES = [&#34;Resources&#34;, &#34;resources&#34;]
+
+optimize_images = True
 &#34;&#34;&#34;
 If `True`, images loaded with `get_image()` will have `convert_alpha()` called on them by default. Defaults to `True`.
 &#34;&#34;&#34;
 run_length_encode = False
-
-DEFAULT_RESOURCE_DIRECTORY_NAMES = [&#34;Resources&#34;, &#34;resources&#34;]
-
-image_cache  = {}
-font_cache   = {}
-sound_cache  = {}
-text_cache   = {}
-cursor_cache = {}
-
-dummy_sound = DummySound()
-
-ourLogger = logging.getLogger(__name__)
 
 
 class ResourceUtility:
@@ -150,6 +141,15 @@ class ResourceUtility:
     .. Note::
         Make unit tests for sound and cursor APIs since they are not currently demo&#39;ed
     &#34;&#34;&#34;
+
+    dummy_sound = None
+    sound_cache = {}
+    image_cache = {}
+    cursor_cache = {}
+    font_cache = {}
+    text_cache = {}
+
+    ourLogger = logging.getLogger(__name__)
 
     @staticmethod
     def find_resource_dir():
@@ -196,7 +196,7 @@ class ResourceUtility:
         Returns:
 
         &#34;&#34;&#34;
-        prefix = kwds.pop(&#39;prefix&#39;, &#34;%s&#34; % DEFAULT_IMAGES_DIRECTORY)
+        prefix = kwds.pop(&#39;prefix&#39;, DEFAULT_IMAGES_DIRECTORY)
         path = ResourceUtility._resource_path(prefix, names)
         return ResourceUtility._get_image(path, **kwds)
 
@@ -217,7 +217,7 @@ class ResourceUtility:
         &#34;&#34;&#34;
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_FONTS_DIRECTORY, names, **kwds)
         key = (path, size)
-        font = font_cache.get(key)
+        font = ResourceUtility.font_cache.get(key)
         if not font:
             try:
                 font = pygame.font.Font(path, size)
@@ -227,7 +227,7 @@ class ResourceUtility:
             # except IOError, e:
             except IOError as e:
                 raise e.__class__(&#34;%s: %s&#34; % (e, path))
-            font_cache[key] = font
+            ResourceUtility.font_cache[key] = font
         return font
 
     @staticmethod
@@ -244,10 +244,10 @@ class ResourceUtility:
 
         &#34;&#34;&#34;
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_TEXT_DIRECTORY, names, **kwds)
-        text = text_cache.get(path)
+        text = ResourceUtility.text_cache.get(path)
         if text is None:
             text = open(path, &#34;rU&#34;).read()
-            text_cache[path] = text
+            ResourceUtility.text_cache[path] = text
         return text
 
     @staticmethod
@@ -287,7 +287,7 @@ class ResourceUtility:
         return ResourceUtility.load_sound(path)
 
     @staticmethod
-    def load_sound(path) -&gt; &#39;Sound&#39;:
+    def load_sound(path) -&gt; &#34;mixer.Sound&#34;:
         &#34;&#34;&#34;
         Loads a sound from the file specified by path, or returns it from the cache. Like `get_sound()`,
         returns a dummy sound object if the sound cannot be loaded.
@@ -298,10 +298,10 @@ class ResourceUtility:
         Returns: A pygame sound object
 
         &#34;&#34;&#34;
-        if sound_cache is None:
-            return dummy_sound
-        sound = sound_cache.get(path)
-        if not sound:
+        if ResourceUtility.sound_cache is None:
+            return ResourceUtility.dummy_sound
+        retSound = ResourceUtility.sound_cache.get(path)
+        if not retSound:
             try:
                 from pygame.mixer import Sound
             #
@@ -310,19 +310,19 @@ class ResourceUtility:
             # except ImportError, e:
             except ImportError as e:
                 ResourceUtility.no_sound(e)
-                return dummy_sound
+                return ResourceUtility.dummy_sound
             try:
-                sound = Sound(path)
+                retSound = Sound(path)
             #
             # Python 3 update
             #
             # except pygame.error, e:
             except pygame.error as e:
                 ResourceUtility.missing_sound(e, path)
-                return dummy_sound
-            sound_cache[path] = sound
+                return ResourceUtility.dummy_sound
+            ResourceUtility.sound_cache[path] = retSound
 
-        return sound
+        return retSound
 
     @staticmethod
     def no_sound(e):
@@ -332,12 +332,11 @@ class ResourceUtility:
         :param e: Exception to log
         :return:
         &#34;&#34;&#34;
-        global sound_cache
 
-        ourLogger.error(&#34;albow.resource.get_sound: %s&#34;, e)
-        ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
+        ResourceUtility.ourLogger.error(f&#34;albow.resource.get_sound: {e}&#34;)
+        ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
 
-        sound_cache = None
+        ResourceUtility.sound_cache = None
 
     @staticmethod
     def missing_sound(e, name):
@@ -348,7 +347,7 @@ class ResourceUtility:
         :param name: This name of the missing sound
         :return:
         &#34;&#34;&#34;
-        ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)
+        ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)
 
     @staticmethod
     def get_cursor(*names, **kwds):
@@ -361,10 +360,10 @@ class ResourceUtility:
         &#34;&#34;&#34;
 
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_CURSORS_DIRECTORY, names, **kwds)
-        cursor = cursor_cache.get(path)
+        cursor = ResourceUtility.cursor_cache.get(path)
         if cursor is None:
             cursor = ResourceUtility.load_cursor(path)
-            cursor_cache[path] = cursor
+            ResourceUtility.cursor_cache[path] = cursor
         return cursor
 
     @staticmethod
@@ -436,8 +435,8 @@ class ResourceUtility:
         Args:
             path:
 
-            border: If border is specified, a border of that number of pixels is stripped from around the
-            image (making it 2 * border pixels smaller in each direction).
+            border: If border is specified, a border of that number of pixels is stripped from around
+                    the image (making it 2 * border pixels smaller in each direction).
 
             optimize: If optimize is true, convert_alpha() is called on the image.
 
@@ -447,7 +446,7 @@ class ResourceUtility:
 
         Returns:  The specified image from the images directory or returns it from the cache
         &#34;&#34;&#34;
-        image = image_cache.get(path)
+        image = ResourceUtility.image_cache.get(path)
         if not image:
             image = pygame.image.load(path)
             if noalpha:
@@ -461,7 +460,7 @@ class ResourceUtility:
                 b = border
                 d = 2 * border
                 image = image.subsurface(b, b, w - d, h - d)
-            image_cache[path] = image
+            ResourceUtility.image_cache[path] = image
         return image</code></pre>
 </details>
 </section>
@@ -514,6 +513,15 @@ class ResourceUtility:
         Make unit tests for sound and cursor APIs since they are not currently demo&#39;ed
     &#34;&#34;&#34;
 
+    dummy_sound = None
+    sound_cache = {}
+    image_cache = {}
+    cursor_cache = {}
+    font_cache = {}
+    text_cache = {}
+
+    ourLogger = logging.getLogger(__name__)
+
     @staticmethod
     def find_resource_dir():
 
@@ -559,7 +567,7 @@ class ResourceUtility:
         Returns:
 
         &#34;&#34;&#34;
-        prefix = kwds.pop(&#39;prefix&#39;, &#34;%s&#34; % DEFAULT_IMAGES_DIRECTORY)
+        prefix = kwds.pop(&#39;prefix&#39;, DEFAULT_IMAGES_DIRECTORY)
         path = ResourceUtility._resource_path(prefix, names)
         return ResourceUtility._get_image(path, **kwds)
 
@@ -580,7 +588,7 @@ class ResourceUtility:
         &#34;&#34;&#34;
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_FONTS_DIRECTORY, names, **kwds)
         key = (path, size)
-        font = font_cache.get(key)
+        font = ResourceUtility.font_cache.get(key)
         if not font:
             try:
                 font = pygame.font.Font(path, size)
@@ -590,7 +598,7 @@ class ResourceUtility:
             # except IOError, e:
             except IOError as e:
                 raise e.__class__(&#34;%s: %s&#34; % (e, path))
-            font_cache[key] = font
+            ResourceUtility.font_cache[key] = font
         return font
 
     @staticmethod
@@ -607,10 +615,10 @@ class ResourceUtility:
 
         &#34;&#34;&#34;
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_TEXT_DIRECTORY, names, **kwds)
-        text = text_cache.get(path)
+        text = ResourceUtility.text_cache.get(path)
         if text is None:
             text = open(path, &#34;rU&#34;).read()
-            text_cache[path] = text
+            ResourceUtility.text_cache[path] = text
         return text
 
     @staticmethod
@@ -650,7 +658,7 @@ class ResourceUtility:
         return ResourceUtility.load_sound(path)
 
     @staticmethod
-    def load_sound(path) -&gt; &#39;Sound&#39;:
+    def load_sound(path) -&gt; &#34;mixer.Sound&#34;:
         &#34;&#34;&#34;
         Loads a sound from the file specified by path, or returns it from the cache. Like `get_sound()`,
         returns a dummy sound object if the sound cannot be loaded.
@@ -661,10 +669,10 @@ class ResourceUtility:
         Returns: A pygame sound object
 
         &#34;&#34;&#34;
-        if sound_cache is None:
-            return dummy_sound
-        sound = sound_cache.get(path)
-        if not sound:
+        if ResourceUtility.sound_cache is None:
+            return ResourceUtility.dummy_sound
+        retSound = ResourceUtility.sound_cache.get(path)
+        if not retSound:
             try:
                 from pygame.mixer import Sound
             #
@@ -673,19 +681,19 @@ class ResourceUtility:
             # except ImportError, e:
             except ImportError as e:
                 ResourceUtility.no_sound(e)
-                return dummy_sound
+                return ResourceUtility.dummy_sound
             try:
-                sound = Sound(path)
+                retSound = Sound(path)
             #
             # Python 3 update
             #
             # except pygame.error, e:
             except pygame.error as e:
                 ResourceUtility.missing_sound(e, path)
-                return dummy_sound
-            sound_cache[path] = sound
+                return ResourceUtility.dummy_sound
+            ResourceUtility.sound_cache[path] = retSound
 
-        return sound
+        return retSound
 
     @staticmethod
     def no_sound(e):
@@ -695,12 +703,11 @@ class ResourceUtility:
         :param e: Exception to log
         :return:
         &#34;&#34;&#34;
-        global sound_cache
 
-        ourLogger.error(&#34;albow.resource.get_sound: %s&#34;, e)
-        ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
+        ResourceUtility.ourLogger.error(f&#34;albow.resource.get_sound: {e}&#34;)
+        ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
 
-        sound_cache = None
+        ResourceUtility.sound_cache = None
 
     @staticmethod
     def missing_sound(e, name):
@@ -711,7 +718,7 @@ class ResourceUtility:
         :param name: This name of the missing sound
         :return:
         &#34;&#34;&#34;
-        ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)
+        ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)
 
     @staticmethod
     def get_cursor(*names, **kwds):
@@ -724,10 +731,10 @@ class ResourceUtility:
         &#34;&#34;&#34;
 
         path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_CURSORS_DIRECTORY, names, **kwds)
-        cursor = cursor_cache.get(path)
+        cursor = ResourceUtility.cursor_cache.get(path)
         if cursor is None:
             cursor = ResourceUtility.load_cursor(path)
-            cursor_cache[path] = cursor
+            ResourceUtility.cursor_cache[path] = cursor
         return cursor
 
     @staticmethod
@@ -799,8 +806,8 @@ class ResourceUtility:
         Args:
             path:
 
-            border: If border is specified, a border of that number of pixels is stripped from around the
-            image (making it 2 * border pixels smaller in each direction).
+            border: If border is specified, a border of that number of pixels is stripped from around
+                    the image (making it 2 * border pixels smaller in each direction).
 
             optimize: If optimize is true, convert_alpha() is called on the image.
 
@@ -810,7 +817,7 @@ class ResourceUtility:
 
         Returns:  The specified image from the images directory or returns it from the cache
         &#34;&#34;&#34;
-        image = image_cache.get(path)
+        image = ResourceUtility.image_cache.get(path)
         if not image:
             image = pygame.image.load(path)
             if noalpha:
@@ -824,9 +831,40 @@ class ResourceUtility:
                 b = border
                 d = 2 * border
                 image = image.subsurface(b, b, w - d, h - d)
-            image_cache[path] = image
+            ResourceUtility.image_cache[path] = image
         return image</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.core.ResourceUtility.ResourceUtility.cursor_cache"><code class="name">var <span class="ident">cursor_cache</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.dummy_sound"><code class="name">var <span class="ident">dummy_sound</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.font_cache"><code class="name">var <span class="ident">font_cache</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.image_cache"><code class="name">var <span class="ident">image_cache</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.ourLogger"><code class="name">var <span class="ident">ourLogger</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.sound_cache"><code class="name">var <span class="ident">sound_cache</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ResourceUtility.ResourceUtility.text_cache"><code class="name">var <span class="ident">text_cache</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="albow.core.ResourceUtility.ResourceUtility.find_resource_dir"><code class="name flex">
@@ -874,10 +912,10 @@ def get_cursor(*names, **kwds):
     &#34;&#34;&#34;
 
     path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_CURSORS_DIRECTORY, names, **kwds)
-    cursor = cursor_cache.get(path)
+    cursor = ResourceUtility.cursor_cache.get(path)
     if cursor is None:
         cursor = ResourceUtility.load_cursor(path)
-        cursor_cache[path] = cursor
+        ResourceUtility.cursor_cache[path] = cursor
     return cursor</code></pre>
 </details>
 </dd>
@@ -917,7 +955,7 @@ def get_font(size, *names, **kwds):
     &#34;&#34;&#34;
     path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_FONTS_DIRECTORY, names, **kwds)
     key = (path, size)
-    font = font_cache.get(key)
+    font = ResourceUtility.font_cache.get(key)
     if not font:
         try:
             font = pygame.font.Font(path, size)
@@ -927,7 +965,7 @@ def get_font(size, *names, **kwds):
         # except IOError, e:
         except IOError as e:
             raise e.__class__(&#34;%s: %s&#34; % (e, path))
-        font_cache[key] = font
+        ResourceUtility.font_cache[key] = font
     return font</code></pre>
 </details>
 </dd>
@@ -961,7 +999,7 @@ def get_image(*names, **kwds) -&gt; Surface:
     Returns:
 
     &#34;&#34;&#34;
-    prefix = kwds.pop(&#39;prefix&#39;, &#34;%s&#34; % DEFAULT_IMAGES_DIRECTORY)
+    prefix = kwds.pop(&#39;prefix&#39;, DEFAULT_IMAGES_DIRECTORY)
     path = ResourceUtility._resource_path(prefix, names)
     return ResourceUtility._get_image(path, **kwds)</code></pre>
 </details>
@@ -1031,10 +1069,10 @@ def get_text(*names, **kwds):
 
     &#34;&#34;&#34;
     path = ResourceUtility._resource_path(&#34;%s&#34; % DEFAULT_TEXT_DIRECTORY, names, **kwds)
-    text = text_cache.get(path)
+    text = ResourceUtility.text_cache.get(path)
     if text is None:
         text = open(path, &#34;rU&#34;).read()
-        text_cache[path] = text
+        ResourceUtility.text_cache[path] = text
     return text</code></pre>
 </details>
 </dd>
@@ -1136,7 +1174,7 @@ returns a dummy sound object if the sound cannot be loaded.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">@staticmethod
-def load_sound(path) -&gt; &#39;Sound&#39;:
+def load_sound(path) -&gt; &#34;mixer.Sound&#34;:
     &#34;&#34;&#34;
     Loads a sound from the file specified by path, or returns it from the cache. Like `get_sound()`,
     returns a dummy sound object if the sound cannot be loaded.
@@ -1147,10 +1185,10 @@ def load_sound(path) -&gt; &#39;Sound&#39;:
     Returns: A pygame sound object
 
     &#34;&#34;&#34;
-    if sound_cache is None:
-        return dummy_sound
-    sound = sound_cache.get(path)
-    if not sound:
+    if ResourceUtility.sound_cache is None:
+        return ResourceUtility.dummy_sound
+    retSound = ResourceUtility.sound_cache.get(path)
+    if not retSound:
         try:
             from pygame.mixer import Sound
         #
@@ -1159,19 +1197,19 @@ def load_sound(path) -&gt; &#39;Sound&#39;:
         # except ImportError, e:
         except ImportError as e:
             ResourceUtility.no_sound(e)
-            return dummy_sound
+            return ResourceUtility.dummy_sound
         try:
-            sound = Sound(path)
+            retSound = Sound(path)
         #
         # Python 3 update
         #
         # except pygame.error, e:
         except pygame.error as e:
             ResourceUtility.missing_sound(e, path)
-            return dummy_sound
-        sound_cache[path] = sound
+            return ResourceUtility.dummy_sound
+        ResourceUtility.sound_cache[path] = retSound
 
-    return sound</code></pre>
+    return retSound</code></pre>
 </details>
 </dd>
 <dt id="albow.core.ResourceUtility.ResourceUtility.missing_sound"><code class="name flex">
@@ -1193,7 +1231,7 @@ def missing_sound(e, name):
     :param name: This name of the missing sound
     :return:
     &#34;&#34;&#34;
-    ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)</code></pre>
+    ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: %s: %s&#34;, name, e)</code></pre>
 </details>
 </dd>
 <dt id="albow.core.ResourceUtility.ResourceUtility.no_sound"><code class="name flex">
@@ -1213,12 +1251,11 @@ def no_sound(e):
     :param e: Exception to log
     :return:
     &#34;&#34;&#34;
-    global sound_cache
 
-    ourLogger.error(&#34;albow.resource.get_sound: %s&#34;, e)
-    ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
+    ResourceUtility.ourLogger.error(f&#34;albow.resource.get_sound: {e}&#34;)
+    ResourceUtility.ourLogger.error(&#34;albow.resource.get_sound: Sound not available, continuing without it&#34;)
 
-    sound_cache = None</code></pre>
+    ResourceUtility.sound_cache = None</code></pre>
 </details>
 </dd>
 <dt id="albow.core.ResourceUtility.ResourceUtility.resource_exists"><code class="name flex">
@@ -1308,18 +1345,25 @@ def resource_path(*names, **kwds) -&gt; str:
 <li>
 <h4><code><a title="albow.core.ResourceUtility.ResourceUtility" href="#albow.core.ResourceUtility.ResourceUtility">ResourceUtility</a></code></h4>
 <ul class="two-column">
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.cursor_cache" href="#albow.core.ResourceUtility.ResourceUtility.cursor_cache">cursor_cache</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.dummy_sound" href="#albow.core.ResourceUtility.ResourceUtility.dummy_sound">dummy_sound</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.find_resource_dir" href="#albow.core.ResourceUtility.ResourceUtility.find_resource_dir">find_resource_dir</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.font_cache" href="#albow.core.ResourceUtility.ResourceUtility.font_cache">font_cache</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.get_cursor" href="#albow.core.ResourceUtility.ResourceUtility.get_cursor">get_cursor</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.get_font" href="#albow.core.ResourceUtility.ResourceUtility.get_font">get_font</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.get_image" href="#albow.core.ResourceUtility.ResourceUtility.get_image">get_image</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.get_sound" href="#albow.core.ResourceUtility.ResourceUtility.get_sound">get_sound</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.get_text" href="#albow.core.ResourceUtility.ResourceUtility.get_text">get_text</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.image_cache" href="#albow.core.ResourceUtility.ResourceUtility.image_cache">image_cache</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.load_cursor" href="#albow.core.ResourceUtility.ResourceUtility.load_cursor">load_cursor</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.load_sound" href="#albow.core.ResourceUtility.ResourceUtility.load_sound">load_sound</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.missing_sound" href="#albow.core.ResourceUtility.ResourceUtility.missing_sound">missing_sound</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.no_sound" href="#albow.core.ResourceUtility.ResourceUtility.no_sound">no_sound</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.ourLogger" href="#albow.core.ResourceUtility.ResourceUtility.ourLogger">ourLogger</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.resource_exists" href="#albow.core.ResourceUtility.ResourceUtility.resource_exists">resource_exists</a></code></li>
 <li><code><a title="albow.core.ResourceUtility.ResourceUtility.resource_path" href="#albow.core.ResourceUtility.ResourceUtility.resource_path">resource_path</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.sound_cache" href="#albow.core.ResourceUtility.ResourceUtility.sound_cache">sound_cache</a></code></li>
+<li><code><a title="albow.core.ResourceUtility.ResourceUtility.text_cache" href="#albow.core.ResourceUtility.ResourceUtility.text_cache">text_cache</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1328,8 +1372,7 @@ def resource_path(*names, **kwds) -&gt; str:
 </nav>
 </main>
 <footer id="footer">
-Ported to Python 3 and extended by Humberto A. Sanchez II
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

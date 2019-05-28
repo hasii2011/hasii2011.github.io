@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>albow.widgets.TextBox API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.widgets.TextBox</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from typing import List
+
+import logging
+
+from pygame import Surface
+from pygame import Rect
+from pygame import draw
+from pygame.event import Event
+
+from albow.utils import overridable_property
+
+from albow.core.Widget import Widget
+
+from albow.themes.ThemeProperty import ThemeProperty
+
+
+class TextBox(Widget):
+    &#34;&#34;&#34;
+    This is a basic _read-only_ multi-line display widget with support for scrolling.  Currently,
+    the API consumer breaks up lines via the `LINE_SEPARATOR` character.  The widget automatically
+    displays scroll buttons when the number of lines in `text` exceeds the `numberOfRows`
+
+    &#34;&#34;&#34;
+    LINE_SEPARATOR = &#34;\n&#34;
+    &#34;&#34;&#34;
+    The character to use to break up lines in the text widget
+    &#34;&#34;&#34;
+    CANONICAL_WIDEST_TALLEST_CHARACTER = &#34;W&#34;
+
+    text = overridable_property(&#39;text&#39;)
+    &#34;&#34;&#34;
+    The text to be displayed. This can be changed dynamically
+    &#34;&#34;&#34;
+    disabled_color = ThemeProperty(&#39;disabled_color&#39;)
+    &#34;&#34;&#34;
+    The color to use when the text box is disabled
+    &#34;&#34;&#34;
+    enabled_bg_color = ThemeProperty(&#39;enabled_bg_color&#39;)
+    &#34;&#34;&#34;
+    The enabled background color
+    &#34;&#34;&#34;
+    disabled_bg_color = ThemeProperty(&#39;disabled_bg_color&#39;)
+    &#34;&#34;&#34;
+    The disabled background color
+    &#34;&#34;&#34;
+    scroll_button_size = ThemeProperty(&#39;scroll_button_size&#39;)
+    &#34;&#34;&#34;
+    Size of the scrolling buttons. This is a number, not a tuple -- the scroll buttons are square.
+    &#34;&#34;&#34;
+    scroll_button_color = ThemeProperty(&#39;scroll_button_color&#39;)
+    &#34;&#34;&#34;
+        Color in which to draw the scrolling buttons.
+    &#34;&#34;&#34;
+    def __init__(self, theText: str = &#34;&#34;, theNumberOfColumns: int = 28, theNumberOfRows: int = 6, **kwds):
+        &#34;&#34;&#34;
+
+        Args:
+            theText:   The text to display in the multi-line widget
+
+            theNumberOfColumns:  The number of columns to display.  One column is one character
+
+            theNumberOfRows:  The number of rows to display.  One text line is one row
+
+            **kwds: Additional key value pairs that affect the text widget
+        &#34;&#34;&#34;
+
+        self.logger = logging.getLogger(__name__)
+
+        super().__init__(**kwds)
+
+        self.margin = 4
+        lines: List = []
+        if theText is not None:
+            lines = theText.strip().split(TextBox.LINE_SEPARATOR)
+
+        self.numberOfColumns = theNumberOfColumns
+        self.numberOfRows = theNumberOfRows
+        self.firstRow = 0
+        &#34;&#34;&#34;&#34;The index into `lines` as the first line to display&#34;&#34;&#34;
+
+        self.size = self.computeBoxSize(theNumberOfColumns, theNumberOfRows)
+
+        self.lines = lines
+        &#34;&#34;&#34; Saves the broken up lines&#34;&#34;&#34;
+        self._text = theText
+        self.logger.debug(f&#34;size: {self.size}&#34;)
+
+    def get_text(self):
+        return self._text
+
+    def set_text(self, theNewText: str):
+
+        lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
+        self.lines = lines
+        self._text = theNewText
+
+    def draw(self, theSurface: Surface):
+        &#34;&#34;&#34;
+
+        Args:
+            theSurface:  The surface onto which to draw
+
+        &#34;&#34;&#34;
+        r = theSurface.get_rect()
+        b = self.border_width
+        if b:
+            e = - 2 * b
+            r.inflate_ip(e, e)
+        theSurface.fill(self.bg_color, r)
+
+        x = self.margin
+        y = self.margin
+
+        color = self.fg_color
+        firstIdx = self.firstRow
+        if len(self.lines) &lt; self.numberOfRows:
+            lastIdx = len(self.lines) - 1
+        else:
+            lastIdx = firstIdx + self.numberOfRows - 1
+            if lastIdx &gt;= len(self.lines):
+                lastIdx = len(self.lines) - 1
+
+        self.logger.debug(f&#34;firstIdx: {firstIdx} lastIdx: {lastIdx}&#34;)
+        for idx in range(firstIdx, lastIdx):
+
+            buf = self.font.render(self.lines[idx], True, color)
+            theSurface.blit(buf, (x, y))
+            y += buf.get_rect().height
+
+        if len(self.lines) &gt; self.numberOfRows:
+            self.draw_scroll_up_button(theSurface)
+            self.draw_scroll_down_button(theSurface)
+
+    def mouse_down(self, theEvent: Event):
+
+        localPosition = theEvent.local
+
+        scrollDownRect: Rect = self.scroll_down_rect()
+        scrollUpRect: Rect = self.scroll_up_rect()
+
+        scrolledDown: bool = scrollDownRect.collidepoint(localPosition[0], localPosition[1])
+        scrolledUp: bool = scrollUpRect.collidepoint(localPosition[0], localPosition[1])
+
+        if scrolledDown:
+            self.firstRow += 1
+        elif scrolledUp:
+            if self.firstRow != 0:
+                self.firstRow -= 1
+
+        if self.firstRow &lt; 0:
+            self.firstRow = 0
+        if self.firstRow &gt;= len(self.lines) - 1:
+            self.firstRow = len(self.lines) - 1
+
+        self.logger.info(f&#34;firstRow: {self.firstRow} -- len(self.lines) {len(self.lines)}&#34;)
+
+    def computeBoxSize(self, theNumberOfColumns: int, theNumberOfRows: int) -&gt; tuple:
+
+        width, height = self.font.size(TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER)
+
+        self.logger.debug(f&#34;width: {width}, height: {height}&#34;)
+
+        size = (width * theNumberOfColumns, (height * theNumberOfRows) - self.margin)
+        self.logger.debug(f&#34;size {size}&#34;)
+
+        return size
+
+    def draw_scroll_up_button(self, theSurface: Surface):
+
+        r = self.scroll_up_rect()
+        c = self.scroll_button_color
+        draw.polygon(theSurface, c, [r.bottomleft, r.midtop, r.bottomright])
+
+    def draw_scroll_down_button(self, theSurface: Surface):
+
+        r = self.scroll_down_rect()
+        c = self.scroll_button_color
+        draw.polygon(theSurface, c, [r.topleft, r.midbottom, r.topright])
+
+    def scroll_up_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.top = m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+        return r
+
+    def scroll_down_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.bottom = self.height - m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+
+        return r</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.widgets.TextBox.TextBox"><code class="flex name class">
+<span>class <span class="ident">TextBox</span></span>
+<span>(</span><span>theText='', theNumberOfColumns=28, theNumberOfRows=6, **kwds)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This is a basic <em>read-only</em> multi-line display widget with support for scrolling.
+Currently,
+the API consumer breaks up lines via the <code>LINE_SEPARATOR</code> character.
+The widget automatically
+displays scroll buttons when the number of lines in <code>text</code> exceeds the <code>numberOfRows</code></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theText</code></strong></dt>
+<dd>The text to display in the multi-line widget</dd>
+<dt><strong><code>theNumberOfColumns</code></strong></dt>
+<dd>The number of columns to display.
+One column is one character</dd>
+<dt><strong><code>theNumberOfRows</code></strong></dt>
+<dd>The number of rows to display.
+One text line is one row</dd>
+<dt><strong><code>**kwds</code></strong></dt>
+<dd>Additional key value pairs that affect the text widget</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class TextBox(Widget):
+    &#34;&#34;&#34;
+    This is a basic _read-only_ multi-line display widget with support for scrolling.  Currently,
+    the API consumer breaks up lines via the `LINE_SEPARATOR` character.  The widget automatically
+    displays scroll buttons when the number of lines in `text` exceeds the `numberOfRows`
+
+    &#34;&#34;&#34;
+    LINE_SEPARATOR = &#34;\n&#34;
+    &#34;&#34;&#34;
+    The character to use to break up lines in the text widget
+    &#34;&#34;&#34;
+    CANONICAL_WIDEST_TALLEST_CHARACTER = &#34;W&#34;
+
+    text = overridable_property(&#39;text&#39;)
+    &#34;&#34;&#34;
+    The text to be displayed. This can be changed dynamically
+    &#34;&#34;&#34;
+    disabled_color = ThemeProperty(&#39;disabled_color&#39;)
+    &#34;&#34;&#34;
+    The color to use when the text box is disabled
+    &#34;&#34;&#34;
+    enabled_bg_color = ThemeProperty(&#39;enabled_bg_color&#39;)
+    &#34;&#34;&#34;
+    The enabled background color
+    &#34;&#34;&#34;
+    disabled_bg_color = ThemeProperty(&#39;disabled_bg_color&#39;)
+    &#34;&#34;&#34;
+    The disabled background color
+    &#34;&#34;&#34;
+    scroll_button_size = ThemeProperty(&#39;scroll_button_size&#39;)
+    &#34;&#34;&#34;
+    Size of the scrolling buttons. This is a number, not a tuple -- the scroll buttons are square.
+    &#34;&#34;&#34;
+    scroll_button_color = ThemeProperty(&#39;scroll_button_color&#39;)
+    &#34;&#34;&#34;
+        Color in which to draw the scrolling buttons.
+    &#34;&#34;&#34;
+    def __init__(self, theText: str = &#34;&#34;, theNumberOfColumns: int = 28, theNumberOfRows: int = 6, **kwds):
+        &#34;&#34;&#34;
+
+        Args:
+            theText:   The text to display in the multi-line widget
+
+            theNumberOfColumns:  The number of columns to display.  One column is one character
+
+            theNumberOfRows:  The number of rows to display.  One text line is one row
+
+            **kwds: Additional key value pairs that affect the text widget
+        &#34;&#34;&#34;
+
+        self.logger = logging.getLogger(__name__)
+
+        super().__init__(**kwds)
+
+        self.margin = 4
+        lines: List = []
+        if theText is not None:
+            lines = theText.strip().split(TextBox.LINE_SEPARATOR)
+
+        self.numberOfColumns = theNumberOfColumns
+        self.numberOfRows = theNumberOfRows
+        self.firstRow = 0
+        &#34;&#34;&#34;&#34;The index into `lines` as the first line to display&#34;&#34;&#34;
+
+        self.size = self.computeBoxSize(theNumberOfColumns, theNumberOfRows)
+
+        self.lines = lines
+        &#34;&#34;&#34; Saves the broken up lines&#34;&#34;&#34;
+        self._text = theText
+        self.logger.debug(f&#34;size: {self.size}&#34;)
+
+    def get_text(self):
+        return self._text
+
+    def set_text(self, theNewText: str):
+
+        lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
+        self.lines = lines
+        self._text = theNewText
+
+    def draw(self, theSurface: Surface):
+        &#34;&#34;&#34;
+
+        Args:
+            theSurface:  The surface onto which to draw
+
+        &#34;&#34;&#34;
+        r = theSurface.get_rect()
+        b = self.border_width
+        if b:
+            e = - 2 * b
+            r.inflate_ip(e, e)
+        theSurface.fill(self.bg_color, r)
+
+        x = self.margin
+        y = self.margin
+
+        color = self.fg_color
+        firstIdx = self.firstRow
+        if len(self.lines) &lt; self.numberOfRows:
+            lastIdx = len(self.lines) - 1
+        else:
+            lastIdx = firstIdx + self.numberOfRows - 1
+            if lastIdx &gt;= len(self.lines):
+                lastIdx = len(self.lines) - 1
+
+        self.logger.debug(f&#34;firstIdx: {firstIdx} lastIdx: {lastIdx}&#34;)
+        for idx in range(firstIdx, lastIdx):
+
+            buf = self.font.render(self.lines[idx], True, color)
+            theSurface.blit(buf, (x, y))
+            y += buf.get_rect().height
+
+        if len(self.lines) &gt; self.numberOfRows:
+            self.draw_scroll_up_button(theSurface)
+            self.draw_scroll_down_button(theSurface)
+
+    def mouse_down(self, theEvent: Event):
+
+        localPosition = theEvent.local
+
+        scrollDownRect: Rect = self.scroll_down_rect()
+        scrollUpRect: Rect = self.scroll_up_rect()
+
+        scrolledDown: bool = scrollDownRect.collidepoint(localPosition[0], localPosition[1])
+        scrolledUp: bool = scrollUpRect.collidepoint(localPosition[0], localPosition[1])
+
+        if scrolledDown:
+            self.firstRow += 1
+        elif scrolledUp:
+            if self.firstRow != 0:
+                self.firstRow -= 1
+
+        if self.firstRow &lt; 0:
+            self.firstRow = 0
+        if self.firstRow &gt;= len(self.lines) - 1:
+            self.firstRow = len(self.lines) - 1
+
+        self.logger.info(f&#34;firstRow: {self.firstRow} -- len(self.lines) {len(self.lines)}&#34;)
+
+    def computeBoxSize(self, theNumberOfColumns: int, theNumberOfRows: int) -&gt; tuple:
+
+        width, height = self.font.size(TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER)
+
+        self.logger.debug(f&#34;width: {width}, height: {height}&#34;)
+
+        size = (width * theNumberOfColumns, (height * theNumberOfRows) - self.margin)
+        self.logger.debug(f&#34;size {size}&#34;)
+
+        return size
+
+    def draw_scroll_up_button(self, theSurface: Surface):
+
+        r = self.scroll_up_rect()
+        c = self.scroll_button_color
+        draw.polygon(theSurface, c, [r.bottomleft, r.midtop, r.bottomright])
+
+    def draw_scroll_down_button(self, theSurface: Surface):
+
+        r = self.scroll_down_rect()
+        c = self.scroll_button_color
+        draw.polygon(theSurface, c, [r.topleft, r.midbottom, r.topright])
+
+    def scroll_up_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.top = m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+        return r
+
+    def scroll_down_rect(self):
+
+        d = self.scroll_button_size
+        r = Rect(0, 0, d, d)
+        m = self.margin
+        r.bottom = self.height - m
+        r.right = self.width - m
+        r.inflate_ip(-4, -4)
+
+        return r</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.widgets.TextBox.TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER"><code class="name">var <span class="ident">CANONICAL_WIDEST_TALLEST_CHARACTER</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.LINE_SEPARATOR"><code class="name">var <span class="ident">LINE_SEPARATOR</span></code></dt>
+<dd>
+<section class="desc"><p>The character to use to break up lines in the text widget</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.disabled_bg_color"><code class="name">var <span class="ident">disabled_bg_color</span></code></dt>
+<dd>
+<section class="desc"><p>The disabled background color</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.disabled_color"><code class="name">var <span class="ident">disabled_color</span></code></dt>
+<dd>
+<section class="desc"><p>The color to use when the text box is disabled</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.enabled_bg_color"><code class="name">var <span class="ident">enabled_bg_color</span></code></dt>
+<dd>
+<section class="desc"><p>The enabled background color</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.scroll_button_color"><code class="name">var <span class="ident">scroll_button_color</span></code></dt>
+<dd>
+<section class="desc"><p>Color in which to draw the scrolling buttons.</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.scroll_button_size"><code class="name">var <span class="ident">scroll_button_size</span></code></dt>
+<dd>
+<section class="desc"><p>Size of the scrolling buttons. This is a number, not a tuple &ndash; the scroll buttons are square.</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.text"><code class="name">var <span class="ident">text</span></code></dt>
+<dd>
+<section class="desc"><p>The text to be displayed. This can be changed dynamically</p></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="albow.widgets.TextBox.TextBox.firstRow"><code class="name">var <span class="ident">firstRow</span></code></dt>
+<dd>
+<section class="desc"><p>"The index into <code>lines</code> as the first line to display</p></section>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.lines"><code class="name">var <span class="ident">lines</span></code></dt>
+<dd>
+<section class="desc"><p>Saves the broken up lines</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.widgets.TextBox.TextBox.computeBoxSize"><code class="name flex">
+<span>def <span class="ident">computeBoxSize</span></span>(<span>self, theNumberOfColumns, theNumberOfRows)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def computeBoxSize(self, theNumberOfColumns: int, theNumberOfRows: int) -&gt; tuple:
+
+    width, height = self.font.size(TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER)
+
+    self.logger.debug(f&#34;width: {width}, height: {height}&#34;)
+
+    size = (width * theNumberOfColumns, (height * theNumberOfRows) - self.margin)
+    self.logger.debug(f&#34;size {size}&#34;)
+
+    return size</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, theSurface)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theSurface</code></strong></dt>
+<dd>The surface onto which to draw</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw(self, theSurface: Surface):
+    &#34;&#34;&#34;
+
+    Args:
+        theSurface:  The surface onto which to draw
+
+    &#34;&#34;&#34;
+    r = theSurface.get_rect()
+    b = self.border_width
+    if b:
+        e = - 2 * b
+        r.inflate_ip(e, e)
+    theSurface.fill(self.bg_color, r)
+
+    x = self.margin
+    y = self.margin
+
+    color = self.fg_color
+    firstIdx = self.firstRow
+    if len(self.lines) &lt; self.numberOfRows:
+        lastIdx = len(self.lines) - 1
+    else:
+        lastIdx = firstIdx + self.numberOfRows - 1
+        if lastIdx &gt;= len(self.lines):
+            lastIdx = len(self.lines) - 1
+
+    self.logger.debug(f&#34;firstIdx: {firstIdx} lastIdx: {lastIdx}&#34;)
+    for idx in range(firstIdx, lastIdx):
+
+        buf = self.font.render(self.lines[idx], True, color)
+        theSurface.blit(buf, (x, y))
+        y += buf.get_rect().height
+
+    if len(self.lines) &gt; self.numberOfRows:
+        self.draw_scroll_up_button(theSurface)
+        self.draw_scroll_down_button(theSurface)</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.draw_scroll_down_button"><code class="name flex">
+<span>def <span class="ident">draw_scroll_down_button</span></span>(<span>self, theSurface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_scroll_down_button(self, theSurface: Surface):
+
+    r = self.scroll_down_rect()
+    c = self.scroll_button_color
+    draw.polygon(theSurface, c, [r.topleft, r.midbottom, r.topright])</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.draw_scroll_up_button"><code class="name flex">
+<span>def <span class="ident">draw_scroll_up_button</span></span>(<span>self, theSurface)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw_scroll_up_button(self, theSurface: Surface):
+
+    r = self.scroll_up_rect()
+    c = self.scroll_button_color
+    draw.polygon(theSurface, c, [r.bottomleft, r.midtop, r.bottomright])</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.get_text"><code class="name flex">
+<span>def <span class="ident">get_text</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_text(self):
+    return self._text</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.mouse_down"><code class="name flex">
+<span>def <span class="ident">mouse_down</span></span>(<span>self, theEvent)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def mouse_down(self, theEvent: Event):
+
+    localPosition = theEvent.local
+
+    scrollDownRect: Rect = self.scroll_down_rect()
+    scrollUpRect: Rect = self.scroll_up_rect()
+
+    scrolledDown: bool = scrollDownRect.collidepoint(localPosition[0], localPosition[1])
+    scrolledUp: bool = scrollUpRect.collidepoint(localPosition[0], localPosition[1])
+
+    if scrolledDown:
+        self.firstRow += 1
+    elif scrolledUp:
+        if self.firstRow != 0:
+            self.firstRow -= 1
+
+    if self.firstRow &lt; 0:
+        self.firstRow = 0
+    if self.firstRow &gt;= len(self.lines) - 1:
+        self.firstRow = len(self.lines) - 1
+
+    self.logger.info(f&#34;firstRow: {self.firstRow} -- len(self.lines) {len(self.lines)}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.scroll_down_rect"><code class="name flex">
+<span>def <span class="ident">scroll_down_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_down_rect(self):
+
+    d = self.scroll_button_size
+    r = Rect(0, 0, d, d)
+    m = self.margin
+    r.bottom = self.height - m
+    r.right = self.width - m
+    r.inflate_ip(-4, -4)
+
+    return r</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.scroll_up_rect"><code class="name flex">
+<span>def <span class="ident">scroll_up_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def scroll_up_rect(self):
+
+    d = self.scroll_button_size
+    r = Rect(0, 0, d, d)
+    m = self.margin
+    r.top = m
+    r.right = self.width - m
+    r.inflate_ip(-4, -4)
+    return r</code></pre>
+</details>
+</dd>
+<dt id="albow.widgets.TextBox.TextBox.set_text"><code class="name flex">
+<span>def <span class="ident">set_text</span></span>(<span>self, theNewText)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_text(self, theNewText: str):
+
+    lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
+    self.lines = lines
+    self._text = theNewText</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.core.Widget.Widget.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.Widget.Widget.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.widgets" href="index.html">albow.widgets</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.widgets.TextBox.TextBox" href="#albow.widgets.TextBox.TextBox">TextBox</a></code></h4>
+<ul class="">
+<li><code><a title="albow.widgets.TextBox.TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER" href="#albow.widgets.TextBox.TextBox.CANONICAL_WIDEST_TALLEST_CHARACTER">CANONICAL_WIDEST_TALLEST_CHARACTER</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.LINE_SEPARATOR" href="#albow.widgets.TextBox.TextBox.LINE_SEPARATOR">LINE_SEPARATOR</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.computeBoxSize" href="#albow.widgets.TextBox.TextBox.computeBoxSize">computeBoxSize</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.disabled_bg_color" href="#albow.widgets.TextBox.TextBox.disabled_bg_color">disabled_bg_color</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.disabled_color" href="#albow.widgets.TextBox.TextBox.disabled_color">disabled_color</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.draw" href="#albow.widgets.TextBox.TextBox.draw">draw</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.draw_scroll_down_button" href="#albow.widgets.TextBox.TextBox.draw_scroll_down_button">draw_scroll_down_button</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.draw_scroll_up_button" href="#albow.widgets.TextBox.TextBox.draw_scroll_up_button">draw_scroll_up_button</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.enabled_bg_color" href="#albow.widgets.TextBox.TextBox.enabled_bg_color">enabled_bg_color</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.firstRow" href="#albow.widgets.TextBox.TextBox.firstRow">firstRow</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.get_text" href="#albow.widgets.TextBox.TextBox.get_text">get_text</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.lines" href="#albow.widgets.TextBox.TextBox.lines">lines</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.mouse_down" href="#albow.widgets.TextBox.TextBox.mouse_down">mouse_down</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.scroll_button_color" href="#albow.widgets.TextBox.TextBox.scroll_button_color">scroll_button_color</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.scroll_button_size" href="#albow.widgets.TextBox.TextBox.scroll_button_size">scroll_button_size</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.scroll_down_rect" href="#albow.widgets.TextBox.TextBox.scroll_down_rect">scroll_down_rect</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.scroll_up_rect" href="#albow.widgets.TextBox.TextBox.scroll_up_rect">scroll_up_rect</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.set_text" href="#albow.widgets.TextBox.TextBox.set_text">set_text</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.text" href="#albow.widgets.TextBox.TextBox.text">text</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

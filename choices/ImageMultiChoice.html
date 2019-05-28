@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.0" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>albow.choices.ImageMultiChoice API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/far.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
 <style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
@@ -145,383 +145,8 @@ class ImageMultiChoice(MultiChoice):
 <li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
 <li><a title="albow.widgets.Control.Control" href="../widgets/Control.html#albow.widgets.Control.Control">Control</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.anchor"><code class="name">var <span class="ident">anchor</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.anchor" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.anchor">anchor</a></code>
-</p>
-<section class="desc inherited"><p>A string specifying how this widget is to change in size and position when its parent widget changes size. The
-letters 'l', 'r', 't' and 'b' are used …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.bg_color"><code class="name">var <span class="ident">bg_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.bg_color" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.bg_color">bg_color</a></code>
-</p>
-<section class="desc inherited"><p>Background colour of the widget. If specified, the widget's rect is filled with this colour before drawing its
-contents. If no background colour is …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.bg_image"><code class="name">var <span class="ident">bg_image</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.bg_image" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.bg_image">bg_image</a></code>
-</p>
-<section class="desc inherited"><p>An image to be displayed in the background. If specified, this overrides any bg_color.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.border_color"><code class="name">var <span class="ident">border_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.border_color" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.border_color">border_color</a></code>
-</p>
-<section class="desc inherited"><p>Color in which to draw the border specified by border_width.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.border_width"><code class="name">var <span class="ident">border_width</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.border_width" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.border_width">border_width</a></code>
-</p>
-<section class="desc inherited"><p>Width of a border to be drawn inside the outer edge of the widget. If this is unspecified or set to zero,
-no border is drawn.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.enable"><code class="name">var <span class="ident">enable</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.enable" href="../widgets/Control.html#albow.choices.MultiChoice.MultiChoice.enable">enable</a></code>
-</p>
-<section class="desc inherited"><p>A function with no arguments that returns a boolean indicating whether the button should be enabled.
-May also be defined as a method in the subclass.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.enabled"><code class="name">var <span class="ident">enabled</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.enabled" href="../widgets/Control.html#albow.choices.MultiChoice.MultiChoice.enabled">enabled</a></code>
-</p>
-<section class="desc inherited"><p>A boolean indicating whether the control is enabled. Defaults to True. By default, this property is
-read-write and maintains
-its own state internal …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.fg_color"><code class="name">var <span class="ident">fg_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.fg_color" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.fg_color">fg_color</a></code>
-</p>
-<section class="desc inherited"><p>Foreground colour for the contents of the widget. How this property is used depends on the widget. Some widgets
-have additional colour properties for …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.focus_switch"><code class="name">var <span class="ident">focus_switch</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.focus_switch" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.focus_switch">focus_switch</a></code>
-</p>
-<section class="desc inherited"><p>subwidget to receive key events</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.font"><code class="name">var <span class="ident">font</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.font" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.font">font</a></code>
-</p>
-<section class="desc inherited"><p>Font to use for drawing text in the widget. How this property is used depends on the widget. Some widgets have
-additional font properties for …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_style"><code class="name">var <span class="ident">highlight_style</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.highlight_style" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.highlight_style">highlight_style</a></code>
-</p>
-<section class="desc inherited"><p>Determines the way in which a selected cell is highlighted. Values are: …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.highlighted"><code class="name">var <span class="ident">highlighted</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.highlighted" href="../widgets/Control.html#albow.choices.MultiChoice.MultiChoice.highlighted">highlighted</a></code>
-</p>
-<section class="desc inherited"><p>True if the button should be displayed in a highlighted state. This attribute is maintained by the
-default mouse handlers.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.is_gl_container"><code class="name">var <span class="ident">is_gl_container</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.is_gl_container" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.is_gl_container">is_gl_container</a></code>
-</p>
-<section class="desc inherited"><p>Controls the drawing behaviour of the widget when used in an OpenGL window. When true, …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.margin"><code class="name">var <span class="ident">margin</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.margin" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.margin">margin</a></code>
-</p>
-<section class="desc inherited"><p>The amount of space to leave between the edge of the widget and its contents. Note that this distance includes the
-border_width, e.g. if border_width …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.menu_bar"><code class="name">var <span class="ident">menu_bar</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.menu_bar" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.menu_bar">menu_bar</a></code>
-</p>
-<section class="desc inherited"><p>A MenuBar to be attached to and managed by this widget. Assigning to the menu_bar property automatically adds the
-menu bar as a child widget. Also, …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.parent"><code class="name">var <span class="ident">parent</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.parent" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.parent">parent</a></code>
-</p>
-<section class="desc inherited"><p>Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another
-widget. A widget must ultimately be …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.rect"><code class="name">var <span class="ident">rect</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.rect" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.rect">rect</a></code>
-</p>
-<section class="desc inherited"><p>bounds in parent's coordinates</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.ref"><code class="name">var <span class="ident">ref</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.ref" href="../widgets/Control.html#albow.choices.MultiChoice.MultiChoice.ref">ref</a></code>
-</p>
-<section class="desc inherited"><p>Reference to an external value. If supplied, it should be a reference object or other object providing
-the following methods: …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.scale_bg"><code class="name">var <span class="ident">scale_bg</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.scale_bg" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.scale_bg">scale_bg</a></code>
-</p>
-<section class="desc inherited"><p>If true, and the background image is smaller than the widget in either direction, the background image is scaled
-to fill the widget, otherwise it is …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_color"><code class="name">var <span class="ident">scroll_button_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.scroll_button_color" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.scroll_button_color">scroll_button_color</a></code>
-</p>
-<section class="desc inherited"><p>Color in which to draw the scrolling buttons.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_size"><code class="name">var <span class="ident">scroll_button_size</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.scroll_button_size" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.scroll_button_size">scroll_button_size</a></code>
-</p>
-<section class="desc inherited"><p>Size of the scrolling buttons. (This is a number, not a tuple &ndash; the scroll buttons are square.)</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.sel_color"><code class="name">var <span class="ident">sel_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.sel_color" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.sel_color">sel_color</a></code>
-</p>
-<section class="desc inherited"><p>The ThemeProperty class is a property descriptor used for defining theme properties …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.sel_width"><code class="name">var <span class="ident">sel_width</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.sel_width" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.sel_width">sel_width</a></code>
-</p>
-<section class="desc inherited"><p>Width of the border drawn around the selected item when the highlight_style is 'frame'.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.tab_stop"><code class="name">var <span class="ident">tab_stop</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.containers.PaletteView.PaletteView" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView">PaletteView</a></code>.<code><a title="albow.containers.PaletteView.PaletteView.tab_stop" href="../core/Widget.html#albow.containers.PaletteView.PaletteView.tab_stop">tab_stop</a></code>
-</p>
-<section class="desc inherited"><p>True if this widget should receive the keyboard focus when the user presses the Tab key. Defaults to false.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.value"><code class="name">var <span class="ident">value</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.value" href="../widgets/Control.html#albow.choices.MultiChoice.MultiChoice.value">value</a></code>
-</p>
-<section class="desc inherited"><p>The current value of the Control. If a ref has been supplied, accesses the value that it specifies. Otherwise,
-accesses a value stored internally in …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.visible"><code class="name">var <span class="ident">visible</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.visible" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.visible">visible</a></code>
-</p>
-<section class="desc inherited"><p>When true, the widget is visible and active. When false, the widget is invisible and will not receive events.
-Defaults to true. The behaviour of this …</p></section>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.cell_margin"><code class="name">var <span class="ident">cell_margin</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.cell_margin" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.cell_margin">cell_margin</a></code>
-</p>
-<section class="desc inherited"><p>The ThemeProperty class is a property descriptor used for defining theme properties …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_color"><code class="name">var <span class="ident">highlight_color</span></code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.highlight_color" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.highlight_color">highlight_color</a></code>
-</p>
-<section class="desc inherited"><p>The ThemeProperty class is a property descriptor used for defining theme properties …</p></section>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, arg)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.add" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.add">add</a></code>
-</p>
-<section class="desc inherited"><p>Adds the given widget or sequence of widgets as a subwidget of this widget …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.add_anchor"><code class="name flex">
-<span>def <span class="ident">add_anchor</span></span>(<span>self, mode)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.add_anchor" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.add_anchor">add_anchor</a></code>
-</p>
-<section class="desc inherited"><p>Adds the options specified by mode to the anchor property …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.add_centered"><code class="name flex">
-<span>def <span class="ident">add_centered</span></span>(<span>self, widget)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.add_centered" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.add_centered">add_centered</a></code>
-</p>
-<section class="desc inherited"><p>Adds the given widget and positions it in the center of this widget …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.attention_lost"><code class="name flex">
-<span>def <span class="ident">attention_lost</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.attention_lost" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.attention_lost">attention_lost</a></code>
-</p>
-<section class="desc inherited"><p>Called when the widget is on the focus path, and a mouse-down event occurs in any widget which is not on
-the focus path. The focus path is defined as …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.augment_mouse_event"><code class="name flex">
-<span>def <span class="ident">augment_mouse_event</span></span>(<span>self, event)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.augment_mouse_event" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.augment_mouse_event">augment_mouse_event</a></code>
-</p>
-<section class="desc inherited"><p>Python 3 update.
-local really needs to be a list …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.call_handler"><code class="name flex">
-<span>def <span class="ident">call_handler</span></span>(<span>self, name, *args)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.call_handler" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.call_handler">call_handler</a></code>
-</p>
-<section class="desc inherited"><p>If the widget has a method with the given name, it is called with the given arguments, and its return value is
-is returned. Otherwise, nothing is done …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.call_parent_handler"><code class="name flex">
-<span>def <span class="ident">call_parent_handler</span></span>(<span>self, name, *args)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.call_parent_handler" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.call_parent_handler">call_parent_handler</a></code>
-</p>
-<section class="desc inherited"><p>Invokes call_handler on the parent of this widget, if any. This can be used to pass an event on to a
-parent widget if you don't want to handle it …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.cell_rect"><code class="name flex">
-<span>def <span class="ident">cell_rect</span></span>(<span>self, theRow, theColumn)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.cell_rect" href="../containers/GridView.html#albow.choices.MultiChoice.MultiChoice.cell_rect">cell_rect</a></code>
-</p>
-<section class="desc inherited"><p>Returns a rectangle covering the cell for row 'theRow' and column 'theColumn' …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.click_item"><code class="name flex">
-<span>def <span class="ident">click_item</span></span>(<span>self, n, e)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.click_item" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.click_item">click_item</a></code>
-</p>
-<section class="desc inherited"><p>Called when a mouse-down event occurs in item theItemNumber. Typically the subclass will record the fact that
-the item is selected so that this can be …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.defer_drawing"><code class="name flex">
-<span>def <span class="ident">defer_drawing</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.defer_drawing" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.defer_drawing">defer_drawing</a></code>
-</p>
-<section class="desc inherited"><p>Called every time around the event loop on the root widget or a
-widget that is modal. If it returns true, the frame timer runs,
-scheduled calls are …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.dismiss"><code class="name flex">
-<span>def <span class="ident">dismiss</span></span>(<span>self, value=True)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.dismiss" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.dismiss">dismiss</a></code>
-</p>
-<section class="desc inherited"><p>When the presented widget presented is modal using present() causes the modal event loop to exit and
-the present() call to return with the given result …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw"><code class="name flex">
-<span>def <span class="ident">draw</span></span>(<span>self, surf)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.draw" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.draw">draw</a></code>
-</p>
-<section class="desc inherited"><p>Called whenever the widget's contents need to be drawn. The surface is a subsurface the same size as the
-widget's rect with the drawing origin at its …</p></section>
-</dd>
 <dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item"><code class="name flex">
 <span>def <span class="ident">draw_item</span></span>(<span>self, surface, imageIndex, rect)</span>
 </code></dt>
@@ -535,332 +160,87 @@ widget's rect with the drawing origin at its …</p></section>
     blit_in_rect(surface, image, rect, self.align, self.margin)</code></pre>
 </details>
 </dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item_and_highlight"><code class="name flex">
-<span>def <span class="ident">draw_item_and_highlight</span></span>(<span>self, theSurface, theItemNumber, theRect, highlight)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.draw_item_and_highlight" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.draw_item_and_highlight">draw_item_and_highlight</a></code>
-</p>
-<section class="desc inherited"><p>Draws the cell for item theItemNumber, together with highlighting if highlight is true. The default
-implementation calls draw_prehighlight, draw_item …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_over"><code class="name flex">
-<span>def <span class="ident">draw_over</span></span>(<span>self, surface)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.draw_over" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.draw_over">draw_over</a></code>
-</p>
-<section class="desc inherited"><p>Called after drawing all the subwidgets of this widget. This method can be used to draw content that is
-to appear on top of any subwidgets …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_posthighlight"><code class="name flex">
-<span>def <span class="ident">draw_posthighlight</span></span>(<span>self, theSurface, theItemNumber, theRect)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.draw_posthighlight" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.draw_posthighlight">draw_posthighlight</a></code>
-</p>
-<section class="desc inherited"><p>Called for highlighted cells after draw_item, to draw highlighting that is to appear
-on top of the cell's contents …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_prehighlight"><code class="name flex">
-<span>def <span class="ident">draw_prehighlight</span></span>(<span>self, surf, theItemNumber, theRect)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.draw_prehighlight" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.draw_prehighlight">draw_prehighlight</a></code>
-</p>
-<section class="desc inherited"><p>Called for highlighted cells before draw_item, to draw highlighting that is to appear
-underneath the cell's contents …</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def draw_prehighlight(self, surf: Surface, theItemNumber: int, theRect: Rect):
-
-    color = self.sel_color
-    surf.fill(color, theRect)</code></pre>
-</details>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.focus"><code class="name flex">
-<span>def <span class="ident">focus</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.focus" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.focus">focus</a></code>
-</p>
-<section class="desc inherited"><p>Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
-widget) for this to have any affect.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_cursor"><code class="name flex">
-<span>def <span class="ident">get_cursor</span></span>(<span>self, event)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_cursor" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_cursor">get_cursor</a></code>
-</p>
-<section class="desc inherited"><p>Called to determine the appropriate cursor to display over the widget.
-The ResourceUtility.get_cursor() function returns a suitable tuple …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_focus"><code class="name flex">
-<span>def <span class="ident">get_focus</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_focus" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_focus">get_focus</a></code>
-</p>
-<section class="desc inherited"><p>If this widget or one of its subwidgets has the keyboard focus, returns that widget. Otherwise it returns
-the widget that would have the keyboard …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_margin_rect"><code class="name flex">
-<span>def <span class="ident">get_margin_rect</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_margin_rect" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_margin_rect">get_margin_rect</a></code>
-</p>
-<section class="desc inherited"><p>Returns a Rect in local coordinates representing the content area of the widget, as determined
-by its margin property …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_root"><code class="name flex">
-<span>def <span class="ident">get_root</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_root" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_root">get_root</a></code>
-</p>
-<section class="desc inherited"><p>Returns the root widget (whether this widget is contained within it or not) …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_top_widget"><code class="name flex">
-<span>def <span class="ident">get_top_widget</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_top_widget" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_top_widget">get_top_widget</a></code>
-</p>
-<section class="desc inherited"><p>Returns the highest widget in the containment hierarchy currently receiving input events. If a modal
-dialog is in progress, the modal dialog widget is …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.get_visible"><code class="name flex">
-<span>def <span class="ident">get_visible</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.get_visible" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.get_visible">get_visible</a></code>
-</p>
-<section class="desc inherited"><p>Called to determine the value of the visible property. By overriding this, you can make the visibility of the
-widget dependent on some external …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.global_to_local"><code class="name flex">
-<span>def <span class="ident">global_to_local</span></span>(<span>self, p)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.global_to_local" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.global_to_local">global_to_local</a></code>
-</p>
-<section class="desc inherited"><p>Converts the given coordinate pair from PyGame screen coordinates to the widget's local coordinate system …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.has_focus"><code class="name flex">
-<span>def <span class="ident">has_focus</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.has_focus" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.has_focus">has_focus</a></code>
-</p>
-<section class="desc inherited"><p>Returns:
-True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently
-has the keyboard focus.</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.inherited"><code class="name flex">
-<span>def <span class="ident">inherited</span></span>(<span>self, attributeName)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.inherited" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.inherited">inherited</a></code>
-</p>
-<section class="desc inherited"><p>Looks up the parent hierarchy to find the first widget that has an attribute with the given name, and
-returns its value. If not found, returns None …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.invalidate"><code class="name flex">
-<span>def <span class="ident">invalidate</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.invalidate" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.invalidate">invalidate</a></code>
-</p>
-<section class="desc inherited"><p>Marks the widget as needing to be redrawn. You will need to call this from the begin_frame() method of your
-Shell or Screen if you have the …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.item_is_selected"><code class="name flex">
-<span>def <span class="ident">item_is_selected</span></span>(<span>self, n)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.item_is_selected" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.item_is_selected">item_is_selected</a></code>
-</p>
-<section class="desc inherited"><p>Should return a boolean indicating whether item number item_no is currently to be considered selected …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.key_down"><code class="name flex">
-<span>def <span class="ident">key_down</span></span>(<span>self, e)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.key_down" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.key_down">key_down</a></code>
-</p>
-<section class="desc inherited"><p>Called when a key press event occurs and this widget has the keyboard focus, or a subwidget has the
-focus but did not handle the event …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.key_up"><code class="name flex">
-<span>def <span class="ident">key_up</span></span>(<span>self, theKeyEvent)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.key_up" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.key_up">key_up</a></code>
-</p>
-<section class="desc inherited"><p>Called when a key release event occurs and this widget has the keyboard focus …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.local_to_global"><code class="name flex">
-<span>def <span class="ident">local_to_global</span></span>(<span>self, p)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.local_to_global" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.local_to_global">local_to_global</a></code>
-</p>
-<section class="desc inherited"><p>Converts the given coordinate pair from the widget's local coordinate system to PyGame screen coordinates …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.num_cols"><code class="name flex">
-<span>def <span class="ident">num_cols</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.num_cols" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.num_cols">num_cols</a></code>
-</p>
-<section class="desc inherited"><dl>
-<dt><strong><code>Returns</code></strong> :&ensp;<code>The</code> # of <code>columns</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.num_rows"><code class="name flex">
-<span>def <span class="ident">num_rows</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.num_rows" href="../containers/PaletteView.html#albow.choices.MultiChoice.MultiChoice.num_rows">num_rows</a></code>
-</p>
-<section class="desc inherited"><dl>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> # of <code>rows</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.parent_resized"><code class="name flex">
-<span>def <span class="ident">parent_resized</span></span>(<span>self, dw, dh)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.parent_resized" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.parent_resized">parent_resized</a></code>
-</p>
-<section class="desc inherited"><p>Called when the widget's parent changes size as a result of assigning to its width, height or size
-attributes, with (dw, dh) being the amount of the …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.present"><code class="name flex">
-<span>def <span class="ident">present</span></span>(<span>self, centered=True)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.present" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.present">present</a></code>
-</p>
-<section class="desc inherited"><p>Presents the widget as a modal dialog. The widget is added as a subwidget of the root widget, centered
-within it if centered is true. A nested event …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.relative_mode"><code class="name flex">
-<span>def <span class="ident">relative_mode</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.relative_mode" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.relative_mode">relative_mode</a></code>
-</p>
-<section class="desc inherited"><p>Return true if relative input mode should be used. Called each
-time around the event loop on the root widget or a widget that is
-modal …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.remove"><code class="name flex">
-<span>def <span class="ident">remove</span></span>(<span>self, widget)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.remove" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.remove">remove</a></code>
-</p>
-<section class="desc inherited"><p>If the given widget is a subwidget of this widget, it is removed and its parent attribute is set to None …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.remove_anchor"><code class="name flex">
-<span>def <span class="ident">remove_anchor</span></span>(<span>self, mode)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.remove_anchor" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.remove_anchor">remove_anchor</a></code>
-</p>
-<section class="desc inherited"><p>Remove the options specified by mode from anchor property …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.resized"><code class="name flex">
-<span>def <span class="ident">resized</span></span>(<span>self, dw, dh)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.resized" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.resized">resized</a></code>
-</p>
-<section class="desc inherited"><p>Called when the widget changes size as a result of assigning to its width, height or size attributes,
-with (dw, dh) being the amount of the change …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.set_parent"><code class="name flex">
-<span>def <span class="ident">set_parent</span></span>(<span>self, parent)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.set_parent" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.set_parent">set_parent</a></code>
-</p>
-<section class="desc inherited"><p>Changes the parent of this widget to the given widget. This is an alternative to using the add and remove
-methods of the parent widget. Setting the …</p></section>
-</dd>
-<dt id="albow.choices.ImageMultiChoice.ImageMultiChoice.set_size_for_text"><code class="name flex">
-<span>def <span class="ident">set_size_for_text</span></span>(<span>self, width, nLines=1)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></code>.<code><a title="albow.choices.MultiChoice.MultiChoice.set_size_for_text" href="../core/Widget.html#albow.choices.MultiChoice.MultiChoice.set_size_for_text">set_size_for_text</a></code>
-</p>
-<section class="desc inherited"><p>Sets the widget's Rect to a suitable size for displaying text of the specified width and number of lines in
-its current font, as determined by the …</p></section>
-</dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.choices.MultiChoice.MultiChoice" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice">MultiChoice</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.cell_margin" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.cell_margin">cell_margin</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.cell_rect" href="../containers/GridView.html#albow.containers.GridView.GridView.cell_rect">cell_rect</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.click_item" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.click_item">click_item</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.draw_item_and_highlight" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.draw_item_and_highlight">draw_item_and_highlight</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.draw_posthighlight" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.draw_posthighlight">draw_posthighlight</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.draw_prehighlight" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.draw_prehighlight">draw_prehighlight</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.enable" href="../widgets/Control.html#albow.widgets.Control.Control.enable">enable</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.enabled" href="../widgets/Control.html#albow.widgets.Control.Control.enabled">enabled</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.highlight_color" href="MultiChoice.html#albow.choices.MultiChoice.MultiChoice.highlight_color">highlight_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.highlight_style" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.highlight_style">highlight_style</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.highlighted" href="../widgets/Control.html#albow.widgets.Control.Control.highlighted">highlighted</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.item_is_selected" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.item_is_selected">item_is_selected</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.num_cols" href="../containers/GridView.html#albow.containers.GridView.GridView.num_cols">num_cols</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.num_rows" href="../containers/GridView.html#albow.containers.GridView.GridView.num_rows">num_rows</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.ref" href="../widgets/Control.html#albow.widgets.Control.Control.ref">ref</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.scroll_button_color" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.scroll_button_color">scroll_button_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.scroll_button_size" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.scroll_button_size">scroll_button_size</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.sel_width" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView.sel_width">sel_width</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.value" href="../widgets/Control.html#albow.widgets.Control.Control.value">value</a></code></li>
+<li><code><a title="albow.choices.MultiChoice.MultiChoice.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+<li><code><b><a title="albow.containers.PaletteView.PaletteView" href="../containers/PaletteView.html#albow.containers.PaletteView.PaletteView">PaletteView</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.containers.PaletteView.PaletteView.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -881,76 +261,7 @@ its current font, as determined by the …</p></section>
 <li>
 <h4><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice" href="#albow.choices.ImageMultiChoice.ImageMultiChoice">ImageMultiChoice</a></code></h4>
 <ul class="">
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.add" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.add">add</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.add_anchor" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.add_centered" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.add_centered">add_centered</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.anchor" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.anchor">anchor</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.attention_lost" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.attention_lost">attention_lost</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.augment_mouse_event" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.bg_color" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.bg_image" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.border_color" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.border_color">border_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.border_width" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.border_width">border_width</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.call_handler" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.call_parent_handler" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.cell_margin" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.cell_margin">cell_margin</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.cell_rect" href="../containers/GridView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.cell_rect">cell_rect</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.click_item" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.click_item">click_item</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.defer_drawing" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.dismiss" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.draw">draw</a></code></li>
 <li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item" href="#albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item">draw_item</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item_and_highlight" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.draw_item_and_highlight">draw_item_and_highlight</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_over" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.draw_over">draw_over</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_posthighlight" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.draw_posthighlight">draw_posthighlight</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.draw_prehighlight" href="#albow.choices.ImageMultiChoice.ImageMultiChoice.draw_prehighlight">draw_prehighlight</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.enable" href="../widgets/Control.html#albow.choices.ImageMultiChoice.ImageMultiChoice.enable">enable</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.enabled" href="../widgets/Control.html#albow.choices.ImageMultiChoice.ImageMultiChoice.enabled">enabled</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.fg_color" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.focus" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.focus">focus</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.focus_switch" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.font" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.font">font</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_cursor" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_focus" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_margin_rect" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_root" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_root">get_root</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_top_widget" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.get_visible" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.global_to_local" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.has_focus" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_color" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_color">highlight_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_style" href="#albow.choices.ImageMultiChoice.ImageMultiChoice.highlight_style">highlight_style</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.highlighted" href="../widgets/Control.html#albow.choices.ImageMultiChoice.ImageMultiChoice.highlighted">highlighted</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.inherited" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.inherited">inherited</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.invalidate" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.is_gl_container" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.item_is_selected" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.item_is_selected">item_is_selected</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.key_down" href="MultiChoice.html#albow.choices.ImageMultiChoice.ImageMultiChoice.key_down">key_down</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.key_up" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.key_up">key_up</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.local_to_global" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.margin" href="#albow.choices.ImageMultiChoice.ImageMultiChoice.margin">margin</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.menu_bar" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.num_cols" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.num_cols">num_cols</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.num_rows" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.num_rows">num_rows</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.parent" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.parent">parent</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.parent_resized" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.present" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.present">present</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.rect" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.rect">rect</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.ref" href="../widgets/Control.html#albow.choices.ImageMultiChoice.ImageMultiChoice.ref">ref</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.relative_mode" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.remove" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.remove">remove</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.remove_anchor" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.resized" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.resized">resized</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.scale_bg" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_color" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_color">scroll_button_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_size" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.scroll_button_size">scroll_button_size</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.sel_color" href="#albow.choices.ImageMultiChoice.ImageMultiChoice.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.sel_width" href="../containers/PaletteView.html#albow.choices.ImageMultiChoice.ImageMultiChoice.sel_width">sel_width</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.set_parent" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.set_size_for_text" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.tab_stop" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.tab_stop">tab_stop</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.value" href="../widgets/Control.html#albow.choices.ImageMultiChoice.ImageMultiChoice.value">value</a></code></li>
-<li><code><a title="albow.choices.ImageMultiChoice.ImageMultiChoice.visible" href="../core/Widget.html#albow.choices.ImageMultiChoice.ImageMultiChoice.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>
@@ -959,8 +270,7 @@ its current font, as determined by the …</p></section>
 </nav>
 </main>
 <footer id="footer">
-Ported to Python 3 and extended by Humberto A. Sanchez II
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
