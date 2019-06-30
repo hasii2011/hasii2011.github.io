@@ -23,7 +23,7 @@
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">from pygame.locals import *
-from albow.core.Screen import Screen
+from albow.core.ui.Screen import Screen
 
 from albow.themes.FontProperty import FontProperty
 
@@ -228,8 +228,9 @@ class TextScreen(Screen):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="albow.core.Screen.Screen" href="../core/Screen.html#albow.core.Screen.Screen">Screen</a></li>
-<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.Screen.Screen" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen">Screen</a></li>
+<li><a title="albow.core.ui.Widget.Widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.AlbowRect.AlbowRect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -350,62 +351,62 @@ given instance, the FontProperty descriptor loads the font using get_font and ca
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="albow.core.Screen.Screen" href="../core/Screen.html#albow.core.Screen.Screen">Screen</a></b></code>:
+<li><code><b><a title="albow.core.ui.Screen.Screen" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen">Screen</a></b></code>:
 <ul class="hlist">
-<li><code><a title="albow.core.Screen.Screen.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.begin_frame" href="../core/Screen.html#albow.core.Screen.Screen.begin_frame">begin_frame</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.enter_screen" href="../core/Screen.html#albow.core.Screen.Screen.enter_screen">enter_screen</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.leave_screen" href="../core/Screen.html#albow.core.Screen.Screen.leave_screen">leave_screen</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.timer_event" href="../core/Screen.html#albow.core.Screen.Screen.timer_event">timer_event</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.add" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.add_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.add_centered" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.anchor" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.attention_lost" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.augment_mouse_event" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.begin_frame" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen.begin_frame">begin_frame</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.bg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.bg_image" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.border_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.border_width" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.call_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.call_parent_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.defer_drawing" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.dismiss" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.draw" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.draw_over" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.enter_screen" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen.enter_screen">enter_screen</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.fg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.focus_switch" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.font" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_cursor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_margin_rect" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_root" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_top_widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.get_visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.global_to_local" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.has_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.inherited" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.invalidate" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.is_gl_container" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.key_down" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.key_up" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.leave_screen" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen.leave_screen">leave_screen</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.local_to_global" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.margin" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.menu_bar" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.parent_resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.present" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.rect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.relative_mode" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.remove" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.remove_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.scale_bg" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.sel_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.set_parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.set_size_for_text" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.tab_stop" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.timer_event" href="../core/ui/Screen.html#albow.core.ui.Screen.Screen.timer_event">timer_event</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>

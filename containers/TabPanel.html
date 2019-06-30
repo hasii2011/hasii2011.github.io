@@ -22,8 +22,17 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from pygame import Rect
-from albow.core.Widget import Widget
+<pre><code class="python">from typing import Callable
+
+import logging
+
+from pygame import Rect
+from pygame.locals import USEREVENT
+
+from pygame.event import Event
+
+from albow.core.ui.Widget import Widget
+
 from albow.themes.ThemeProperty import ThemeProperty
 from albow.themes.FontProperty import FontProperty
 
@@ -75,7 +84,7 @@ class TabPanel(Widget):
     0.0 to 1.0.
     &#34;&#34;&#34;
 
-    def __init__(self, pages=None, **kwds):
+    def __init__(self, pages = None, enterTabAction: Callable=None, exitTabAction: Callable=None, **kwds):
         &#34;&#34;&#34;
 
         Args:
@@ -84,10 +93,19 @@ class TabPanel(Widget):
 
             **kwds:
         &#34;&#34;&#34;
-        #
-        # Python 3 update
-        #
         super().__init__(**kwds)
+
+        self.logger = logging.getLogger(__name__)
+        self.enterTabAction = enterTabAction
+        &#34;&#34;&#34;
+        The method to call when a tab is switched to.  The method is called with an augmented event that has the tab index
+        that is getting the focus.  The tab index is 0 based  
+        &#34;&#34;&#34;
+        self.exitTabAction = exitTabAction
+        &#34;&#34;&#34;
+        The method to call when a tab is switched from.  The method is called with an augmented event that has the tab index
+        of the tab losing the focus.  The tab index is 0 based  
+        &#34;&#34;&#34;
         self.pages = []
         self.current_page = None
         if pages:
@@ -160,15 +178,21 @@ class TabPanel(Widget):
         if thePage is self.current_page:
             self.show_page(None)
 
-    def show_page(self, page):
+    def show_page(self, newPage: Widget, theEvent: Event=None):
+
         if self.current_page:
+
+            self._doExitTabAction(theEvent)
             self.remove(self.current_page)
-        self.current_page = page
-        if page:
+
+        self.current_page = newPage
+        if newPage:
             th = self.tab_height
-            page.rect = Rect(0, th, self.width, self.height - th)
-            self.add(page)
-            page.focus()
+            newPage.rect = Rect(0, th, self.width, self.height - th)
+
+            self._doEnterTabAction(theEvent=theEvent, newPage=newPage)
+            self.add(newPage)
+            newPage.focus()
 
     def draw(self, surf):
         self.draw_tab_area_bg(surf)
@@ -230,12 +254,12 @@ class TabPanel(Widget):
             or page.bg_color \
             or self.default_tab_bg_color
 
-    def mouse_down(self, e):
-        x, y = e.local
+    def mouse_down(self, theEvent: Event):
+        x, y = theEvent.local
         if y &lt; self.tab_height:
             i = self.tab_number_containing_x(x)
             if i is not None:
-                self.show_page(self.pages[i])
+                self.show_page(self.pages[i], theEvent)
 
     def tab_number_containing_x(self, x):
         n = len(self.pages)
@@ -243,7 +267,33 @@ class TabPanel(Widget):
         width = self.width - 2 * m + self.tab_spacing - self.tab_border_width
         i = (x - m) * n // width
         if 0 &lt;= i &lt; n:
-            return i</code></pre>
+            return i
+
+    def _doExitTabAction(self, theEvent: Event):
+
+        leavingIndex: int = self.pages.index(self.current_page)
+        self.logger.debug(f&#34;leavingIndex: {leavingIndex}&#34;)
+        if self.exitTabAction is not None:
+            augmentedEvent: Event = self._augmentEvent(theEvent=theEvent, theIndex=leavingIndex)
+            self.exitTabAction(augmentedEvent)
+
+    def _doEnterTabAction(self, theEvent: Event, newPage):
+
+        if newPage is not None:
+            enterIndex: int = self.pages.index(newPage)
+            self.logger.debug(f&#34;enterIndex: {enterIndex}&#34;)
+            if self.exitTabAction is not None:
+                augmentedEvent: Event = self._augmentEvent(theEvent=theEvent, theIndex=enterIndex)
+                self.enterTabAction(augmentedEvent)
+
+    def _augmentEvent(self, theEvent: Event, theIndex: int) -&gt; Event:
+
+        if theEvent is None:
+            theEvent = Event(USEREVENT, {&#39;index&#39;: theIndex})
+        else:
+            theEvent.dict[&#39;index&#39;] = theIndex
+
+        return theEvent</code></pre>
 </details>
 </section>
 <section>
@@ -257,7 +307,7 @@ class TabPanel(Widget):
 <dl>
 <dt id="albow.containers.TabPanel.TabPanel"><code class="flex name class">
 <span>class <span class="ident">TabPanel</span></span>
-<span>(</span><span>pages=None, **kwds)</span>
+<span>(</span><span>pages=None, enterTabAction=None, exitTabAction=None, **kwds)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>A <a title="albow.containers.TabPanel.TabPanel" href="#albow.containers.TabPanel.TabPanel"><code>TabPanel</code></a> is a widget that manages a collection of pages and displays one of them at a time. Switching
@@ -317,7 +367,7 @@ be added by the add_page() method.</dd>
     0.0 to 1.0.
     &#34;&#34;&#34;
 
-    def __init__(self, pages=None, **kwds):
+    def __init__(self, pages = None, enterTabAction: Callable=None, exitTabAction: Callable=None, **kwds):
         &#34;&#34;&#34;
 
         Args:
@@ -326,10 +376,19 @@ be added by the add_page() method.</dd>
 
             **kwds:
         &#34;&#34;&#34;
-        #
-        # Python 3 update
-        #
         super().__init__(**kwds)
+
+        self.logger = logging.getLogger(__name__)
+        self.enterTabAction = enterTabAction
+        &#34;&#34;&#34;
+        The method to call when a tab is switched to.  The method is called with an augmented event that has the tab index
+        that is getting the focus.  The tab index is 0 based  
+        &#34;&#34;&#34;
+        self.exitTabAction = exitTabAction
+        &#34;&#34;&#34;
+        The method to call when a tab is switched from.  The method is called with an augmented event that has the tab index
+        of the tab losing the focus.  The tab index is 0 based  
+        &#34;&#34;&#34;
         self.pages = []
         self.current_page = None
         if pages:
@@ -402,15 +461,21 @@ be added by the add_page() method.</dd>
         if thePage is self.current_page:
             self.show_page(None)
 
-    def show_page(self, page):
+    def show_page(self, newPage: Widget, theEvent: Event=None):
+
         if self.current_page:
+
+            self._doExitTabAction(theEvent)
             self.remove(self.current_page)
-        self.current_page = page
-        if page:
+
+        self.current_page = newPage
+        if newPage:
             th = self.tab_height
-            page.rect = Rect(0, th, self.width, self.height - th)
-            self.add(page)
-            page.focus()
+            newPage.rect = Rect(0, th, self.width, self.height - th)
+
+            self._doEnterTabAction(theEvent=theEvent, newPage=newPage)
+            self.add(newPage)
+            newPage.focus()
 
     def draw(self, surf):
         self.draw_tab_area_bg(surf)
@@ -472,12 +537,12 @@ be added by the add_page() method.</dd>
             or page.bg_color \
             or self.default_tab_bg_color
 
-    def mouse_down(self, e):
-        x, y = e.local
+    def mouse_down(self, theEvent: Event):
+        x, y = theEvent.local
         if y &lt; self.tab_height:
             i = self.tab_number_containing_x(x)
             if i is not None:
-                self.show_page(self.pages[i])
+                self.show_page(self.pages[i], theEvent)
 
     def tab_number_containing_x(self, x):
         n = len(self.pages)
@@ -485,11 +550,38 @@ be added by the add_page() method.</dd>
         width = self.width - 2 * m + self.tab_spacing - self.tab_border_width
         i = (x - m) * n // width
         if 0 &lt;= i &lt; n:
-            return i</code></pre>
+            return i
+
+    def _doExitTabAction(self, theEvent: Event):
+
+        leavingIndex: int = self.pages.index(self.current_page)
+        self.logger.debug(f&#34;leavingIndex: {leavingIndex}&#34;)
+        if self.exitTabAction is not None:
+            augmentedEvent: Event = self._augmentEvent(theEvent=theEvent, theIndex=leavingIndex)
+            self.exitTabAction(augmentedEvent)
+
+    def _doEnterTabAction(self, theEvent: Event, newPage):
+
+        if newPage is not None:
+            enterIndex: int = self.pages.index(newPage)
+            self.logger.debug(f&#34;enterIndex: {enterIndex}&#34;)
+            if self.exitTabAction is not None:
+                augmentedEvent: Event = self._augmentEvent(theEvent=theEvent, theIndex=enterIndex)
+                self.enterTabAction(augmentedEvent)
+
+    def _augmentEvent(self, theEvent: Event, theIndex: int) -&gt; Event:
+
+        if theEvent is None:
+            theEvent = Event(USEREVENT, {&#39;index&#39;: theIndex})
+        else:
+            theEvent.dict[&#39;index&#39;] = theIndex
+
+        return theEvent</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.Widget.Widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.AlbowRect.AlbowRect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -529,6 +621,23 @@ be added by the add_page() method.</dd>
 <dt id="albow.containers.TabPanel.TabPanel.tab_spacing"><code class="name">var <span class="ident">tab_spacing</span></code></dt>
 <dd>
 <section class="desc"><p>Width of space to leave between adjacent tabs.</p></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="albow.containers.TabPanel.TabPanel.enterTabAction"><code class="name">var <span class="ident">enterTabAction</span></code></dt>
+<dd>
+<section class="desc"><p>The method to call when a tab is switched to.
+The method is called with an augmented event that has the tab index
+that is getting the focus.
+The tab index is 0 based</p></section>
+</dd>
+<dt id="albow.containers.TabPanel.TabPanel.exitTabAction"><code class="name">var <span class="ident">exitTabAction</span></code></dt>
+<dd>
+<section class="desc"><p>The method to call when a tab is switched from.
+The method is called with an augmented event that has the tab index
+of the tab losing the focus.
+The tab index is 0 based</p></section>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -687,18 +796,18 @@ A tuple <code>(width, height)</code> of the size of the content area</p></sectio
 </details>
 </dd>
 <dt id="albow.containers.TabPanel.TabPanel.mouse_down"><code class="name flex">
-<span>def <span class="ident">mouse_down</span></span>(<span>self, e)</span>
+<span>def <span class="ident">mouse_down</span></span>(<span>self, theEvent)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def mouse_down(self, e):
-    x, y = e.local
+<pre><code class="python">def mouse_down(self, theEvent: Event):
+    x, y = theEvent.local
     if y &lt; self.tab_height:
         i = self.tab_number_containing_x(x)
         if i is not None:
-            self.show_page(self.pages[i])</code></pre>
+            self.show_page(self.pages[i], theEvent)</code></pre>
 </details>
 </dd>
 <dt id="albow.containers.TabPanel.TabPanel.page_height"><code class="name flex">
@@ -748,21 +857,27 @@ The height of a page (equal to the height of the content_rect()).</p></section>
 </details>
 </dd>
 <dt id="albow.containers.TabPanel.TabPanel.show_page"><code class="name flex">
-<span>def <span class="ident">show_page</span></span>(<span>self, page)</span>
+<span>def <span class="ident">show_page</span></span>(<span>self, newPage, theEvent=None)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def show_page(self, page):
+<pre><code class="python">def show_page(self, newPage: Widget, theEvent: Event=None):
+
     if self.current_page:
+
+        self._doExitTabAction(theEvent)
         self.remove(self.current_page)
-    self.current_page = page
-    if page:
+
+    self.current_page = newPage
+    if newPage:
         th = self.tab_height
-        page.rect = Rect(0, th, self.width, self.height - th)
-        self.add(page)
-        page.focus()</code></pre>
+        newPage.rect = Rect(0, th, self.width, self.height - th)
+
+        self._doEnterTabAction(theEvent=theEvent, newPage=newPage)
+        self.add(newPage)
+        newPage.focus()</code></pre>
 </details>
 </dd>
 <dt id="albow.containers.TabPanel.TabPanel.tab_bg_color_for_page"><code class="name flex">
@@ -797,58 +912,58 @@ The height of a page (equal to the height of the content_rect()).</p></section>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<li><code><b><a title="albow.core.ui.Widget.Widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
-<li><code><a title="albow.core.Widget.Widget.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_centered" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.anchor" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.attention_lost" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.augment_mouse_event" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_image" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_width" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_parent_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.defer_drawing" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.dismiss" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw_over" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.fg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus_switch" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.font" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_cursor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_margin_rect" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_root" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_top_widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.global_to_local" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.has_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.inherited" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.invalidate" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.is_gl_container" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_down" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_up" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.local_to_global" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.margin" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.menu_bar" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.parent_resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.present" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.rect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.relative_mode" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.scale_bg" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.sel_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_size_for_text" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.tab_stop" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>
@@ -879,6 +994,8 @@ The height of a page (equal to the height of the content_rect()).</p></section>
 <li><code><a title="albow.containers.TabPanel.TabPanel.draw_tab_area_bg" href="#albow.containers.TabPanel.TabPanel.draw_tab_area_bg">draw_tab_area_bg</a></code></li>
 <li><code><a title="albow.containers.TabPanel.TabPanel.draw_tab_bg" href="#albow.containers.TabPanel.TabPanel.draw_tab_bg">draw_tab_bg</a></code></li>
 <li><code><a title="albow.containers.TabPanel.TabPanel.draw_tabs" href="#albow.containers.TabPanel.TabPanel.draw_tabs">draw_tabs</a></code></li>
+<li><code><a title="albow.containers.TabPanel.TabPanel.enterTabAction" href="#albow.containers.TabPanel.TabPanel.enterTabAction">enterTabAction</a></code></li>
+<li><code><a title="albow.containers.TabPanel.TabPanel.exitTabAction" href="#albow.containers.TabPanel.TabPanel.exitTabAction">exitTabAction</a></code></li>
 <li><code><a title="albow.containers.TabPanel.TabPanel.iter_tabs" href="#albow.containers.TabPanel.TabPanel.iter_tabs">iter_tabs</a></code></li>
 <li><code><a title="albow.containers.TabPanel.TabPanel.mouse_down" href="#albow.containers.TabPanel.TabPanel.mouse_down">mouse_down</a></code></li>
 <li><code><a title="albow.containers.TabPanel.TabPanel.page_height" href="#albow.containers.TabPanel.TabPanel.page_height">page_height</a></code></li>

@@ -35,11 +35,6 @@ class GLSurface:
         self.display = display
         self.rect = rect
 
-    def gl_set_viewport(self):
-        r = self.rect
-        w = r.width
-        h = r.height
-
     def gl_enter(self):
         r = self.rect
         w = r.width
@@ -84,10 +79,8 @@ class GLSurface:
     def get_rect(self):
         return Rect(self.rect)
 
-    def blit(self, src, dst=(0, 0), area=None, flags=0):
-        #
-        # TODO: flags
-        # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+    def blit(self, src, dst=(0, 0), area=None):
+
         if isinstance(dst, Rect):
             dst = dst.topleft
         x, y = dst
@@ -98,13 +91,13 @@ class GLSurface:
             y += area.top
         w, h = src.get_size()
         data = image.tostring(src, &#39;RGBA&#39;, 1)
-        #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+
         gl = GL
         gl.glRasterPos2i(x, y + h)
         gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)
 
-    def fill(self, color, rect=None, flags=0):
-        # TODO: flags
+    def fill(self, color, rect=None):
+
         if rect:
             x, y, w, h = rect
         else:
@@ -149,11 +142,6 @@ class GLSurface:
         self.display = display
         self.rect = rect
 
-    def gl_set_viewport(self):
-        r = self.rect
-        w = r.width
-        h = r.height
-
     def gl_enter(self):
         r = self.rect
         w = r.width
@@ -198,10 +186,8 @@ class GLSurface:
     def get_rect(self):
         return Rect(self.rect)
 
-    def blit(self, src, dst=(0, 0), area=None, flags=0):
-        #
-        # TODO: flags
-        # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+    def blit(self, src, dst=(0, 0), area=None):
+
         if isinstance(dst, Rect):
             dst = dst.topleft
         x, y = dst
@@ -212,13 +198,13 @@ class GLSurface:
             y += area.top
         w, h = src.get_size()
         data = image.tostring(src, &#39;RGBA&#39;, 1)
-        #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+
         gl = GL
         gl.glRasterPos2i(x, y + h)
         gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)
 
-    def fill(self, color, rect=None, flags=0):
-        # TODO: flags
+    def fill(self, color, rect=None):
+
         if rect:
             x, y, w, h = rect
         else:
@@ -242,16 +228,14 @@ class GLSurface:
 <h3>Methods</h3>
 <dl>
 <dt id="albow.openGL.GLSurface.GLSurface.blit"><code class="name flex">
-<span>def <span class="ident">blit</span></span>(<span>self, src, dst=(0, 0), area=None, flags=0)</span>
+<span>def <span class="ident">blit</span></span>(<span>self, src, dst=(0, 0), area=None)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def blit(self, src, dst=(0, 0), area=None, flags=0):
-    #
-    # TODO: flags
-    # print &#34;GLSurface.blit:&#34;, src, &#34;at&#34;, dst, &#34;area =&#34;, area ###
+<pre><code class="python">def blit(self, src, dst=(0, 0), area=None):
+
     if isinstance(dst, Rect):
         dst = dst.topleft
     x, y = dst
@@ -262,21 +246,21 @@ class GLSurface:
         y += area.top
     w, h = src.get_size()
     data = image.tostring(src, &#39;RGBA&#39;, 1)
-    #  print &#34;GLSurface: Drawing %sx%s pixels at %s,%s&#34; % (w, h, x, y + h) ###
+
     gl = GL
     gl.glRasterPos2i(x, y + h)
     gl.glDrawPixels(w, h, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, data)</code></pre>
 </details>
 </dd>
 <dt id="albow.openGL.GLSurface.GLSurface.fill"><code class="name flex">
-<span>def <span class="ident">fill</span></span>(<span>self, color, rect=None, flags=0)</span>
+<span>def <span class="ident">fill</span></span>(<span>self, color, rect=None)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def fill(self, color, rect=None, flags=0):
-    # TODO: flags
+<pre><code class="python">def fill(self, color, rect=None):
+
     if rect:
         x, y, w, h = rect
     else:
@@ -401,19 +385,6 @@ class GLSurface:
     GL.glFlush()</code></pre>
 </details>
 </dd>
-<dt id="albow.openGL.GLSurface.GLSurface.gl_set_viewport"><code class="name flex">
-<span>def <span class="ident">gl_set_viewport</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def gl_set_viewport(self):
-    r = self.rect
-    w = r.width
-    h = r.height</code></pre>
-</details>
-</dd>
 <dt id="albow.openGL.GLSurface.GLSurface.subsurface"><code class="name flex">
 <span>def <span class="ident">subsurface</span></span>(<span>self, rect)</span>
 </code></dt>
@@ -458,7 +429,6 @@ class GLSurface:
 <li><code><a title="albow.openGL.GLSurface.GLSurface.gl_enter" href="#albow.openGL.GLSurface.GLSurface.gl_enter">gl_enter</a></code></li>
 <li><code><a title="albow.openGL.GLSurface.GLSurface.gl_exit" href="#albow.openGL.GLSurface.GLSurface.gl_exit">gl_exit</a></code></li>
 <li><code><a title="albow.openGL.GLSurface.GLSurface.gl_flush" href="#albow.openGL.GLSurface.GLSurface.gl_flush">gl_flush</a></code></li>
-<li><code><a title="albow.openGL.GLSurface.GLSurface.gl_set_viewport" href="#albow.openGL.GLSurface.GLSurface.gl_set_viewport">gl_set_viewport</a></code></li>
 <li><code><a title="albow.openGL.GLSurface.GLSurface.subsurface" href="#albow.openGL.GLSurface.GLSurface.subsurface">subsurface</a></code></li>
 </ul>
 </li>

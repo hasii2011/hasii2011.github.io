@@ -47,8 +47,9 @@ class ButtonBase(Control):
             self._highlighted = True
 
     def mouse_drag(self, theEvent: event):
-        state = event in self
-        # if state &lt;&gt; self._highlighted:
+
+        state = theEvent in self
+
         if state != self._highlighted:
             self._highlighted = state
             self.invalidate()
@@ -113,8 +114,9 @@ upport for calling a function when the button is clicked.</p>
             self._highlighted = True
 
     def mouse_drag(self, theEvent: event):
-        state = event in self
-        # if state &lt;&gt; self._highlighted:
+
+        state = theEvent in self
+
         if state != self._highlighted:
             self._highlighted = state
             self.invalidate()
@@ -207,8 +209,9 @@ a method in the subclass.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def mouse_drag(self, theEvent: event):
-    state = event in self
-    # if state &lt;&gt; self._highlighted:
+
+    state = theEvent in self
+
     if state != self._highlighted:
         self._highlighted = state
         self.invalidate()</code></pre>

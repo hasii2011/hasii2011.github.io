@@ -100,12 +100,12 @@ class Scheduler:
             repeat: Set to _True_ to repeat, else _False_
         &#34;&#34;&#34;
         def thunk():
-            # TODO:  Fix to include the time attribute
             #
             # Pygame 1.9 update
             #
             # event = Event(USEREVENT, time = timestamp())
-            event = Event(USEREVENT, dict=None)
+            ts = Scheduler.timestamp()
+            event = Event(USEREVENT, {&#39;time&#39;: ts})
             CoreUtilities.add_modifiers(event)
             func(event)
 
@@ -114,7 +114,7 @@ class Scheduler:
     @staticmethod
     def timestamp():
 
-        return time() * 1000.0 - CoreUtilities.time_base
+        return time() * 1000.0 - CoreUtilities.timeBase
 
     @staticmethod
     def cancel_call(token):
@@ -264,12 +264,12 @@ class Scheduler:
             repeat: Set to _True_ to repeat, else _False_
         &#34;&#34;&#34;
         def thunk():
-            # TODO:  Fix to include the time attribute
             #
             # Pygame 1.9 update
             #
             # event = Event(USEREVENT, time = timestamp())
-            event = Event(USEREVENT, dict=None)
+            ts = Scheduler.timestamp()
+            event = Event(USEREVENT, {&#39;time&#39;: ts})
             CoreUtilities.add_modifiers(event)
             func(event)
 
@@ -278,7 +278,7 @@ class Scheduler:
     @staticmethod
     def timestamp():
 
-        return time() * 1000.0 - CoreUtilities.time_base
+        return time() * 1000.0 - CoreUtilities.timeBase
 
     @staticmethod
     def cancel_call(token):
@@ -575,12 +575,12 @@ def schedule_event(delay, func, repeat=False):
         repeat: Set to _True_ to repeat, else _False_
     &#34;&#34;&#34;
     def thunk():
-        # TODO:  Fix to include the time attribute
         #
         # Pygame 1.9 update
         #
         # event = Event(USEREVENT, time = timestamp())
-        event = Event(USEREVENT, dict=None)
+        ts = Scheduler.timestamp()
+        event = Event(USEREVENT, {&#39;time&#39;: ts})
         CoreUtilities.add_modifiers(event)
         func(event)
 
@@ -597,7 +597,7 @@ def schedule_event(delay, func, repeat=False):
 <pre><code class="python">@staticmethod
 def timestamp():
 
-    return time() * 1000.0 - CoreUtilities.time_base</code></pre>
+    return time() * 1000.0 - CoreUtilities.timeBase</code></pre>
 </details>
 </dd>
 </dl>

@@ -22,7 +22,9 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from albow.widgets.Control import Control
+<pre><code class="python">import logging
+
+from albow.widgets.Control import Control
 
 from albow.input.TextEditor import TextEditor
 
@@ -44,6 +46,8 @@ class Field(Control, TextEditor):
     the value is updated and the control returns to the non-editing state. Updating of the value can also be
     forced by calling the `commit()` method.
     &#34;&#34;&#34;
+
+    DEFAULT_WIDTH = 100
 
     empty = NotImplemented
     &#34;&#34;&#34;
@@ -83,27 +87,41 @@ class Field(Control, TextEditor):
 
             **kwds:
         &#34;&#34;&#34;
-        minimum = self.predict_attr(kwds, &#39;min&#39;)
-        maximum = self.predict_attr(kwds, &#39;max&#39;)
+        self.logger = logging.getLogger(__name__)
+
         if &#39;format&#39; in kwds:
             self.format = kwds.pop(&#39;format&#39;)
         if &#39;empty&#39; in kwds:
             self.empty = kwds.pop(&#39;empty&#39;)
         self.editing = False
-        if width is None:
-            w1 = w2 = &#34;&#34;
+
+        predictedWidth = self._predictWidth(kwds, width)
+        TextEditor.__init__(self, width=predictedWidth, **kwds)
+
+    def _predictWidth(self, kwds, theWidth):
+
+        minimum = self.predict_attr(kwds, &#39;min&#39;)
+        maximum = self.predict_attr(kwds, &#39;max&#39;)
+
+        predictedWidth = theWidth
+        if theWidth is None:
+            w1 = 0
+            w2 = 0
             if minimum is not None:
-                w1 = self.format_value(minimum)
+                w1 = minimum
             if maximum is not None:
-                w2 = self.format_value(maximum)
-            if w2:
-                if len(w1) &gt; len(w2):
-                    width = w1
-                else:
-                    width = w2
-        if width is None:
-            width = 100
-        TextEditor.__init__(self, width, **kwds)
+                w2 = maximum
+            if w1 &gt; w2:
+                predictedWidth = w1
+            else:
+                predictedWidth = w2
+
+        if predictedWidth == 0 and theWidth is None:
+            predictedWidth = Field.DEFAULT_WIDTH
+
+        self.logger.debug(f&#34;predictedWidth: {predictedWidth}&#34;)
+
+        return predictedWidth
 
     def format_value(self, theValueToFormat):
         &#34;&#34;&#34;
@@ -228,6 +246,8 @@ the min or max value. If no other way of determining the width is available, it 
     forced by calling the `commit()` method.
     &#34;&#34;&#34;
 
+    DEFAULT_WIDTH = 100
+
     empty = NotImplemented
     &#34;&#34;&#34;
     Internal value to use when the field is empty.  If set to NotImplemented, the user is not allowed to enter 
@@ -266,27 +286,41 @@ the min or max value. If no other way of determining the width is available, it 
 
             **kwds:
         &#34;&#34;&#34;
-        minimum = self.predict_attr(kwds, &#39;min&#39;)
-        maximum = self.predict_attr(kwds, &#39;max&#39;)
+        self.logger = logging.getLogger(__name__)
+
         if &#39;format&#39; in kwds:
             self.format = kwds.pop(&#39;format&#39;)
         if &#39;empty&#39; in kwds:
             self.empty = kwds.pop(&#39;empty&#39;)
         self.editing = False
-        if width is None:
-            w1 = w2 = &#34;&#34;
+
+        predictedWidth = self._predictWidth(kwds, width)
+        TextEditor.__init__(self, width=predictedWidth, **kwds)
+
+    def _predictWidth(self, kwds, theWidth):
+
+        minimum = self.predict_attr(kwds, &#39;min&#39;)
+        maximum = self.predict_attr(kwds, &#39;max&#39;)
+
+        predictedWidth = theWidth
+        if theWidth is None:
+            w1 = 0
+            w2 = 0
             if minimum is not None:
-                w1 = self.format_value(minimum)
+                w1 = minimum
             if maximum is not None:
-                w2 = self.format_value(maximum)
-            if w2:
-                if len(w1) &gt; len(w2):
-                    width = w1
-                else:
-                    width = w2
-        if width is None:
-            width = 100
-        TextEditor.__init__(self, width, **kwds)
+                w2 = maximum
+            if w1 &gt; w2:
+                predictedWidth = w1
+            else:
+                predictedWidth = w2
+
+        if predictedWidth == 0 and theWidth is None:
+            predictedWidth = Field.DEFAULT_WIDTH
+
+        self.logger.debug(f&#34;predictedWidth: {predictedWidth}&#34;)
+
+        return predictedWidth
 
     def format_value(self, theValueToFormat):
         &#34;&#34;&#34;
@@ -359,7 +393,8 @@ the min or max value. If no other way of determining the width is available, it 
 <ul class="hlist">
 <li><a title="albow.widgets.Control.Control" href="../widgets/Control.html#albow.widgets.Control.Control">Control</a></li>
 <li><a title="albow.input.TextEditor.TextEditor" href="TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
-<li><a title="albow.core.Widget.Widget" href="../core/Widget.html#albow.core.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.Widget.Widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.AlbowRect.AlbowRect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -369,6 +404,10 @@ the min or max value. If no other way of determining the width is available, it 
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="albow.input.Field.Field.DEFAULT_WIDTH"><code class="name">var <span class="ident">DEFAULT_WIDTH</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
 <dt id="albow.input.Field.Field.editing"><code class="name">var <span class="ident">editing</span></code></dt>
 <dd>
 <section class="desc"><p><em>Read only</em>. A boolean which is true when the control is in the editing state.</p></section>
@@ -529,67 +568,67 @@ the format attribute. You can override this method to format the value in a diff
 </li>
 <li><code><b><a title="albow.input.TextEditor.TextEditor" href="TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></b></code>:
 <ul class="hlist">
-<li><code><a title="albow.input.TextEditor.TextEditor.attention_lost" href="../core/Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.attention_lost" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.attention_lost">attention_lost</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.set_text" href="TextEditor.html#albow.input.TextEditor.TextEditor.set_text">set_text</a></code></li>
 </ul>
 </li>
 <li><code><b><a title="albow.input.TextEditor.TextEditor" href="TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></b></code>:
 <ul class="hlist">
-<li><code><a title="albow.input.TextEditor.TextEditor.add" href="../core/Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.add_anchor" href="../core/Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.add_centered" href="../core/Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.add" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.add_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.add_centered" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.add_centered">add_centered</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.allow_char" href="TextEditor.html#albow.input.TextEditor.TextEditor.allow_char">allow_char</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.anchor" href="../core/Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.augment_mouse_event" href="../core/Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.bg_color" href="../core/Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.bg_image" href="../core/Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.border_color" href="../core/Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.border_width" href="../core/Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.call_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.call_parent_handler" href="../core/Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.defer_drawing" href="../core/Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.dismiss" href="../core/Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.draw" href="../core/Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.draw_over" href="../core/Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.anchor" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.augment_mouse_event" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.bg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.bg_image" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.border_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.border_width" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.call_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.call_parent_handler" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.defer_drawing" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.dismiss" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.draw" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.draw_over" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.draw_over">draw_over</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.enterAction" href="TextEditor.html#albow.input.TextEditor.TextEditor.enterAction">enterAction</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.escapeAction" href="TextEditor.html#albow.input.TextEditor.TextEditor.escapeAction">escapeAction</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.fg_color" href="../core/Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.focus" href="../core/Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.focus_switch" href="../core/Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.font" href="../core/Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_cursor" href="../core/Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_focus" href="../core/Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_margin_rect" href="../core/Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_root" href="../core/Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_top_widget" href="../core/Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.get_visible" href="../core/Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.global_to_local" href="../core/Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.has_focus" href="../core/Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.inherited" href="../core/Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.fg_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.focus_switch" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.font" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_cursor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_margin_rect" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_root" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_top_widget" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.get_visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.global_to_local" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.has_focus" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.inherited" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.inherited">inherited</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.insertionPoint" href="TextEditor.html#albow.input.TextEditor.TextEditor.insertionPoint">insertionPoint</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.invalidate" href="../core/Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.is_gl_container" href="../core/Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.key_down" href="../core/Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.key_up" href="../core/Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.local_to_global" href="../core/Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.margin" href="../core/Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.menu_bar" href="../core/Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.parent" href="../core/Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.parent_resized" href="../core/Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.present" href="../core/Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.rect" href="../core/Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.relative_mode" href="../core/Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.remove" href="../core/Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.remove_anchor" href="../core/Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.resized" href="../core/Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.scale_bg" href="../core/Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.sel_color" href="../core/Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.set_parent" href="../core/Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.set_size_for_text" href="../core/Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.tab_stop" href="../core/Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.invalidate" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.is_gl_container" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.key_down" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.key_up" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.local_to_global" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.margin" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.menu_bar" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.parent_resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.present" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.rect" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.relative_mode" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.remove" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.remove_anchor" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.resized" href="../core/ui/AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.scale_bg" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.sel_color" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.set_parent" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.set_size_for_text" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.tab_stop" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.tab_stop">tab_stop</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.text" href="TextEditor.html#albow.input.TextEditor.TextEditor.text">text</a></code></li>
 <li><code><a title="albow.input.TextEditor.TextEditor.upper" href="TextEditor.html#albow.input.TextEditor.TextEditor.upper">upper</a></code></li>
-<li><code><a title="albow.input.TextEditor.TextEditor.visible" href="../core/Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+<li><code><a title="albow.input.TextEditor.TextEditor.visible" href="../core/ui/Widget.html#albow.core.ui.Widget.Widget.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>
@@ -613,6 +652,7 @@ the format attribute. You can override this method to format the value in a diff
 <li>
 <h4><code><a title="albow.input.Field.Field" href="#albow.input.Field.Field">Field</a></code></h4>
 <ul class="two-column">
+<li><code><a title="albow.input.Field.Field.DEFAULT_WIDTH" href="#albow.input.Field.Field.DEFAULT_WIDTH">DEFAULT_WIDTH</a></code></li>
 <li><code><a title="albow.input.Field.Field.commit" href="#albow.input.Field.Field.commit">commit</a></code></li>
 <li><code><a title="albow.input.Field.Field.editing" href="#albow.input.Field.Field.editing">editing</a></code></li>
 <li><code><a title="albow.input.Field.Field.empty" href="#albow.input.Field.Field.empty">empty</a></code></li>

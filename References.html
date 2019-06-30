@@ -199,7 +199,6 @@ class Ref:
 
     def __getitem__(self, index):
         return self.base[index]
-        # return ItemRef(self, index)
 
     def __call__(self, *args, **kwds):
         return CallRef(self, args, kwds)
@@ -208,10 +207,9 @@ class Ref:
         return RefCaller(self)
 
     def __repr__(self):
-        return &#34;Ref(%r)&#34; % self.base
+        return f&#34;Ref({self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base
 
 
@@ -223,18 +221,13 @@ class AttrRef(Ref):
         self.name = name
 
     def __repr__(self):
-        return &#34;AttrRef(%r, %r)&#34; % (self.base, self.name)
+        return f&#34;AttrRef({self.base}, {self.name})&#34;
 
     def get(self):
-        # print(&#34;%r.get()&#34; % self)
-        # Python 3 update
-        # return getattr(self.base.get(), self.name)
         val = getattr(self.base, self.name)
         return val
 
     def set(self, value):
-        # Python 3 update
-        # setattr(self.base.get(), self.name, value)
         setattr(self.base, self.name, value)
 
 
@@ -249,13 +242,11 @@ class ItemRef(Ref):
         return f&#34;ItemRef({self.index}, {self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base[self.index]
 
     def set(self, value):
         if isinstance(value, self.__class__):
             self.base[self.index] = value
-            print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
         else:
             ex: ItemRefInsertionException = ItemRefInsertionException(
                 theIndex=self.index,
@@ -274,10 +265,9 @@ class CallRef(Ref):
         self.kwds = kwds
 
     def __repr__(self):
-        return &#34;CallRef(%r)&#34; % self.base
+        return f&#34;CallRef({self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base.get()(*self.args, **self.kwds)
 
 
@@ -290,7 +280,7 @@ class RefCaller:
         return self.base.get()(*args, **kwds)
 
     def __repr__(self):
-        return &#34;+%s&#34; % repr(self.base)</code></pre>
+        return f&#34;+{self.base}&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -324,18 +314,13 @@ this reference source using the operations listed below.</p>
         self.name = name
 
     def __repr__(self):
-        return &#34;AttrRef(%r, %r)&#34; % (self.base, self.name)
+        return f&#34;AttrRef({self.base}, {self.name})&#34;
 
     def get(self):
-        # print(&#34;%r.get()&#34; % self)
-        # Python 3 update
-        # return getattr(self.base.get(), self.name)
         val = getattr(self.base, self.name)
         return val
 
     def set(self, value):
-        # Python 3 update
-        # setattr(self.base.get(), self.name, value)
         setattr(self.base, self.name, value)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -352,9 +337,6 @@ this reference source using the operations listed below.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get(self):
-    # print(&#34;%r.get()&#34; % self)
-    # Python 3 update
-    # return getattr(self.base.get(), self.name)
     val = getattr(self.base, self.name)
     return val</code></pre>
 </details>
@@ -367,8 +349,6 @@ this reference source using the operations listed below.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def set(self, value):
-    # Python 3 update
-    # setattr(self.base.get(), self.name, value)
     setattr(self.base, self.name, value)</code></pre>
 </details>
 </dd>
@@ -401,10 +381,9 @@ this reference source using the operations listed below.</p>
         self.kwds = kwds
 
     def __repr__(self):
-        return &#34;CallRef(%r)&#34; % self.base
+        return f&#34;CallRef({self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base.get()(*self.args, **self.kwds)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -421,7 +400,6 @@ this reference source using the operations listed below.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get(self):
-    print(&#34;%r.get()&#34; % self)
     return self.base.get()(*self.args, **self.kwds)</code></pre>
 </details>
 </dd>
@@ -452,13 +430,11 @@ this reference source using the operations listed below.</p>
         return f&#34;ItemRef({self.index}, {self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base[self.index]
 
     def set(self, value):
         if isinstance(value, self.__class__):
             self.base[self.index] = value
-            print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
         else:
             ex: ItemRefInsertionException = ItemRefInsertionException(
                 theIndex=self.index,
@@ -479,7 +455,6 @@ this reference source using the operations listed below.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get(self):
-    print(&#34;%r.get()&#34; % self)
     return self.base[self.index]</code></pre>
 </details>
 </dd>
@@ -493,7 +468,6 @@ this reference source using the operations listed below.</p>
 <pre><code class="python">def set(self, value):
     if isinstance(value, self.__class__):
         self.base[self.index] = value
-        print(f&#34;ItemRef.index{self.index}, value{self.base}&#34;)
     else:
         ex: ItemRefInsertionException = ItemRefInsertionException(
             theIndex=self.index,
@@ -534,7 +508,6 @@ this reference source using the operations listed below.</p>
 
     def __getitem__(self, index):
         return self.base[index]
-        # return ItemRef(self, index)
 
     def __call__(self, *args, **kwds):
         return CallRef(self, args, kwds)
@@ -543,10 +516,9 @@ this reference source using the operations listed below.</p>
         return RefCaller(self)
 
     def __repr__(self):
-        return &#34;Ref(%r)&#34; % self.base
+        return f&#34;Ref({self.base})&#34;
 
     def get(self):
-        print(&#34;%r.get()&#34; % self)
         return self.base</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -565,7 +537,6 @@ this reference source using the operations listed below.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def get(self):
-    print(&#34;%r.get()&#34; % self)
     return self.base</code></pre>
 </details>
 </dd>
@@ -588,7 +559,7 @@ this reference source using the operations listed below.</p>
         return self.base.get()(*args, **kwds)
 
     def __repr__(self):
-        return &#34;+%s&#34; % repr(self.base)</code></pre>
+        return f&#34;+{self.base}&#34;</code></pre>
 </details>
 </dd>
 </dl>

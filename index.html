@@ -27,21 +27,26 @@ by Gregory Ewing
 greg.ewing@canterbury.ac.nz</p>
 <p>Ported to Python 3 and extended by <a href="https://www.linkedin.com/in/hasii/">Humberto A. Sanchez II</a></p>
 <h2 id="usage">Usage</h2>
-<p>Typical usage of the widget system is as follows:</p>
+<p>The typical usage of the Albow widget system is succinctly summarized:</p>
 <ol>
 <li>Initialize the PyGame display surface.</li>
-<li>Create an instance of RootWidget or subclass thereof (such as Shell), passing it the display surface.</li>
+<li>Create an instance of the <code>RootWidget</code><ul>
+<li>Albow provides a convenience called the <code>Shell</code> widget</li>
+<li>Provide it the Pygame display <code>surface</code>.</li>
+</ul>
+</li>
 <li>Create additional widgets if needed and add them as subwidgets of the root widget. If using Shell, create
 the screens you will be using and display your main screen.</li>
-<li>Start the frame timer if you will be using it (see RootWidget.set_timer()).</li>
-<li>Call the run() method of the root widget.</li>
+<li>Start the frame timer if you will be using it (see <code>RootWidget.set_timer()</code>).</li>
+<li>Call the <code>run()</code> method of the root widget.</li>
 </ol>
 <h2 id="constructors">Constructors</h2>
-<p>There is a convention used by the constructors of Widget and its subclasses. As well as the arguments
-listed in the documentation for the class's constructor, you can also pass initial values for any
+<p>There is a convention used by the constructors of Widget and its subclasses.
+In addition to the arguments
+listed in the documentation for the class's constructor, a developer can also pass initial values for any
 other attributes of the class as keyword arguments.</p>
-<p>You can do this for attributes of your own Widget subclasses as well, if you pass on any extra
-keyword arguments to the base class <strong>init</strong> method. The only requirement is that the attribute
+<p>Developers can do this for attributes of their own Widget subclasses as well, if they provide any extra
+keyword arguments to the base class <code>__init__</code> method. The only requirement is that the attribute
 already exist as an instance or class attribute, or as a property. This ensures that mistaken
 keyword arguments are diagnosed rather than silently creating a new attribute.</p>
 <h2 id="events">Events</h2>
@@ -61,7 +66,7 @@ keyword arguments are diagnosed rather than silently creating a new attribute.</
 <td>Time of occurrence of the event, in milliseconds since pygame.init() was called.</td>
 </tr>
 <tr>
-<td>POS</td>
+<td>pos</td>
 <td>Mouse events</td>
 <td>TBD</td>
 </tr>
@@ -78,12 +83,17 @@ keyword arguments are diagnosed rather than silently creating a new attribute.</
 </tbody>
 </table>
 <p>Mouse events are classified into mouse_down, mouse_drag, mouse_up and mouse_move, and are delivered by
-calling the corresponding method of the relevant widget. Mouse-down events are delivered to the widget in
-which the event occurs. Mouse-drag and mouse-up events are delivered to the widget that received the last
-mouse-down event. Mouse-move events (with no mouse button pressed) are delivered to the widget in which
+calling the corresponding method of the relevant widget.
+Mouse-down events are delivered to the widget in
+which the event occurs.
+Mouse-drag and mouse-up events are delivered to the widget that received the last
+mouse-down event.
+Mouse-move events (with no mouse button pressed) are delivered to the widget in which
 they occur.</p>
 <p>Keyboard events are delivered by calling the key_down or key_up methods of the widget having the current
-keyboard focus. A widget is given the keyboard focus by calling its focus() method. If the focus widget
+keyboard focus.
+A widget is given the keyboard focus by calling its focus() method.
+If the focus widget
 does not handle a key event, it is passed up the widget hierarchy until a handler is found.</p>
 <p>Both mouse and keyboard events have a set of boolean attributes indicating the state of the modifier keys
 at the time of the event.</p>
@@ -109,16 +119,29 @@ at the time of the event.</p>
 </tr>
 <tr>
 <td>meta</td>
-<td>True if the Meta key (Command key on Macintosh, Windows key on PC keyboards) is down.</td>
+<td>True if the Meta key (Command key on Macintosh, Windows key</td>
+</tr>
+<tr>
+<td></td>
+<td>on PC keyboards) is down.</td>
 </tr>
 <tr>
 <td>cmd</td>
-<td>True if either the Control or Meta key is down. This can be used to implement command keys that work according to either Macintosh or Linux/Windows conventions.</td>
+<td>True if either the Control or Meta key is down.
+This can be</td>
+</tr>
+<tr>
+<td></td>
+<td>used to implement command keys that work according to either</td>
+</tr>
+<tr>
+<td></td>
+<td>Mac or Linux/Windows conventions.</td>
 </tr>
 </tbody>
 </table>
 <p>Albow also provides timer events that are delivered to the root widget by calling its timer_event() method.
-If you use the Shell and Screen classes, timer events are dispatched to the currently active Screen. The
+If the developer uses the Shell and Screen classes, timer events are dispatched to the currently active <code>Screen</code>. The
 timer_event() method returns a boolean indicating whether to update the display.</p>
 <details class="source">
 <summary>Source code</summary>
@@ -133,25 +156,27 @@ timer_event() method returns a boolean indicating whether to update the display.
     Usage
     -----
 
-    Typical usage of the widget system is as follows:
+    The typical usage of the Albow widget system is succinctly summarized:
 
     1. Initialize the PyGame display surface.
-    2. Create an instance of RootWidget or subclass thereof (such as Shell), passing it the display surface.
+    2. Create an instance of the `RootWidget`
+        - Albow provides a convenience called the `Shell` widget
+        - Provide it the Pygame display `surface`.
     3. Create additional widgets if needed and add them as subwidgets of the root widget. If using Shell, create
     the screens you will be using and display your main screen.
-    4. Start the frame timer if you will be using it (see RootWidget.set_timer()).
-    5. Call the run() method of the root widget.
+    4. Start the frame timer if you will be using it (see `RootWidget.set_timer()`).
+    5. Call the `run()` method of the root widget.
 
 
     Constructors
     ------------
 
-    There is a convention used by the constructors of Widget and its subclasses. As well as the arguments
-    listed in the documentation for the class&#39;s constructor, you can also pass initial values for any
+    There is a convention used by the constructors of Widget and its subclasses.  In addition to the arguments
+    listed in the documentation for the class&#39;s constructor, a developer can also pass initial values for any
     other attributes of the class as keyword arguments.
 
-    You can do this for attributes of your own Widget subclasses as well, if you pass on any extra
-    keyword arguments to the base class __init__ method. The only requirement is that the attribute
+    Developers can do this for attributes of their own Widget subclasses as well, if they provide any extra
+    keyword arguments to the base class `__init__` method. The only requirement is that the attribute
     already exist as an instance or class attribute, or as a property. This ensures that mistaken
     keyword arguments are diagnosed rather than silently creating a new attribute.
 
@@ -163,35 +188,38 @@ timer_event() method returns a boolean indicating whether to update the display.
     | Attribute  | Event type          | Description                                                                                              |
     |------------|---------------------|----------------------------------------------------------------------------------------------------------|
     | time       | All events          | Time of occurrence of the event, in milliseconds since pygame.init() was called.                         |
-    | POS        | Mouse events        | TBD                                                                                                      |
+    | pos        | Mouse events        | TBD                                                                                                      |
     | local      | Mouse events        | Position of the mouse in the local coordinate system of the widget to which it is delivered.             |
     | ray        | OpenGL mouse events | A pair of points representing the projection of the mouse position onto the near and far clipping planes |
 
 
     Mouse events are classified into mouse_down, mouse_drag, mouse_up and mouse_move, and are delivered by
-    calling the corresponding method of the relevant widget. Mouse-down events are delivered to the widget in
-    which the event occurs. Mouse-drag and mouse-up events are delivered to the widget that received the last
-    mouse-down event. Mouse-move events (with no mouse button pressed) are delivered to the widget in which
+    calling the corresponding method of the relevant widget.  Mouse-down events are delivered to the widget in
+    which the event occurs.  Mouse-drag and mouse-up events are delivered to the widget that received the last
+    mouse-down event.  Mouse-move events (with no mouse button pressed) are delivered to the widget in which
     they occur.
 
     Keyboard events are delivered by calling the key_down or key_up methods of the widget having the current
-    keyboard focus. A widget is given the keyboard focus by calling its focus() method. If the focus widget
+    keyboard focus.  A widget is given the keyboard focus by calling its focus() method.  If the focus widget
     does not handle a key event, it is passed up the widget hierarchy until a handler is found.
 
     Both mouse and keyboard events have a set of boolean attributes indicating the state of the modifier keys
     at the time of the event.
 
-    | Attribute| State                                                     |
+    | Attribute| State                                                        |
     | -------- | ------------------------------------------------------------ |
-    | shift | True if one of the Shift keys is down.                       |
-    | ctrl  | True if the Control key is down.                             |
-    | alt   | True if the Alt key (Option key on Macintosh) is down.       |
-    | meta  | True if the Meta key (Command key on Macintosh, Windows key on PC keyboards) is down. |
-    | cmd   | True if either the Control or Meta key is down. This can be used to implement command keys that work according to either Macintosh or Linux/Windows conventions. |
+    | shift | True if one of the Shift keys is down.                          |
+    | ctrl  | True if the Control key is down.                                |
+    | alt   | True if the Alt key (Option key on Macintosh) is down.          |
+    | meta  | True if the Meta key (Command key on Macintosh, Windows key     |
+    |       | on PC keyboards) is down.                                       |
+    | cmd   | True if either the Control or Meta key is down.  This can be    |
+    |       | used to implement command keys that work according to either    |
+    |       | Mac or Linux/Windows conventions.                               |
 
 
     Albow also provides timer events that are delivered to the root widget by calling its timer_event() method.
-    If you use the Shell and Screen classes, timer events are dispatched to the currently active Screen. The
+    If the developer uses the Shell and Screen classes, timer events are dispatched to the currently active `Screen`. The
     timer_event() method returns a boolean indicating whether to update the display.
 
 &#34;&#34;&#34;

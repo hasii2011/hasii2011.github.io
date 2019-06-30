@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>albow.core.ui.AlbowRect API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>albow.core.ui.AlbowRect</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import logging
+
+from pygame import Rect
+
+from albow.core.RectUtility import RectUtility
+
+from albow.vectors import subtract
+from albow.vectors import add
+
+
+class AlbowRect:
+
+    left = RectUtility.rect_property(&#39;left&#39;)
+    right = RectUtility.rect_property(&#39;right&#39;)
+    top = RectUtility.rect_property(&#39;top&#39;)
+    bottom = RectUtility.rect_property(&#39;bottom&#39;)
+    width = RectUtility.rect_property(&#39;width&#39;)
+    height = RectUtility.rect_property(&#39;height&#39;)
+    size = RectUtility.rect_property(&#39;size&#39;)
+    topleft = RectUtility.rect_property(&#39;topleft&#39;)
+    topright = RectUtility.rect_property(&#39;topright&#39;)
+    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
+    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
+    midleft = RectUtility.rect_property(&#39;midleft&#39;)
+    midright = RectUtility.rect_property(&#39;midright&#39;)
+    midtop = RectUtility.rect_property(&#39;midtop&#39;)
+    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
+    center = RectUtility.rect_property(&#39;center&#39;)
+    centerx = RectUtility.rect_property(&#39;centerx&#39;)
+    centery = RectUtility.rect_property(&#39;centery&#39;)
+
+    debug_resize = False
+
+    def __init__(self, thePygameRect: Rect = None):
+
+        self.logger = logging.getLogger(__name__)
+        self.subwidgets = []
+        self.parent = None
+        self.anchor = &#39;lt&#39;
+        &#34;&#34;&#34;
+        A string specifying how this widget is to change in size and position when its parent widget changes size. The 
+        letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
+        parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
+        its parent changes in width or height.
+        &#34;&#34;&#34;
+
+        if thePygameRect and not isinstance(thePygameRect, Rect):
+            raise TypeError(&#34;AlbowRect rect not a pygame.Rect&#34;)
+
+        self._rect = Rect(thePygameRect or (0, 0, 100, 100))
+
+    def get_rect(self):
+        return self._rect
+
+    def set_rect(self, x):
+
+        old_size = self._rect.size
+        self._rect = Rect(x)
+        self._resized(old_size[0], old_size[1])
+
+    rect = property(get_rect, set_rect)
+    &#34;&#34;&#34;
+    bounds in parent&#39;s coordinates
+    &#34;&#34;&#34;
+
+    def _resized(self, old_width, old_height):
+        &#34;&#34;&#34;
+
+        Args:
+            old_width:
+            old_height:
+        &#34;&#34;&#34;
+        new_width, new_height = self._rect.size
+        dw = new_width - old_width
+        dh = new_height - old_height
+        if dw or dh:
+            self.resized(dw, dh)
+
+    def resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget changes size as a result of assigning to its width, height or size attributes,
+        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+        Args:
+            dw:  width
+            dh:  height
+        &#34;&#34;&#34;
+        if self.debug_resize:
+            self.logger.info(f&#34;AlbowRect.resized: {self} by: ({dw}, {dh}) to {self.size}&#34;)
+        for widget in self.subwidgets:
+            widget.parent_resized(dw, dh)
+
+    def parent_resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+        the widget according to its anchor attribute.
+
+        Args:
+            dw:  Width
+            dh:  Height
+        &#34;&#34;&#34;
+        debug_resize = self.debug_resize or self.parent.debug_resize
+
+        if debug_resize:
+            self.logger.info(f&#34;AlbowRect.parent_resized {self}, by ({dw}, {dh})&#34;)
+
+        left, top, width, height = self._rect
+        move = False
+        resize = False
+        anchor = self.anchor
+
+        if dw and &#39;r&#39; in anchor:
+            if &#39;l&#39; in anchor:
+                resize = True
+                width += dw
+            else:
+                move = True
+                left += dw
+        if dh and &#39;b&#39; in anchor:
+            if &#39;t&#39; in anchor:
+                resize = True
+                height += dh
+            else:
+                move = True
+                top += dh
+
+        if resize:
+            if debug_resize:
+                self.logger.info(f&#34;AlbowRect.parent_resized: changing rect to ({left}, {top}, {width}, {height})&#34;)
+            self.rect = (left, top, width, height)
+        elif move:
+            if debug_resize:
+                self.logger.info(f&#34;AlbowRect.parent_resized: moving to (%{left},{top})&#34;)
+            self._rect.topleft = (left, top)
+
+    def global_to_local(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+        Args:
+            p:  The global coordinates
+
+        Returns:  The widget&#39;s local coordinates
+        &#34;&#34;&#34;
+        return subtract(p, self.local_to_global_offset())
+
+    def local_to_global(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+        Args:
+            p: Widget local coordinates
+
+        Returns: global coordinates
+        &#34;&#34;&#34;
+        return add(p, self.local_to_global_offset())
+
+    def local_to_global_offset(self):
+
+        d = self.topleft
+        parent = self.parent
+        if parent:
+            d = add(d, parent.local_to_global_offset())
+        return d
+
+    def get_global_rect(self):
+
+        p = self.local_to_global_offset()
+        pTuple = tuple(p)
+        s = self.rect.size
+
+        return Rect(pTuple, s)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="albow.core.ui.AlbowRect.AlbowRect"><code class="flex name class">
+<span>class <span class="ident">AlbowRect</span></span>
+<span>(</span><span>thePygameRect=None)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class AlbowRect:
+
+    left = RectUtility.rect_property(&#39;left&#39;)
+    right = RectUtility.rect_property(&#39;right&#39;)
+    top = RectUtility.rect_property(&#39;top&#39;)
+    bottom = RectUtility.rect_property(&#39;bottom&#39;)
+    width = RectUtility.rect_property(&#39;width&#39;)
+    height = RectUtility.rect_property(&#39;height&#39;)
+    size = RectUtility.rect_property(&#39;size&#39;)
+    topleft = RectUtility.rect_property(&#39;topleft&#39;)
+    topright = RectUtility.rect_property(&#39;topright&#39;)
+    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
+    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
+    midleft = RectUtility.rect_property(&#39;midleft&#39;)
+    midright = RectUtility.rect_property(&#39;midright&#39;)
+    midtop = RectUtility.rect_property(&#39;midtop&#39;)
+    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
+    center = RectUtility.rect_property(&#39;center&#39;)
+    centerx = RectUtility.rect_property(&#39;centerx&#39;)
+    centery = RectUtility.rect_property(&#39;centery&#39;)
+
+    debug_resize = False
+
+    def __init__(self, thePygameRect: Rect = None):
+
+        self.logger = logging.getLogger(__name__)
+        self.subwidgets = []
+        self.parent = None
+        self.anchor = &#39;lt&#39;
+        &#34;&#34;&#34;
+        A string specifying how this widget is to change in size and position when its parent widget changes size. The 
+        letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
+        parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
+        its parent changes in width or height.
+        &#34;&#34;&#34;
+
+        if thePygameRect and not isinstance(thePygameRect, Rect):
+            raise TypeError(&#34;AlbowRect rect not a pygame.Rect&#34;)
+
+        self._rect = Rect(thePygameRect or (0, 0, 100, 100))
+
+    def get_rect(self):
+        return self._rect
+
+    def set_rect(self, x):
+
+        old_size = self._rect.size
+        self._rect = Rect(x)
+        self._resized(old_size[0], old_size[1])
+
+    rect = property(get_rect, set_rect)
+    &#34;&#34;&#34;
+    bounds in parent&#39;s coordinates
+    &#34;&#34;&#34;
+
+    def _resized(self, old_width, old_height):
+        &#34;&#34;&#34;
+
+        Args:
+            old_width:
+            old_height:
+        &#34;&#34;&#34;
+        new_width, new_height = self._rect.size
+        dw = new_width - old_width
+        dh = new_height - old_height
+        if dw or dh:
+            self.resized(dw, dh)
+
+    def resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget changes size as a result of assigning to its width, height or size attributes,
+        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+        Args:
+            dw:  width
+            dh:  height
+        &#34;&#34;&#34;
+        if self.debug_resize:
+            self.logger.info(f&#34;AlbowRect.resized: {self} by: ({dw}, {dh}) to {self.size}&#34;)
+        for widget in self.subwidgets:
+            widget.parent_resized(dw, dh)
+
+    def parent_resized(self, dw, dh):
+        &#34;&#34;&#34;
+        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+        the widget according to its anchor attribute.
+
+        Args:
+            dw:  Width
+            dh:  Height
+        &#34;&#34;&#34;
+        debug_resize = self.debug_resize or self.parent.debug_resize
+
+        if debug_resize:
+            self.logger.info(f&#34;AlbowRect.parent_resized {self}, by ({dw}, {dh})&#34;)
+
+        left, top, width, height = self._rect
+        move = False
+        resize = False
+        anchor = self.anchor
+
+        if dw and &#39;r&#39; in anchor:
+            if &#39;l&#39; in anchor:
+                resize = True
+                width += dw
+            else:
+                move = True
+                left += dw
+        if dh and &#39;b&#39; in anchor:
+            if &#39;t&#39; in anchor:
+                resize = True
+                height += dh
+            else:
+                move = True
+                top += dh
+
+        if resize:
+            if debug_resize:
+                self.logger.info(f&#34;AlbowRect.parent_resized: changing rect to ({left}, {top}, {width}, {height})&#34;)
+            self.rect = (left, top, width, height)
+        elif move:
+            if debug_resize:
+                self.logger.info(f&#34;AlbowRect.parent_resized: moving to (%{left},{top})&#34;)
+            self._rect.topleft = (left, top)
+
+    def global_to_local(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+        Args:
+            p:  The global coordinates
+
+        Returns:  The widget&#39;s local coordinates
+        &#34;&#34;&#34;
+        return subtract(p, self.local_to_global_offset())
+
+    def local_to_global(self, p):
+        &#34;&#34;&#34;
+        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+        Args:
+            p: Widget local coordinates
+
+        Returns: global coordinates
+        &#34;&#34;&#34;
+        return add(p, self.local_to_global_offset())
+
+    def local_to_global_offset(self):
+
+        d = self.topleft
+        parent = self.parent
+        if parent:
+            d = add(d, parent.local_to_global_offset())
+        return d
+
+    def get_global_rect(self):
+
+        p = self.local_to_global_offset()
+        pTuple = tuple(p)
+        s = self.rect.size
+
+        return Rect(pTuple, s)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="albow.core.ui.Widget.Widget" href="Widget.html#albow.core.ui.Widget.Widget">Widget</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.debug_resize"><code class="name">var <span class="ident">debug_resize</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.rect"><code class="name">var <span class="ident">rect</span></code></dt>
+<dd>
+<section class="desc"><p>bounds in parent's coordinates</p></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.anchor"><code class="name">var <span class="ident">anchor</span></code></dt>
+<dd>
+<section class="desc"><p>A string specifying how this widget is to change in size and position when its parent widget changes size. The
+letters 'l', 'r', 't' and 'b' are used to anchor the widget to the left, right, top or bottom sides of its
+parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when
+its parent changes in width or height.</p></section>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.bottom"><code class="name">var <span class="ident">bottom</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.bottomleft"><code class="name">var <span class="ident">bottomleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.bottomright"><code class="name">var <span class="ident">bottomright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.center"><code class="name">var <span class="ident">center</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.centerx"><code class="name">var <span class="ident">centerx</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.centery"><code class="name">var <span class="ident">centery</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.height"><code class="name">var <span class="ident">height</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.left"><code class="name">var <span class="ident">left</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.midbottom"><code class="name">var <span class="ident">midbottom</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.midleft"><code class="name">var <span class="ident">midleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.midright"><code class="name">var <span class="ident">midright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.midtop"><code class="name">var <span class="ident">midtop</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.right"><code class="name">var <span class="ident">right</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.size"><code class="name">var <span class="ident">size</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.top"><code class="name">var <span class="ident">top</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.topleft"><code class="name">var <span class="ident">topleft</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.topright"><code class="name">var <span class="ident">topright</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.width"><code class="name">var <span class="ident">width</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get(self):
+    return getattr(self._rect, name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.get_global_rect"><code class="name flex">
+<span>def <span class="ident">get_global_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_global_rect(self):
+
+    p = self.local_to_global_offset()
+    pTuple = tuple(p)
+    s = self.rect.size
+
+    return Rect(pTuple, s)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.get_rect"><code class="name flex">
+<span>def <span class="ident">get_rect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_rect(self):
+    return self._rect</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.global_to_local"><code class="name flex">
+<span>def <span class="ident">global_to_local</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Converts the given coordinate pair from PyGame screen coordinates to the widget's local coordinate system.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>p</code></strong></dt>
+<dd>The global coordinates</dd>
+<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>widget's</code> <code>local</code> <code>coordinates</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def global_to_local(self, p):
+    &#34;&#34;&#34;
+    Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
+
+    Args:
+        p:  The global coordinates
+
+    Returns:  The widget&#39;s local coordinates
+    &#34;&#34;&#34;
+    return subtract(p, self.local_to_global_offset())</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.local_to_global"><code class="name flex">
+<span>def <span class="ident">local_to_global</span></span>(<span>self, p)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Converts the given coordinate pair from the widget's local coordinate system to PyGame screen coordinates.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>p</code></strong></dt>
+<dd>Widget local coordinates</dd>
+<dt><strong><code>Returns</code></strong> :&ensp;<code>global</code> <code>coordinates</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def local_to_global(self, p):
+    &#34;&#34;&#34;
+    Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
+
+    Args:
+        p: Widget local coordinates
+
+    Returns: global coordinates
+    &#34;&#34;&#34;
+    return add(p, self.local_to_global_offset())</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.local_to_global_offset"><code class="name flex">
+<span>def <span class="ident">local_to_global_offset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def local_to_global_offset(self):
+
+    d = self.topleft
+    parent = self.parent
+    if parent:
+        d = add(d, parent.local_to_global_offset())
+    return d</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.parent_resized"><code class="name flex">
+<span>def <span class="ident">parent_resized</span></span>(<span>self, dw, dh)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when the widget's parent changes size as a result of assigning to its width, height or size
+attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+the widget according to its anchor attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dw</code></strong></dt>
+<dd>Width</dd>
+<dt><strong><code>dh</code></strong></dt>
+<dd>Height</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def parent_resized(self, dw, dh):
+    &#34;&#34;&#34;
+    Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
+    attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
+    the widget according to its anchor attribute.
+
+    Args:
+        dw:  Width
+        dh:  Height
+    &#34;&#34;&#34;
+    debug_resize = self.debug_resize or self.parent.debug_resize
+
+    if debug_resize:
+        self.logger.info(f&#34;AlbowRect.parent_resized {self}, by ({dw}, {dh})&#34;)
+
+    left, top, width, height = self._rect
+    move = False
+    resize = False
+    anchor = self.anchor
+
+    if dw and &#39;r&#39; in anchor:
+        if &#39;l&#39; in anchor:
+            resize = True
+            width += dw
+        else:
+            move = True
+            left += dw
+    if dh and &#39;b&#39; in anchor:
+        if &#39;t&#39; in anchor:
+            resize = True
+            height += dh
+        else:
+            move = True
+            top += dh
+
+    if resize:
+        if debug_resize:
+            self.logger.info(f&#34;AlbowRect.parent_resized: changing rect to ({left}, {top}, {width}, {height})&#34;)
+        self.rect = (left, top, width, height)
+    elif move:
+        if debug_resize:
+            self.logger.info(f&#34;AlbowRect.parent_resized: moving to (%{left},{top})&#34;)
+        self._rect.topleft = (left, top)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.resized"><code class="name flex">
+<span>def <span class="ident">resized</span></span>(<span>self, dw, dh)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called when the widget changes size as a result of assigning to its width, height or size attributes,
+with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dw</code></strong></dt>
+<dd>width</dd>
+<dt><strong><code>dh</code></strong></dt>
+<dd>height</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def resized(self, dw, dh):
+    &#34;&#34;&#34;
+    Called when the widget changes size as a result of assigning to its width, height or size attributes,
+    with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
+
+    Args:
+        dw:  width
+        dh:  height
+    &#34;&#34;&#34;
+    if self.debug_resize:
+        self.logger.info(f&#34;AlbowRect.resized: {self} by: ({dw}, {dh}) to {self.size}&#34;)
+    for widget in self.subwidgets:
+        widget.parent_resized(dw, dh)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.AlbowRect.AlbowRect.set_rect"><code class="name flex">
+<span>def <span class="ident">set_rect</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_rect(self, x):
+
+    old_size = self._rect.size
+    self._rect = Rect(x)
+    self._resized(old_size[0], old_size[1])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="albow.core.ui" href="index.html">albow.core.ui</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.core.ui.AlbowRect.AlbowRect" href="#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></code></h4>
+<ul class="">
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.anchor" href="#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.bottom" href="#albow.core.ui.AlbowRect.AlbowRect.bottom">bottom</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.bottomleft" href="#albow.core.ui.AlbowRect.AlbowRect.bottomleft">bottomleft</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.bottomright" href="#albow.core.ui.AlbowRect.AlbowRect.bottomright">bottomright</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.center" href="#albow.core.ui.AlbowRect.AlbowRect.center">center</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.centerx" href="#albow.core.ui.AlbowRect.AlbowRect.centerx">centerx</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.centery" href="#albow.core.ui.AlbowRect.AlbowRect.centery">centery</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.debug_resize" href="#albow.core.ui.AlbowRect.AlbowRect.debug_resize">debug_resize</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.get_global_rect" href="#albow.core.ui.AlbowRect.AlbowRect.get_global_rect">get_global_rect</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.get_rect" href="#albow.core.ui.AlbowRect.AlbowRect.get_rect">get_rect</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.global_to_local" href="#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.height" href="#albow.core.ui.AlbowRect.AlbowRect.height">height</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.left" href="#albow.core.ui.AlbowRect.AlbowRect.left">left</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.local_to_global" href="#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.local_to_global_offset" href="#albow.core.ui.AlbowRect.AlbowRect.local_to_global_offset">local_to_global_offset</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.midbottom" href="#albow.core.ui.AlbowRect.AlbowRect.midbottom">midbottom</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.midleft" href="#albow.core.ui.AlbowRect.AlbowRect.midleft">midleft</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.midright" href="#albow.core.ui.AlbowRect.AlbowRect.midright">midright</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.midtop" href="#albow.core.ui.AlbowRect.AlbowRect.midtop">midtop</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.parent_resized" href="#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.rect" href="#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.resized" href="#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.right" href="#albow.core.ui.AlbowRect.AlbowRect.right">right</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.set_rect" href="#albow.core.ui.AlbowRect.AlbowRect.set_rect">set_rect</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.size" href="#albow.core.ui.AlbowRect.AlbowRect.size">size</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.top" href="#albow.core.ui.AlbowRect.AlbowRect.top">top</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.topleft" href="#albow.core.ui.AlbowRect.AlbowRect.topleft">topleft</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.topright" href="#albow.core.ui.AlbowRect.AlbowRect.topright">topright</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.width" href="#albow.core.ui.AlbowRect.AlbowRect.width">width</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

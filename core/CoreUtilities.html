@@ -113,7 +113,7 @@ MOD_KEYS = {
 
 class CoreUtilities:
 
-    time_base = 0
+    timeBase = 0
 
     &#34;&#34;&#34;
     A static class for some leftover module functions
@@ -133,8 +133,8 @@ class CoreUtilities:
     @staticmethod
     def init_timebase():
 
-        CoreUtilities.time_base = time() * 1000.0 - get_ticks()
-        print(f&#34;time_base: {str(CoreUtilities.time_base)}&#34;)</code></pre>
+        CoreUtilities.timeBase = time() * 1000.0 - get_ticks()
+        print(f&#34;timeBase: {str(CoreUtilities.timeBase)}&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -156,7 +156,7 @@ class CoreUtilities:
 <summary>Source code</summary>
 <pre><code class="python">class CoreUtilities:
 
-    time_base = 0
+    timeBase = 0
 
     &#34;&#34;&#34;
     A static class for some leftover module functions
@@ -176,12 +176,12 @@ class CoreUtilities:
     @staticmethod
     def init_timebase():
 
-        CoreUtilities.time_base = time() * 1000.0 - get_ticks()
-        print(f&#34;time_base: {str(CoreUtilities.time_base)}&#34;)</code></pre>
+        CoreUtilities.timeBase = time() * 1000.0 - get_ticks()
+        print(f&#34;timeBase: {str(CoreUtilities.timeBase)}&#34;)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="albow.core.CoreUtilities.CoreUtilities.time_base"><code class="name">var <span class="ident">time_base</span></code></dt>
+<dt id="albow.core.CoreUtilities.CoreUtilities.timeBase"><code class="name">var <span class="ident">timeBase</span></code></dt>
 <dd>
 <section class="desc"><p>A static class for some leftover module functions</p></section>
 </dd>
@@ -212,8 +212,8 @@ def add_modifiers(event):
 <pre><code class="python">@staticmethod
 def init_timebase():
 
-    CoreUtilities.time_base = time() * 1000.0 - get_ticks()
-    print(f&#34;time_base: {str(CoreUtilities.time_base)}&#34;)</code></pre>
+    CoreUtilities.timeBase = time() * 1000.0 - get_ticks()
+    print(f&#34;timeBase: {str(CoreUtilities.timeBase)}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="albow.core.CoreUtilities.CoreUtilities.set_modifier"><code class="name flex">
@@ -254,7 +254,7 @@ def set_modifier(key, value):
 <li><code><a title="albow.core.CoreUtilities.CoreUtilities.add_modifiers" href="#albow.core.CoreUtilities.CoreUtilities.add_modifiers">add_modifiers</a></code></li>
 <li><code><a title="albow.core.CoreUtilities.CoreUtilities.init_timebase" href="#albow.core.CoreUtilities.CoreUtilities.init_timebase">init_timebase</a></code></li>
 <li><code><a title="albow.core.CoreUtilities.CoreUtilities.set_modifier" href="#albow.core.CoreUtilities.CoreUtilities.set_modifier">set_modifier</a></code></li>
-<li><code><a title="albow.core.CoreUtilities.CoreUtilities.time_base" href="#albow.core.CoreUtilities.CoreUtilities.time_base">time_base</a></code></li>
+<li><code><a title="albow.core.CoreUtilities.CoreUtilities.timeBase" href="#albow.core.CoreUtilities.CoreUtilities.timeBase">timeBase</a></code></li>
 </ul>
 </li>
 </ul>
