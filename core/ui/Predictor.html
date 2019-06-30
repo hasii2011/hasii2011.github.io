@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.0" />
-<title>albow.core.root API documentation</title>
-<meta name="description" content=".. WARNING::
-This is warning text …" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>albow.core.ui.Predictor API documentation</title>
+<meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -18,116 +17,43 @@ This is warning text …" />
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>albow.core.root</code></h1>
+<h1 class="title">Module <code>albow.core.ui.Predictor</code></h1>
 </header>
 <section id="section-intro">
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This is warning text</p>
-</div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>This is attention text</p>
-</div>
-<div class="admonition caution">
-<p class="admonition-title">Caution</p>
-<p>This is caution text</p>
-</div>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>This is danger text</p>
-</div>
-<div class="admonition error">
-<p class="admonition-title">Error</p>
-<p>This is error text</p>
-</div>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>This is hint text</p>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>This is important text</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is note text</p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>This is tip text</p>
-</div>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">&#34;&#34;&#34;
-        .. WARNING::
-            This is warning text
+<pre><code class="python">import logging
 
-        .. ATTENTION::
-            This is attention text
+from albow.themes.Theme import Theme
+from albow.core.ui.Widget import Widget
 
-        .. CAUTION::
-            This is caution text
+class Predictor:
 
-        .. DANGER::
-            This is danger text
+    def __init__(self, theWidget: Widget):
 
-        .. ERROR::
-            This is error text
+        self.logger = logging.getLogger(__name__)
+        self.widget = theWidget
 
-        .. HINT::
-            This is hint text
+    def predict(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return Theme.getThemeRoot().get(self.widget.__class__, name)
 
-        .. IMPORTANT::
-            This is important text
+    def predict_attr(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return getattr(self.widget, name)
 
-        .. NOTE::
-            This is note text
+    def init_attr(self, kwds, name):
+        try:
+            return kwds.pop(name)
+        except KeyError:
+            return getattr(self.widget, name)
 
-        .. TIP::
-            This is tip text
-
-&#34;&#34;&#34;
-from time import time
-
-from pygame.locals import *
-
-from pygame.time import get_ticks
-
-mod_cmd = KMOD_LCTRL | KMOD_RCTRL | KMOD_LMETA | KMOD_RMETA
-
-modifiers = dict(
-    shift=False,
-    ctrl=False,
-    alt=False,
-    meta=False,
-)
-
-modkeys = {
-    K_LSHIFT: &#39;shift&#39;,  K_RSHIFT: &#39;shift&#39;,
-    K_LCTRL:  &#39;ctrl&#39;,   K_RCTRL:  &#39;ctrl&#39;,
-    K_LALT:   &#39;alt&#39;,    K_RALT:   &#39;alt&#39;,
-    K_LMETA:  &#39;meta&#39;,   K_RMETA:  &#39;meta&#39;,
-}
-
-time_base = 0
-
-def set_modifier(key, value):
-    attr = modkeys.get(key)
-    if attr:
-        modifiers[attr] = value
-
-
-def add_modifiers(event):
-    d = event.dict
-    d.update(modifiers)
-    d[&#39;cmd&#39;] = event.ctrl or event.meta
-
-
-def init_timebase():
-    global time_base
-    time_base = time() * 1000.0 - get_ticks()
-    print(&#34;time_base: &#34; + str(time_base))</code></pre>
+    def predict_font(self, kwds, name=&#39;font&#39;):
+        return kwds.get(name) or Theme.getThemeRoot().get_font(self.widget.__class__, name)</code></pre>
 </details>
 </section>
 <section>
@@ -135,50 +61,104 @@ def init_timebase():
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="albow.core.root.add_modifiers"><code class="name flex">
-<span>def <span class="ident">add_modifiers</span></span>(<span>event)</span>
+<dt id="albow.core.ui.Predictor.Predictor"><code class="flex name class">
+<span>class <span class="ident">Predictor</span></span>
+<span>(</span><span>theWidget)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def add_modifiers(event):
-    d = event.dict
-    d.update(modifiers)
-    d[&#39;cmd&#39;] = event.ctrl or event.meta</code></pre>
+<pre><code class="python">class Predictor:
+
+    def __init__(self, theWidget: Widget):
+
+        self.logger = logging.getLogger(__name__)
+        self.widget = theWidget
+
+    def predict(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return Theme.getThemeRoot().get(self.widget.__class__, name)
+
+    def predict_attr(self, kwds, name):
+        try:
+            return kwds[name]
+        except KeyError:
+            return getattr(self.widget, name)
+
+    def init_attr(self, kwds, name):
+        try:
+            return kwds.pop(name)
+        except KeyError:
+            return getattr(self.widget, name)
+
+    def predict_font(self, kwds, name=&#39;font&#39;):
+        return kwds.get(name) or Theme.getThemeRoot().get_font(self.widget.__class__, name)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="albow.core.ui.Predictor.Predictor.init_attr"><code class="name flex">
+<span>def <span class="ident">init_attr</span></span>(<span>self, kwds, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def init_attr(self, kwds, name):
+    try:
+        return kwds.pop(name)
+    except KeyError:
+        return getattr(self.widget, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.root.init_timebase"><code class="name flex">
-<span>def <span class="ident">init_timebase</span></span>(<span>)</span>
+<dt id="albow.core.ui.Predictor.Predictor.predict"><code class="name flex">
+<span>def <span class="ident">predict</span></span>(<span>self, kwds, name)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def init_timebase():
-    global time_base
-    time_base = time() * 1000.0 - get_ticks()
-    print(&#34;time_base: &#34; + str(time_base))</code></pre>
+<pre><code class="python">def predict(self, kwds, name):
+    try:
+        return kwds[name]
+    except KeyError:
+        return Theme.getThemeRoot().get(self.widget.__class__, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.root.set_modifier"><code class="name flex">
-<span>def <span class="ident">set_modifier</span></span>(<span>key, value)</span>
+<dt id="albow.core.ui.Predictor.Predictor.predict_attr"><code class="name flex">
+<span>def <span class="ident">predict_attr</span></span>(<span>self, kwds, name)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def set_modifier(key, value):
-    attr = modkeys.get(key)
-    if attr:
-        modifiers[attr] = value</code></pre>
+<pre><code class="python">def predict_attr(self, kwds, name):
+    try:
+        return kwds[name]
+    except KeyError:
+        return getattr(self.widget, name)</code></pre>
+</details>
+</dd>
+<dt id="albow.core.ui.Predictor.Predictor.predict_font"><code class="name flex">
+<span>def <span class="ident">predict_font</span></span>(<span>self, kwds, name='font')</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def predict_font(self, kwds, name=&#39;font&#39;):
+    return kwds.get(name) or Theme.getThemeRoot().get_font(self.widget.__class__, name)</code></pre>
 </details>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -189,21 +169,27 @@ def init_timebase():
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
+<li><code><a title="albow.core.ui" href="index.html">albow.core.ui</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="albow.core.ui.Predictor.Predictor" href="#albow.core.ui.Predictor.Predictor">Predictor</a></code></h4>
 <ul class="">
-<li><code><a title="albow.core.root.add_modifiers" href="#albow.core.root.add_modifiers">add_modifiers</a></code></li>
-<li><code><a title="albow.core.root.init_timebase" href="#albow.core.root.init_timebase">init_timebase</a></code></li>
-<li><code><a title="albow.core.root.set_modifier" href="#albow.core.root.set_modifier">set_modifier</a></code></li>
+<li><code><a title="albow.core.ui.Predictor.Predictor.init_attr" href="#albow.core.ui.Predictor.Predictor.init_attr">init_attr</a></code></li>
+<li><code><a title="albow.core.ui.Predictor.Predictor.predict" href="#albow.core.ui.Predictor.Predictor.predict">predict</a></code></li>
+<li><code><a title="albow.core.ui.Predictor.Predictor.predict_attr" href="#albow.core.ui.Predictor.Predictor.predict_attr">predict_attr</a></code></li>
+<li><code><a title="albow.core.ui.Predictor.Predictor.predict_font" href="#albow.core.ui.Predictor.Predictor.predict_font">predict_font</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

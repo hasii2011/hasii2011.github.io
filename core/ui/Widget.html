@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
-<title>albow.core.Widget API documentation</title>
+<title>albow.core.ui.Widget API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -17,7 +17,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>albow.core.Widget</code></h1>
+<h1 class="title">Module <code>albow.core.ui.Widget</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -45,19 +45,22 @@ from pygame.cursors import arrow as arrow_cursor
 from pygame.transform import rotozoom
 from albow.vectors import add
 from albow.vectors import subtract
-from albow.utils import frame_rect
 
+from albow.utils import frame_rect
 from albow.utils import overridable_property
 
+from albow.themes.Theme import Theme
 from albow.themes.ThemeProperty import ThemeProperty
 from albow.themes.FontProperty import FontProperty
 
-from albow.themes.Theme import Theme
+# from albow.core.RectUtility import RectUtility
+#
+# import albow.core.ui.Predictor
 
-from albow.core.RectUtility import RectUtility
+from albow.core.ui.AlbowRect import AlbowRect
 
 
-class Widget:
+class Widget(AlbowRect):
     &#34;&#34;&#34;
     The Widget class is the base class for all widgets. A widget occupies a rectangular area of the PyGame screen
     to which all drawing in it is clipped, and it may receive mouse and keyboard events. A widget may also
@@ -89,25 +92,6 @@ class Widget:
 
     current_cursor = None
     root_widget = None
-
-    left = RectUtility.rect_property(&#39;left&#39;)
-    right = RectUtility.rect_property(&#39;right&#39;)
-    top = RectUtility.rect_property(&#39;top&#39;)
-    bottom = RectUtility.rect_property(&#39;bottom&#39;)
-    width = RectUtility.rect_property(&#39;width&#39;)
-    height = RectUtility.rect_property(&#39;height&#39;)
-    size = RectUtility.rect_property(&#39;size&#39;)
-    topleft = RectUtility.rect_property(&#39;topleft&#39;)
-    topright = RectUtility.rect_property(&#39;topright&#39;)
-    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
-    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
-    midleft = RectUtility.rect_property(&#39;midleft&#39;)
-    midright = RectUtility.rect_property(&#39;midright&#39;)
-    midtop = RectUtility.rect_property(&#39;midtop&#39;)
-    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
-    center = RectUtility.rect_property(&#39;center&#39;)
-    centerx = RectUtility.rect_property(&#39;centerx&#39;)
-    centery = RectUtility.rect_property(&#39;centery&#39;)
 
     font = FontProperty(&#39;font&#39;)
     &#34;&#34;&#34;
@@ -192,13 +176,6 @@ class Widget:
     &#34;&#34;&#34;
     enter_response = None
     cancel_response = None
-    anchor = &#39;lt&#39;
-    &#34;&#34;&#34;
-    A string specifying how this widget is to change in size and position when its parent widget changes size. The 
-    letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
-    parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
-    its parent changes in width or height.
-    &#34;&#34;&#34;
     _menubar = None
     _visible = True
     _is_gl_container = False
@@ -216,14 +193,10 @@ class Widget:
     Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another 
     widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.
     &#34;&#34;&#34;
-    subwidgets = []
-    &#34;&#34;&#34;
-    &#34;&#34;&#34;
     focus_switch: &#34;Widget&#34; = None
     &#34;&#34;&#34;
     subwidget to receive key events
     &#34;&#34;&#34;
-    debug_resize = False
 
     def __init__(self, rect: Rect = None, **kwds):
         &#34;&#34;&#34;
@@ -231,20 +204,18 @@ class Widget:
         ize and position relative to its parent.
 
         Args:
-            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the\
+            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the
              widget. Modifying this rectangle changes the widget&#39;s size and position.
 
             **kwds: Additional attributes specified as key-value pairs
         &#34;&#34;&#34;
+        super().__init__(rect)
+
         self.logger = logging.getLogger(__name__)
 
-        if rect and not isinstance(rect, Rect):
-            raise TypeError(&#34;Widget rect not a pygame.Rect&#34;)
+        # self.predictor = albow.core.ui.Predictor.Predictor(self)
+        # &#34;&#34;&#34;Helps the widget look up attributes&#34;&#34;&#34;
 
-        self._rect = Rect(rect or (0, 0, 100, 100))
-        self.parent = None
-        self.subwidgets = []
-        self.focus_switch = None
         self.is_modal = False
         self.modal_result = None
 
@@ -257,22 +228,6 @@ class Widget:
                 raise TypeError(&#34;Unexpected keyword argument &#39;%s&#39;&#34; % name)
             setattr(self, name, value)
 
-    def get_rect(self):
-        return self._rect
-
-    def set_rect(self, x):
-        old_size = self._rect.size
-        self._rect = Rect(x)
-        #
-        # Python 3 update no more tuples
-        # self._resized(old_size)
-        self._resized(old_size[0], old_size[1])
-
-    rect = property(get_rect, set_rect)
-    &#34;&#34;&#34;
-    bounds in parent&#39;s coordinates
-    &#34;&#34;&#34;
-
     def add_anchor(self, mode: str):
         &#34;&#34;&#34;
         Adds the options specified by mode to the anchor property.
@@ -281,9 +236,6 @@ class Widget:
             mode:  The new anchor mode to add
 
         Returns:
-
-        &#34;&#34;&#34;
-        &#34;&#34;&#34;
         &#34;&#34;&#34;
         self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))
 
@@ -307,10 +259,6 @@ class Widget:
             anchor += chars[i]
         self.anchor = anchor + value
 
-    #
-    # update for 3.7
-    # https://stackoverflow.com/questions/33837918/type-hints-solve-circular-dependency
-    #
     def add(self, arg: &#39;Widget&#39;):     # Python 3 forward reference;
         &#34;&#34;&#34;
         Adds the given widget or sequence of widgets as a subwidget of this widget.
@@ -321,7 +269,7 @@ class Widget:
         &#34;&#34;&#34;
         if arg:
 
-            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
+            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34;)
             #
             # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
             #
@@ -351,8 +299,6 @@ class Widget:
 
         Args:
             widget:  The widget to act on
-
-
         &#34;&#34;&#34;
         if widget in self.subwidgets:
             widget.set_parent(None)
@@ -382,7 +328,7 @@ class Widget:
             self.focus_switch = None
 
     def draw_all(self, surface):
-        # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+
         if self.visible:
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
@@ -415,10 +361,6 @@ class Widget:
                 if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
                     try:
                         sub = surface.subsurface(sub_rect)
-                    #
-                    # Python 3 update
-                    #
-                    # except ValueError, e:
                     except ValueError as e:
                         if str(e) == &#34;subsurface rectangle outside surface area&#34;:
                             self.diagnose_subsurface_problem(surface, widget)
@@ -449,10 +391,7 @@ class Widget:
         for widget in self.subwidgets[::-1]:
             if widget.visible:
                 r = widget.rect
-                #
-                # Python 3 update
-                #
-                # if r.collidepoint(pos):
+
                 if isinstance(pos, map):
                     pos = list(pos)
                 if r.collidepoint(pos[0], pos[1]):
@@ -460,20 +399,18 @@ class Widget:
         return self
 
     def handle_mouse(self, name, event):
+
         self.augment_mouse_event(event)
         self.call_handler(name, event)
         self.setup_cursor(event)
 
     def augment_mouse_event(self, event):
         &#34;&#34;&#34;
-        Python 3 update.  local really needs to be a list
-
         Args:
             event:   The event to augment
 
         &#34;&#34;&#34;
         posMap = self.global_to_local(event.pos)
-        # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
         event.dict[&#39;local&#39;] = list(posMap)
 
     def setup_cursor(self, event):
@@ -512,7 +449,6 @@ class Widget:
         the widget that would have the keyboard focus if this widget were on the focus path.
 
         Returns:  A widget with the focus
-
         &#34;&#34;&#34;
         widget = self
         while 1:
@@ -564,7 +500,6 @@ class Widget:
             *args: The arguments to use
 
         Returns:  The value of the &#39;called&#39; method
-
         &#34;&#34;&#34;
         method = getattr(self, name, None)
         if method:
@@ -588,51 +523,6 @@ class Widget:
         if parent:
             parent.call_handler(name, *args)
 
-    def global_to_local(self, p):
-        &#34;&#34;&#34;
-        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
-
-        Args:
-            p:  The global coordinates
-
-        Returns:  The widget&#39;s local coordinates
-
-        &#34;&#34;&#34;
-        return subtract(p, self.local_to_global_offset())
-
-    def local_to_global(self, p):
-        &#34;&#34;&#34;
-        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
-
-        Args:
-            p: Widget local coordinates
-
-        Returns:
-
-        &#34;&#34;&#34;
-        return add(p, self.local_to_global_offset())
-
-    def local_to_global_offset(self):
-        d = self.topleft
-        parent = self.parent
-        if parent:
-            d = add(d, parent.local_to_global_offset())
-        return d
-
-    def get_global_rect(self):
-
-        p = self.local_to_global_offset()
-        #
-        # Python 3 update
-        #
-        pTuple = tuple(p)
-        s = self.rect.size
-        #
-        # Python 3 update
-        #
-        # return Rect(p, s)
-        return Rect(pTuple, s)
-
     def is_inside(self, container):
         widget = self
         while widget:
@@ -655,13 +545,8 @@ class Widget:
         Returns:  The value returned from the modal widget
 
         &#34;&#34;&#34;
-        #
-        # TODO  Something about my re-packaging caused me to lose
-        # visibility to the root widget;  Figure it out later
-        #
-        # print &#34;Widget: presenting with rect&#34;, self.rect
-        # root = self.get_root()
-        root = Widget.root_widget
+
+        root = self.get_root()
         if centered:
             self.center = root.center
         root.add(self)
@@ -713,7 +598,6 @@ class Widget:
         &#34;&#34;&#34;
         Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
         widget) for this to have any affect.
-
         &#34;&#34;&#34;
         parent = self.next_handler()
         if parent:
@@ -732,7 +616,6 @@ class Widget:
 
         Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
         has the keyboard focus.
-
         &#34;&#34;&#34;
         return self.is_modal or (self.parent and self.parent.focused_on(self))
 
@@ -755,10 +638,6 @@ class Widget:
             rmax = rects.pop()
             for r in rects:
                 rmax = rmax.union(r)
-            #
-            # Updated python 3 -- hasii
-            #
-            # self._rect.size = add(rmax.topleft, rmax.bottomright)
             self._rect.size = list(add(rmax.topleft, rmax.bottomright))
 
     def invalidate(self):
@@ -818,8 +697,6 @@ class Widget:
             width:  The number of pixels or some sample text
 
             nLines: The number of lines in the text;  Defaults to 1
-
-
         &#34;&#34;&#34;
         if width is not None:
             font = self.font
@@ -907,7 +784,6 @@ class Widget:
 
     def gl_draw_all(self, gl_surface):
 
-        # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
         if self.visible:
             if self.is_gl_container:
                 self.gl_draw_self(gl_surface)
@@ -923,7 +799,6 @@ class Widget:
 
     def gl_draw_self(self, gl_surface):
 
-        # print &#34;Widget.gl_draw_self:&#34;, self ###
         gl_surface.gl_enter()
         # TODO: draw background and border here
         self.draw(gl_surface)
@@ -960,7 +835,8 @@ class Widget:
         &#34;&#34;&#34;
         return False
 
-    def __contains__(self, event):
+    def __contains__(self, event: Event):
+
         r = Rect(self._rect)
         r.left = 0
         r.top = 0
@@ -971,37 +847,11 @@ class Widget:
             pList = list(p)
             answer = r.collidepoint(pList[0], pList[1])
         except AttributeError as ae:
-            self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
-        #
-        # Python 3 method signature change
-        #
-        # return r.collidepoint(p)
-        # return r.collidepoint(pList[0], pList[1])
+            self.logger.error(f&#34;{ae.__repr__()}&#34;)
+
         return answer
-
-    #
-    # Python 3 update
-    # def _resized(self, (old_width, old_height)): # remove tuple parameters
-    #
-    def _resized(self, old_width, old_height):
-        &#34;&#34;&#34;
-
-        Args:
-            old_width:
-            old_height:
-
-        Returns:
-
-        &#34;&#34;&#34;
-        new_width, new_height = self._rect.size
-        dw = new_width - old_width
-        dh = new_height - old_height
-        if dw or dh:
-            self.resized(dw, dh)
-    #
     #
     #   Abstract methods follow
-    #
     #
 
     def draw(self, surface: Surface):
@@ -1078,8 +928,8 @@ class Widget:
 
         Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
 
-
         &#34;&#34;&#34;
+        self.logger.debug(f&#34;event {event}&#34;)
         return arrow_cursor
 
     def attention_lost(self):
@@ -1091,68 +941,6 @@ class Widget:
 
         &#34;&#34;&#34;
         pass
-
-    def resized(self, dw, dh):
-        &#34;&#34;&#34;
-        Called when the widget changes size as a result of assigning to its width, height or size attributes,
-        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
-
-        Args:
-            dw:  width
-            dh:  height
-
-        Returns:
-
-        &#34;&#34;&#34;
-        if self.debug_resize:
-            self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
-        for widget in self.subwidgets:
-            widget.parent_resized(dw, dh)
-
-    def parent_resized(self, dw, dh):
-        &#34;&#34;&#34;
-        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
-        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
-        the widget according to its anchor attribute.
-
-        Args:
-            dw:  Width
-            dh:  Height
-
-        &#34;&#34;&#34;
-        debug_resize = self.debug_resize or self.parent.debug_resize
-
-        if debug_resize:
-            self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
-
-        left, top, width, height = self._rect
-        move = False
-        resize = False
-        anchor = self.anchor
-
-        if dw and &#39;r&#39; in anchor:
-            if &#39;l&#39; in anchor:
-                resize = True
-                width += dw
-            else:
-                move = True
-                left += dw
-        if dh and &#39;b&#39; in anchor:
-            if &#39;t&#39; in anchor:
-                resize = True
-                height += dh
-            else:
-                move = True
-                top += dh
-
-        if resize:
-            if debug_resize:
-                self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
-            self.rect = (left, top, width, height)
-        elif move:
-            if debug_resize:
-                self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
-            self._rect.topleft = (left, top)
 
     def get_visible(self):
         &#34;&#34;&#34;
@@ -1177,7 +965,7 @@ class Widget:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="albow.core.Widget.Widget"><code class="flex name class">
+<dt id="albow.core.ui.Widget.Widget"><code class="flex name class">
 <span>class <span class="ident">Widget</span></span>
 <span>(</span><span>rect=None, **kwds)</span>
 </code></dt>
@@ -1210,14 +998,16 @@ ize and position relative to its parent.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>rect</code></strong></dt>
-<dd>A PyGame rectangle defining the portion of the parent widget's coordinate system occupied by the
-widget. Modifying this rectangle changes the widget's size and position.</dd>
+<dd>A PyGame rectangle defining the portion of the parent widget's coordinate system occupied by the</dd>
+</dl>
+<p>widget. Modifying this rectangle changes the widget's size and position.</p>
+<dl>
 <dt><strong><code>**kwds</code></strong></dt>
 <dd>Additional attributes specified as key-value pairs</dd>
 </dl></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">class Widget:
+<pre><code class="python">class Widget(AlbowRect):
     &#34;&#34;&#34;
     The Widget class is the base class for all widgets. A widget occupies a rectangular area of the PyGame screen
     to which all drawing in it is clipped, and it may receive mouse and keyboard events. A widget may also
@@ -1249,25 +1039,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
     current_cursor = None
     root_widget = None
-
-    left = RectUtility.rect_property(&#39;left&#39;)
-    right = RectUtility.rect_property(&#39;right&#39;)
-    top = RectUtility.rect_property(&#39;top&#39;)
-    bottom = RectUtility.rect_property(&#39;bottom&#39;)
-    width = RectUtility.rect_property(&#39;width&#39;)
-    height = RectUtility.rect_property(&#39;height&#39;)
-    size = RectUtility.rect_property(&#39;size&#39;)
-    topleft = RectUtility.rect_property(&#39;topleft&#39;)
-    topright = RectUtility.rect_property(&#39;topright&#39;)
-    bottomleft = RectUtility.rect_property(&#39;bottomleft&#39;)
-    bottomright = RectUtility.rect_property(&#39;bottomright&#39;)
-    midleft = RectUtility.rect_property(&#39;midleft&#39;)
-    midright = RectUtility.rect_property(&#39;midright&#39;)
-    midtop = RectUtility.rect_property(&#39;midtop&#39;)
-    midbottom = RectUtility.rect_property(&#39;midbottom&#39;)
-    center = RectUtility.rect_property(&#39;center&#39;)
-    centerx = RectUtility.rect_property(&#39;centerx&#39;)
-    centery = RectUtility.rect_property(&#39;centery&#39;)
 
     font = FontProperty(&#39;font&#39;)
     &#34;&#34;&#34;
@@ -1352,13 +1123,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
     &#34;&#34;&#34;
     enter_response = None
     cancel_response = None
-    anchor = &#39;lt&#39;
-    &#34;&#34;&#34;
-    A string specifying how this widget is to change in size and position when its parent widget changes size. The 
-    letters &#39;l&#39;, &#39;r&#39;, &#39;t&#39; and &#39;b&#39; are used to anchor the widget to the left, right, top or bottom sides of its 
-    parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when 
-    its parent changes in width or height.
-    &#34;&#34;&#34;
     _menubar = None
     _visible = True
     _is_gl_container = False
@@ -1376,14 +1140,10 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
     Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another 
     widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.
     &#34;&#34;&#34;
-    subwidgets = []
-    &#34;&#34;&#34;
-    &#34;&#34;&#34;
     focus_switch: &#34;Widget&#34; = None
     &#34;&#34;&#34;
     subwidget to receive key events
     &#34;&#34;&#34;
-    debug_resize = False
 
     def __init__(self, rect: Rect = None, **kwds):
         &#34;&#34;&#34;
@@ -1391,20 +1151,18 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         ize and position relative to its parent.
 
         Args:
-            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the\
+            rect:   A PyGame rectangle defining the portion of the parent widget&#39;s coordinate system occupied by the
              widget. Modifying this rectangle changes the widget&#39;s size and position.
 
             **kwds: Additional attributes specified as key-value pairs
         &#34;&#34;&#34;
+        super().__init__(rect)
+
         self.logger = logging.getLogger(__name__)
 
-        if rect and not isinstance(rect, Rect):
-            raise TypeError(&#34;Widget rect not a pygame.Rect&#34;)
+        # self.predictor = albow.core.ui.Predictor.Predictor(self)
+        # &#34;&#34;&#34;Helps the widget look up attributes&#34;&#34;&#34;
 
-        self._rect = Rect(rect or (0, 0, 100, 100))
-        self.parent = None
-        self.subwidgets = []
-        self.focus_switch = None
         self.is_modal = False
         self.modal_result = None
 
@@ -1417,22 +1175,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
                 raise TypeError(&#34;Unexpected keyword argument &#39;%s&#39;&#34; % name)
             setattr(self, name, value)
 
-    def get_rect(self):
-        return self._rect
-
-    def set_rect(self, x):
-        old_size = self._rect.size
-        self._rect = Rect(x)
-        #
-        # Python 3 update no more tuples
-        # self._resized(old_size)
-        self._resized(old_size[0], old_size[1])
-
-    rect = property(get_rect, set_rect)
-    &#34;&#34;&#34;
-    bounds in parent&#39;s coordinates
-    &#34;&#34;&#34;
-
     def add_anchor(self, mode: str):
         &#34;&#34;&#34;
         Adds the options specified by mode to the anchor property.
@@ -1441,9 +1183,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             mode:  The new anchor mode to add
 
         Returns:
-
-        &#34;&#34;&#34;
-        &#34;&#34;&#34;
         &#34;&#34;&#34;
         self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))
 
@@ -1467,10 +1206,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             anchor += chars[i]
         self.anchor = anchor + value
 
-    #
-    # update for 3.7
-    # https://stackoverflow.com/questions/33837918/type-hints-solve-circular-dependency
-    #
     def add(self, arg: &#39;Widget&#39;):     # Python 3 forward reference;
         &#34;&#34;&#34;
         Adds the given widget or sequence of widgets as a subwidget of this widget.
@@ -1481,7 +1216,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         &#34;&#34;&#34;
         if arg:
 
-            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
+            self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34;)
             #
             # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
             #
@@ -1511,8 +1246,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
         Args:
             widget:  The widget to act on
-
-
         &#34;&#34;&#34;
         if widget in self.subwidgets:
             widget.set_parent(None)
@@ -1542,7 +1275,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             self.focus_switch = None
 
     def draw_all(self, surface):
-        # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+
         if self.visible:
             surf_rect = surface.get_rect()
             bg_image = self.bg_image
@@ -1575,10 +1308,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
                 if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
                     try:
                         sub = surface.subsurface(sub_rect)
-                    #
-                    # Python 3 update
-                    #
-                    # except ValueError, e:
                     except ValueError as e:
                         if str(e) == &#34;subsurface rectangle outside surface area&#34;:
                             self.diagnose_subsurface_problem(surface, widget)
@@ -1609,10 +1338,7 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         for widget in self.subwidgets[::-1]:
             if widget.visible:
                 r = widget.rect
-                #
-                # Python 3 update
-                #
-                # if r.collidepoint(pos):
+
                 if isinstance(pos, map):
                     pos = list(pos)
                 if r.collidepoint(pos[0], pos[1]):
@@ -1620,20 +1346,18 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         return self
 
     def handle_mouse(self, name, event):
+
         self.augment_mouse_event(event)
         self.call_handler(name, event)
         self.setup_cursor(event)
 
     def augment_mouse_event(self, event):
         &#34;&#34;&#34;
-        Python 3 update.  local really needs to be a list
-
         Args:
             event:   The event to augment
 
         &#34;&#34;&#34;
         posMap = self.global_to_local(event.pos)
-        # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
         event.dict[&#39;local&#39;] = list(posMap)
 
     def setup_cursor(self, event):
@@ -1672,7 +1396,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         the widget that would have the keyboard focus if this widget were on the focus path.
 
         Returns:  A widget with the focus
-
         &#34;&#34;&#34;
         widget = self
         while 1:
@@ -1724,7 +1447,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             *args: The arguments to use
 
         Returns:  The value of the &#39;called&#39; method
-
         &#34;&#34;&#34;
         method = getattr(self, name, None)
         if method:
@@ -1748,51 +1470,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         if parent:
             parent.call_handler(name, *args)
 
-    def global_to_local(self, p):
-        &#34;&#34;&#34;
-        Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
-
-        Args:
-            p:  The global coordinates
-
-        Returns:  The widget&#39;s local coordinates
-
-        &#34;&#34;&#34;
-        return subtract(p, self.local_to_global_offset())
-
-    def local_to_global(self, p):
-        &#34;&#34;&#34;
-        Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
-
-        Args:
-            p: Widget local coordinates
-
-        Returns:
-
-        &#34;&#34;&#34;
-        return add(p, self.local_to_global_offset())
-
-    def local_to_global_offset(self):
-        d = self.topleft
-        parent = self.parent
-        if parent:
-            d = add(d, parent.local_to_global_offset())
-        return d
-
-    def get_global_rect(self):
-
-        p = self.local_to_global_offset()
-        #
-        # Python 3 update
-        #
-        pTuple = tuple(p)
-        s = self.rect.size
-        #
-        # Python 3 update
-        #
-        # return Rect(p, s)
-        return Rect(pTuple, s)
-
     def is_inside(self, container):
         widget = self
         while widget:
@@ -1815,13 +1492,8 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         Returns:  The value returned from the modal widget
 
         &#34;&#34;&#34;
-        #
-        # TODO  Something about my re-packaging caused me to lose
-        # visibility to the root widget;  Figure it out later
-        #
-        # print &#34;Widget: presenting with rect&#34;, self.rect
-        # root = self.get_root()
-        root = Widget.root_widget
+
+        root = self.get_root()
         if centered:
             self.center = root.center
         root.add(self)
@@ -1873,7 +1545,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         &#34;&#34;&#34;
         Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
         widget) for this to have any affect.
-
         &#34;&#34;&#34;
         parent = self.next_handler()
         if parent:
@@ -1892,7 +1563,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
         Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
         has the keyboard focus.
-
         &#34;&#34;&#34;
         return self.is_modal or (self.parent and self.parent.focused_on(self))
 
@@ -1915,10 +1585,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             rmax = rects.pop()
             for r in rects:
                 rmax = rmax.union(r)
-            #
-            # Updated python 3 -- hasii
-            #
-            # self._rect.size = add(rmax.topleft, rmax.bottomright)
             self._rect.size = list(add(rmax.topleft, rmax.bottomright))
 
     def invalidate(self):
@@ -1978,8 +1644,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             width:  The number of pixels or some sample text
 
             nLines: The number of lines in the text;  Defaults to 1
-
-
         &#34;&#34;&#34;
         if width is not None:
             font = self.font
@@ -2067,7 +1731,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
     def gl_draw_all(self, gl_surface):
 
-        # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
         if self.visible:
             if self.is_gl_container:
                 self.gl_draw_self(gl_surface)
@@ -2083,7 +1746,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
     def gl_draw_self(self, gl_surface):
 
-        # print &#34;Widget.gl_draw_self:&#34;, self ###
         gl_surface.gl_enter()
         # TODO: draw background and border here
         self.draw(gl_surface)
@@ -2120,7 +1782,8 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
         &#34;&#34;&#34;
         return False
 
-    def __contains__(self, event):
+    def __contains__(self, event: Event):
+
         r = Rect(self._rect)
         r.left = 0
         r.top = 0
@@ -2131,37 +1794,11 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
             pList = list(p)
             answer = r.collidepoint(pList[0], pList[1])
         except AttributeError as ae:
-            self.logger.error(&#34;Attribute error %s&#34;, ae.__repr__())
-        #
-        # Python 3 method signature change
-        #
-        # return r.collidepoint(p)
-        # return r.collidepoint(pList[0], pList[1])
+            self.logger.error(f&#34;{ae.__repr__()}&#34;)
+
         return answer
-
-    #
-    # Python 3 update
-    # def _resized(self, (old_width, old_height)): # remove tuple parameters
-    #
-    def _resized(self, old_width, old_height):
-        &#34;&#34;&#34;
-
-        Args:
-            old_width:
-            old_height:
-
-        Returns:
-
-        &#34;&#34;&#34;
-        new_width, new_height = self._rect.size
-        dw = new_width - old_width
-        dh = new_height - old_height
-        if dw or dh:
-            self.resized(dw, dh)
-    #
     #
     #   Abstract methods follow
-    #
     #
 
     def draw(self, surface: Surface):
@@ -2238,8 +1875,8 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
         Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
 
-
         &#34;&#34;&#34;
+        self.logger.debug(f&#34;event {event}&#34;)
         return arrow_cursor
 
     def attention_lost(self):
@@ -2251,68 +1888,6 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
 
         &#34;&#34;&#34;
         pass
-
-    def resized(self, dw, dh):
-        &#34;&#34;&#34;
-        Called when the widget changes size as a result of assigning to its width, height or size attributes,
-        with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
-
-        Args:
-            dw:  width
-            dh:  height
-
-        Returns:
-
-        &#34;&#34;&#34;
-        if self.debug_resize:
-            self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
-        for widget in self.subwidgets:
-            widget.parent_resized(dw, dh)
-
-    def parent_resized(self, dw, dh):
-        &#34;&#34;&#34;
-        Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
-        attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
-        the widget according to its anchor attribute.
-
-        Args:
-            dw:  Width
-            dh:  Height
-
-        &#34;&#34;&#34;
-        debug_resize = self.debug_resize or self.parent.debug_resize
-
-        if debug_resize:
-            self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
-
-        left, top, width, height = self._rect
-        move = False
-        resize = False
-        anchor = self.anchor
-
-        if dw and &#39;r&#39; in anchor:
-            if &#39;l&#39; in anchor:
-                resize = True
-                width += dw
-            else:
-                move = True
-                left += dw
-        if dh and &#39;b&#39; in anchor:
-            if &#39;t&#39; in anchor:
-                resize = True
-                height += dh
-            else:
-                move = True
-                top += dh
-
-        if resize:
-            if debug_resize:
-                self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
-            self.rect = (left, top, width, height)
-        elif move:
-            if debug_resize:
-                self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
-            self._rect.topleft = (left, top)
 
     def get_visible(self):
         &#34;&#34;&#34;
@@ -2327,90 +1902,85 @@ widget. Modifying this rectangle changes the widget's size and position.</dd>
     def set_visible(self, x):
         self._visible = x</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="albow.core.ui.AlbowRect.AlbowRect" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></li>
+</ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="albow.core.RootWidget.RootWidget" href="RootWidget.html#albow.core.RootWidget.RootWidget">RootWidget</a></li>
-<li><a title="albow.layout.RowOrColumn.RowOrColumn" href="../layout/RowOrColumn.html#albow.layout.RowOrColumn.RowOrColumn">RowOrColumn</a></li>
-<li><a title="albow.widgets.TextBox.TextBox" href="../widgets/TextBox.html#albow.widgets.TextBox.TextBox">TextBox</a></li>
-<li><a title="albow.widgets.Label.Label" href="../widgets/Label.html#albow.widgets.Label.Label">Label</a></li>
-<li><a title="albow.core.Screen.Screen" href="Screen.html#albow.core.Screen.Screen">Screen</a></li>
-<li><a title="albow.containers.GridView.GridView" href="../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
-<li><a title="albow.input.TextEditor.TextEditor" href="../input/TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
-<li><a title="albow.layout.Grid.Grid" href="../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
-<li><a title="albow.widgets.Image.Image" href="../widgets/Image.html#albow.widgets.Image.Image">Image</a></li>
-<li><a title="albow.containers.TabPanel.TabPanel" href="../containers/TabPanel.html#albow.containers.TabPanel.TabPanel">TabPanel</a></li>
-<li><a title="albow.dialog.Dialog.Dialog" href="../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
-<li><a title="albow.dialog.DirectoryPathView.DirectoryPathView" href="../dialog/DirectoryPathView.html#albow.dialog.DirectoryPathView.DirectoryPathView">DirectoryPathView</a></li>
-<li><a title="albow.widgets.CheckWidget.CheckWidget" href="../widgets/CheckWidget.html#albow.widgets.CheckWidget.CheckWidget">CheckWidget</a></li>
-<li><a title="albow.media.MusicVolumeControl.MusicVolumeControl" href="../media/MusicVolumeControl.html#albow.media.MusicVolumeControl.MusicVolumeControl">MusicVolumeControl</a></li>
-<li><a title="albow.layout.Frame.Frame" href="../layout/Frame.html#albow.layout.Frame.Frame">Frame</a></li>
-<li><a title="albow.menu.MenuBar.MenuBar" href="../menu/MenuBar.html#albow.menu.MenuBar.MenuBar">MenuBar</a></li>
-<li><a title="albow.widgets.ValueDisplay.ValueDisplay" href="../widgets/ValueDisplay.html#albow.widgets.ValueDisplay.ValueDisplay">ValueDisplay</a></li>
-<li><a title="albow.openGL.GLViewport.GLViewport" href="../openGL/GLViewport.html#albow.openGL.GLViewport.GLViewport">GLViewport</a></li>
+<li><a title="albow.core.ui.RootWidget.RootWidget" href="RootWidget.html#albow.core.ui.RootWidget.RootWidget">RootWidget</a></li>
+<li><a title="albow.layout.RowOrColumn.RowOrColumn" href="../../layout/RowOrColumn.html#albow.layout.RowOrColumn.RowOrColumn">RowOrColumn</a></li>
+<li><a title="albow.openGL.GLViewport.GLViewport" href="../../openGL/GLViewport.html#albow.openGL.GLViewport.GLViewport">GLViewport</a></li>
+<li><a title="albow.widgets.Label.Label" href="../../widgets/Label.html#albow.widgets.Label.Label">Label</a></li>
+<li><a title="albow.containers.GridView.GridView" href="../../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
+<li><a title="albow.core.ui.Screen.Screen" href="Screen.html#albow.core.ui.Screen.Screen">Screen</a></li>
+<li>albow.demo.screens.DemoAnimationWidget.DemoAnimationWidget</li>
+<li><a title="albow.dialog.Dialog.Dialog" href="../../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
+<li><a title="albow.input.TextEditor.TextEditor" href="../../input/TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
+<li><a title="albow.layout.Grid.Grid" href="../../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
+<li><a title="albow.widgets.CheckWidget.CheckWidget" href="../../widgets/CheckWidget.html#albow.widgets.CheckWidget.CheckWidget">CheckWidget</a></li>
+<li><a title="albow.media.MusicVolumeControl.MusicVolumeControl" href="../../media/MusicVolumeControl.html#albow.media.MusicVolumeControl.MusicVolumeControl">MusicVolumeControl</a></li>
+<li><a title="albow.dialog.DirectoryPathView.DirectoryPathView" href="../../dialog/DirectoryPathView.html#albow.dialog.DirectoryPathView.DirectoryPathView">DirectoryPathView</a></li>
+<li><a title="albow.layout.Frame.Frame" href="../../layout/Frame.html#albow.layout.Frame.Frame">Frame</a></li>
+<li><a title="albow.menu.MenuBar.MenuBar" href="../../menu/MenuBar.html#albow.menu.MenuBar.MenuBar">MenuBar</a></li>
+<li><a title="albow.widgets.Image.Image" href="../../widgets/Image.html#albow.widgets.Image.Image">Image</a></li>
+<li><a title="albow.containers.TabPanel.TabPanel" href="../../containers/TabPanel.html#albow.containers.TabPanel.TabPanel">TabPanel</a></li>
+<li><a title="albow.widgets.TextBox.TextBox" href="../../widgets/TextBox.html#albow.widgets.TextBox.TextBox">TextBox</a></li>
+<li><a title="albow.widgets.ValueDisplay.ValueDisplay" href="../../widgets/ValueDisplay.html#albow.widgets.ValueDisplay.ValueDisplay">ValueDisplay</a></li>
+<li>albow.demo.ScheduledEventTabPage.ScheduledEventTabPage</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="albow.core.Widget.Widget.anchor"><code class="name">var <span class="ident">anchor</span></code></dt>
-<dd>
-<section class="desc"><p>A string specifying how this widget is to change in size and position when its parent widget changes size. The
-letters 'l', 'r', 't' and 'b' are used to anchor the widget to the left, right, top or bottom sides of its
-parent. Anchoring it to both left and right, or both top and bottom, causes the widget to stretch or shrink when
-its parent changes in width or height.</p></section>
-</dd>
-<dt id="albow.core.Widget.Widget.bg_color"><code class="name">var <span class="ident">bg_color</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.bg_color"><code class="name">var <span class="ident">bg_color</span></code></dt>
 <dd>
 <section class="desc"><p>Background colour of the widget. If specified, the widget's rect is filled with this colour before drawing its
 contents. If no background colour is specified or it is set to None, the widget has no background and is drawn
 transparently over its parent. For most widgets, it defaults to None.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.bg_image"><code class="name">var <span class="ident">bg_image</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.bg_image"><code class="name">var <span class="ident">bg_image</span></code></dt>
 <dd>
 <section class="desc"><p>An image to be displayed in the background. If specified, this overrides any bg_color.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.border_color"><code class="name">var <span class="ident">border_color</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.border_color"><code class="name">var <span class="ident">border_color</span></code></dt>
 <dd>
 <section class="desc"><p>Color in which to draw the border specified by border_width.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.border_width"><code class="name">var <span class="ident">border_width</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.border_width"><code class="name">var <span class="ident">border_width</span></code></dt>
 <dd>
 <section class="desc"><p>Width of a border to be drawn inside the outer edge of the widget. If this is unspecified or set to zero,
 no border is drawn.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.cancel_response"><code class="name">var <span class="ident">cancel_response</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.cancel_response"><code class="name">var <span class="ident">cancel_response</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.current_cursor"><code class="name">var <span class="ident">current_cursor</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.current_cursor"><code class="name">var <span class="ident">current_cursor</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.debug_rect"><code class="name">var <span class="ident">debug_rect</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.debug_rect"><code class="name">var <span class="ident">debug_rect</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.debug_resize"><code class="name">var <span class="ident">debug_resize</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.enter_response"><code class="name">var <span class="ident">enter_response</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.enter_response"><code class="name">var <span class="ident">enter_response</span></code></dt>
-<dd>
-<section class="desc"></section>
-</dd>
-<dt id="albow.core.Widget.Widget.fg_color"><code class="name">var <span class="ident">fg_color</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.fg_color"><code class="name">var <span class="ident">fg_color</span></code></dt>
 <dd>
 <section class="desc"><p>Foreground colour for the contents of the widget. How this property is used depends on the widget. Some widgets
 have additional colour properties for specific parts of the widget.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.focus_switch"><code class="name">var <span class="ident">focus_switch</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.focus_switch"><code class="name">var <span class="ident">focus_switch</span></code></dt>
 <dd>
 <section class="desc"><p>subwidget to receive key events</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.font"><code class="name">var <span class="ident">font</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.font"><code class="name">var <span class="ident">font</span></code></dt>
 <dd>
 <section class="desc"><p>Font to use for drawing text in the widget. How this property is used depends on the widget. Some widgets have
 additional font properties for specific parts of the widget.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.is_gl_container"><code class="name">var <span class="ident">is_gl_container</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.is_gl_container"><code class="name">var <span class="ident">is_gl_container</span></code></dt>
 <dd>
 <section class="desc"><p>Controls the drawing behaviour of the widget when used in an OpenGL window. When true, </p>
 <ul>
@@ -2424,11 +1994,11 @@ using glDrawPixels() with blending. No 3D drawing is performed for any of its su
 <p>In either case, input events are handled in the usual way.</p>
 <p>This property has no effect on widgets in a non-OpenGL window.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.lastDebugRectTime"><code class="name">var <span class="ident">lastDebugRectTime</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.lastDebugRectTime"><code class="name">var <span class="ident">lastDebugRectTime</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.margin"><code class="name">var <span class="ident">margin</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.margin"><code class="name">var <span class="ident">margin</span></code></dt>
 <dd>
 <section class="desc"><p>The amount of space to leave between the edge of the widget and its contents. Note that this distance includes the
 border_width, e.g. if border_width == 1 and margin == 3, then there is 2 pixels of space between the inside of
@@ -2437,7 +2007,7 @@ the border and the contents.</p>
 subclasses. You may find the get_margin_rect() method helpful in implementing support for the margin property
 in your widget classes.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.menu_bar"><code class="name">var <span class="ident">menu_bar</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.menu_bar"><code class="name">var <span class="ident">menu_bar</span></code></dt>
 <dd>
 <section class="desc"><p>A MenuBar to be attached to and managed by this widget. Assigning to the menu_bar property automatically adds the
 menu bar as a child widget. Also, if the width of the menu bar has not already been set, it is set to be the same
@@ -2446,47 +2016,39 @@ width as this widget and to stretch horizontally with it.</p>
 platforms) is dispatched through this widget, the menu bar is first given a chance to handle the event. If the
 menu bar does not handle it, dispatching continues as normal.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.parent"><code class="name">var <span class="ident">parent</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.parent"><code class="name">var <span class="ident">parent</span></code></dt>
 <dd>
 <section class="desc"><p>Read-only. The widget having this widget as a subwidget, or None if the widget is not contained in another
 widget. A widget must ultimately be contained in the root widget in order to be drawn and to receive events.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.rect"><code class="name">var <span class="ident">rect</span></code></dt>
-<dd>
-<section class="desc"><p>bounds in parent's coordinates</p></section>
-</dd>
-<dt id="albow.core.Widget.Widget.redraw_every_event"><code class="name">var <span class="ident">redraw_every_event</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.redraw_every_event"><code class="name">var <span class="ident">redraw_every_event</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.resizing_axes"><code class="name">var <span class="ident">resizing_axes</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.resizing_axes"><code class="name">var <span class="ident">resizing_axes</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.resizing_values"><code class="name">var <span class="ident">resizing_values</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.resizing_values"><code class="name">var <span class="ident">resizing_values</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.root_widget"><code class="name">var <span class="ident">root_widget</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.root_widget"><code class="name">var <span class="ident">root_widget</span></code></dt>
 <dd>
 <section class="desc"></section>
 </dd>
-<dt id="albow.core.Widget.Widget.scale_bg"><code class="name">var <span class="ident">scale_bg</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.scale_bg"><code class="name">var <span class="ident">scale_bg</span></code></dt>
 <dd>
 <section class="desc"><p>If true, and the background image is smaller than the widget in either direction, the background image is scaled
 to fill the widget, otherwise it is centered. Note: Due to a limitation of the pygame rotozoom function, scaling
 is currently uniform in both directions, with the scale factor being that required to ensure that the whole
 widget is covered.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.subwidgets"><code class="name">var <span class="ident">subwidgets</span></code></dt>
-<dd>
-<section class="desc"></section>
-</dd>
-<dt id="albow.core.Widget.Widget.tab_stop"><code class="name">var <span class="ident">tab_stop</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.tab_stop"><code class="name">var <span class="ident">tab_stop</span></code></dt>
 <dd>
 <section class="desc"><p>True if this widget should receive the keyboard focus when the user presses the Tab key. Defaults to false.</p></section>
 </dd>
-<dt id="albow.core.Widget.Widget.visible"><code class="name">var <span class="ident">visible</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.visible"><code class="name">var <span class="ident">visible</span></code></dt>
 <dd>
 <section class="desc"><p>When true, the widget is visible and active. When false, the widget is invisible and will not receive events.
 Defaults to true. The behaviour of this property can be customized by overriding the get_visible method.</p></section>
@@ -2494,124 +2056,7 @@ Defaults to true. The behaviour of this property can be customized by overriding
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="albow.core.Widget.Widget.bottom"><code class="name">var <span class="ident">bottom</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.bottomleft"><code class="name">var <span class="ident">bottomleft</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.bottomright"><code class="name">var <span class="ident">bottomright</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.center"><code class="name">var <span class="ident">center</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.centerx"><code class="name">var <span class="ident">centerx</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.centery"><code class="name">var <span class="ident">centery</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.height"><code class="name">var <span class="ident">height</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.left"><code class="name">var <span class="ident">left</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.midbottom"><code class="name">var <span class="ident">midbottom</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.midleft"><code class="name">var <span class="ident">midleft</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.midright"><code class="name">var <span class="ident">midright</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.midtop"><code class="name">var <span class="ident">midtop</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.right"><code class="name">var <span class="ident">right</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.sel_color"><code class="name">var <span class="ident">sel_color</span></code></dt>
+<dt id="albow.core.ui.Widget.Widget.sel_color"><code class="name">var <span class="ident">sel_color</span></code></dt>
 <dd>
 <section class="desc"><p>The ThemeProperty class is a property descriptor used for defining theme properties.</p>
 <h2 id="example">Example</h2>
@@ -2622,55 +2067,10 @@ Defaults to true. The behaviour of this property can be customized by overriding
 
 </code></pre></section>
 </dd>
-<dt id="albow.core.Widget.Widget.size"><code class="name">var <span class="ident">size</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.top"><code class="name">var <span class="ident">top</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.topleft"><code class="name">var <span class="ident">topleft</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.topright"><code class="name">var <span class="ident">topright</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.width"><code class="name">var <span class="ident">width</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get(self):
-    return getattr(self._rect, name)</code></pre>
-</details>
-</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="albow.core.Widget.Widget.add"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, arg)</span>
 </code></dt>
 <dd>
@@ -2692,7 +2092,7 @@ Defaults to true. The behaviour of this property can be customized by overriding
     &#34;&#34;&#34;
     if arg:
 
-        self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34; )
+        self.logger.debug(f&#34;arg: &#39;{arg.__str__()}&#39; is Widget {isinstance(arg, Widget)}&#34;)
         #
         # Python 3 hack because &#39;Label&#39; is sometimes reported as not a &#39;Widget&#39;
         #
@@ -2704,7 +2104,7 @@ Defaults to true. The behaviour of this property can be customized by overriding
                 self.add(item)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.add_anchor"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.add_anchor"><code class="name flex">
 <span>def <span class="ident">add_anchor</span></span>(<span>self, mode)</span>
 </code></dt>
 <dd>
@@ -2725,14 +2125,11 @@ Defaults to true. The behaviour of this property can be customized by overriding
         mode:  The new anchor mode to add
 
     Returns:
-
-    &#34;&#34;&#34;
-    &#34;&#34;&#34;
     &#34;&#34;&#34;
     self.anchor = &#34;&#34;.join(set(self.anchor) | set(mode))</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.add_centered"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.add_centered"><code class="name flex">
 <span>def <span class="ident">add_centered</span></span>(<span>self, widget)</span>
 </code></dt>
 <dd>
@@ -2757,7 +2154,7 @@ Defaults to true. The behaviour of this property can be customized by overriding
     self.add(widget)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.attention_lost"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.attention_lost"><code class="name flex">
 <span>def <span class="ident">attention_lost</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2778,13 +2175,11 @@ to a data structure being edited are committed before performing some other acti
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.augment_mouse_event"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.augment_mouse_event"><code class="name flex">
 <span>def <span class="ident">augment_mouse_event</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Python 3 update.
-local really needs to be a list</p>
-<h2 id="args">Args</h2>
+<section class="desc"><h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>event</code></strong></dt>
 <dd>The event to augment</dd>
@@ -2793,18 +2188,15 @@ local really needs to be a list</p>
 <summary>Source code</summary>
 <pre><code class="python">def augment_mouse_event(self, event):
     &#34;&#34;&#34;
-    Python 3 update.  local really needs to be a list
-
     Args:
         event:   The event to augment
 
     &#34;&#34;&#34;
     posMap = self.global_to_local(event.pos)
-    # event.dict[&#39;local&#39;] = self.global_to_local(event.pos)
     event.dict[&#39;local&#39;] = list(posMap)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.call_handler"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.call_handler"><code class="name flex">
 <span>def <span class="ident">call_handler</span></span>(<span>self, name, *args)</span>
 </code></dt>
 <dd>
@@ -2831,7 +2223,6 @@ is returned. Otherwise, nothing is done and 'pass' is returned.</p>
         *args: The arguments to use
 
     Returns:  The value of the &#39;called&#39; method
-
     &#34;&#34;&#34;
     method = getattr(self, name, None)
     if method:
@@ -2840,7 +2231,7 @@ is returned. Otherwise, nothing is done and 'pass' is returned.</p>
         return &#39;pass&#39;</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.call_parent_handler"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.call_parent_handler"><code class="name flex">
 <span>def <span class="ident">call_parent_handler</span></span>(<span>self, name, *args)</span>
 </code></dt>
 <dd>
@@ -2874,7 +2265,7 @@ parent widget if you don't want to handle it.</p>
         parent.call_handler(name, *args)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.collect_tab_order"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.collect_tab_order"><code class="name flex">
 <span>def <span class="ident">collect_tab_order</span></span>(<span>self, result)</span>
 </code></dt>
 <dd>
@@ -2889,7 +2280,7 @@ parent widget if you don't want to handle it.</p>
             child.collect_tab_order(result)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.debugSubWidgetDraws"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.debugSubWidgetDraws"><code class="name flex">
 <span>def <span class="ident">debugSubWidgetDraws</span></span>(<span>self, sub_rect, widget)</span>
 </code></dt>
 <dd>
@@ -2907,7 +2298,7 @@ parent widget if you don't want to handle it.</p>
             Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.defer_drawing"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.defer_drawing"><code class="name flex">
 <span>def <span class="ident">defer_drawing</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2929,7 +2320,7 @@ up or keyboard event and scheduled calls are not made.</p></section>
     return False</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.diagnose_subsurface_problem"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.diagnose_subsurface_problem"><code class="name flex">
 <span>def <span class="ident">diagnose_subsurface_problem</span></span>(<span>self, surface, widget)</span>
 </code></dt>
 <dd>
@@ -2943,7 +2334,7 @@ up or keyboard event and scheduled calls are not made.</p></section>
     surface.fill((255, 0, 0), widget.rect)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.dismiss"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.dismiss"><code class="name flex">
 <span>def <span class="ident">dismiss</span></span>(<span>self, value=True)</span>
 </code></dt>
 <dd>
@@ -2971,7 +2362,7 @@ the present() call to return with the given result.</p>
     self.modal_result = value</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.dispatch_attention_loss"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.dispatch_attention_loss"><code class="name flex">
 <span>def <span class="ident">dispatch_attention_loss</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -2985,7 +2376,7 @@ the present() call to return with the given result.</p>
         widget = widget.focus_switch</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.dispatch_key"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.dispatch_key"><code class="name flex">
 <span>def <span class="ident">dispatch_key</span></span>(<span>self, name, event)</span>
 </code></dt>
 <dd>
@@ -3007,7 +2398,7 @@ the present() call to return with the given result.</p>
         self.call_parent_handler(name, event)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.draw"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.draw"><code class="name flex">
 <span>def <span class="ident">draw</span></span>(<span>self, surface)</span>
 </code></dt>
 <dd>
@@ -3036,7 +2427,7 @@ subwidgets, if any, are drawn after this method returns.</p>
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.draw_all"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.draw_all"><code class="name flex">
 <span>def <span class="ident">draw_all</span></span>(<span>self, surface)</span>
 </code></dt>
 <dd>
@@ -3044,7 +2435,7 @@ subwidgets, if any, are drawn after this method returns.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def draw_all(self, surface):
-    # print &#34;Widget.draw_all:&#34;, self, &#34;on&#34;, surface ###
+
     if self.visible:
         surf_rect = surface.get_rect()
         bg_image = self.bg_image
@@ -3077,10 +2468,6 @@ subwidgets, if any, are drawn after this method returns.</p>
             if sub_rect.width &gt; 0 and sub_rect.height &gt; 0:
                 try:
                     sub = surface.subsurface(sub_rect)
-                #
-                # Python 3 update
-                #
-                # except ValueError, e:
                 except ValueError as e:
                     if str(e) == &#34;subsurface rectangle outside surface area&#34;:
                         self.diagnose_subsurface_problem(surface, widget)
@@ -3091,7 +2478,7 @@ subwidgets, if any, are drawn after this method returns.</p>
         self.draw_over(surface)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.draw_over"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.draw_over"><code class="name flex">
 <span>def <span class="ident">draw_over</span></span>(<span>self, surface)</span>
 </code></dt>
 <dd>
@@ -3115,7 +2502,7 @@ to appear on top of any subwidgets.</p>
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.find_widget"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.find_widget"><code class="name flex">
 <span>def <span class="ident">find_widget</span></span>(<span>self, pos)</span>
 </code></dt>
 <dd>
@@ -3127,10 +2514,7 @@ to appear on top of any subwidgets.</p>
     for widget in self.subwidgets[::-1]:
         if widget.visible:
             r = widget.rect
-            #
-            # Python 3 update
-            #
-            # if r.collidepoint(pos):
+
             if isinstance(pos, map):
                 pos = list(pos)
             if r.collidepoint(pos[0], pos[1]):
@@ -3138,7 +2522,7 @@ to appear on top of any subwidgets.</p>
     return self</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.focus"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.focus"><code class="name flex">
 <span>def <span class="ident">focus</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3150,14 +2534,13 @@ widget) for this to have any affect.</p></section>
     &#34;&#34;&#34;
     Gives this widget the keyboard focus. The widget must be visible (i.e. contained within the root
     widget) for this to have any affect.
-
     &#34;&#34;&#34;
     parent = self.next_handler()
     if parent:
         parent.focus_on(self)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.focus_chain"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.focus_chain"><code class="name flex">
 <span>def <span class="ident">focus_chain</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3173,7 +2556,7 @@ widget) for this to have any affect.</p></section>
     return result</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.focus_on"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.focus_on"><code class="name flex">
 <span>def <span class="ident">focus_on</span></span>(<span>self, subwidget)</span>
 </code></dt>
 <dd>
@@ -3189,7 +2572,7 @@ widget) for this to have any affect.</p></section>
     self.focus()</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.focused_on"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.focused_on"><code class="name flex">
 <span>def <span class="ident">focused_on</span></span>(<span>self, widget)</span>
 </code></dt>
 <dd>
@@ -3200,7 +2583,7 @@ widget) for this to have any affect.</p></section>
     return self.focus_switch is widget and self.has_focus()</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_cursor"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_cursor"><code class="name flex">
 <span>def <span class="ident">get_cursor</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -3225,12 +2608,12 @@ The ResourceUtility.get_cursor() function returns a suitable tuple.</p>
 
     Returns: A cursor in the form of a tuple of arguments to the PyGame set_cursor() function
 
-
     &#34;&#34;&#34;
+    self.logger.debug(f&#34;event {event}&#34;)
     return arrow_cursor</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_focus"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_focus"><code class="name flex">
 <span>def <span class="ident">get_focus</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3246,7 +2629,6 @@ A widget with the focus</p></section>
     the widget that would have the keyboard focus if this widget were on the focus path.
 
     Returns:  A widget with the focus
-
     &#34;&#34;&#34;
     widget = self
     while 1:
@@ -3257,29 +2639,7 @@ A widget with the focus</p></section>
     return widget</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_global_rect"><code class="name flex">
-<span>def <span class="ident">get_global_rect</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get_global_rect(self):
-
-    p = self.local_to_global_offset()
-    #
-    # Python 3 update
-    #
-    pTuple = tuple(p)
-    s = self.rect.size
-    #
-    # Python 3 update
-    #
-    # return Rect(p, s)
-    return Rect(pTuple, s)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.get_is_gl_container"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_is_gl_container"><code class="name flex">
 <span>def <span class="ident">get_is_gl_container</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3290,7 +2650,7 @@ A widget with the focus</p></section>
     return self._is_gl_container</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_margin_rect"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_margin_rect"><code class="name flex">
 <span>def <span class="ident">get_margin_rect</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3313,7 +2673,7 @@ by its margin property.</p>
     return r</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_menu_bar"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_menu_bar"><code class="name flex">
 <span>def <span class="ident">get_menu_bar</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3324,7 +2684,7 @@ by its margin property.</p>
     return self._menubar</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_mouse"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_mouse"><code class="name flex">
 <span>def <span class="ident">get_mouse</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3336,18 +2696,7 @@ by its margin property.</p>
     return root.get_mouse_for(self)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_rect"><code class="name flex">
-<span>def <span class="ident">get_rect</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def get_rect(self):
-    return self._rect</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.get_root"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_root"><code class="name flex">
 <span>def <span class="ident">get_root</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3370,7 +2719,7 @@ The root widget</p></section>
     return Widget.root_widget</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_tab_order"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_tab_order"><code class="name flex">
 <span>def <span class="ident">get_tab_order</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3383,7 +2732,7 @@ The root widget</p></section>
     return result</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_top_widget"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_top_widget"><code class="name flex">
 <span>def <span class="ident">get_top_widget</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3407,7 +2756,7 @@ The top level widget in a containment hierarchy</p></section>
     return top</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.get_visible"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.get_visible"><code class="name flex">
 <span>def <span class="ident">get_visible</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3427,7 +2776,7 @@ widget dependent on some external condition.</p>
     return self._visible</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.gl_draw_all"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.gl_draw_all"><code class="name flex">
 <span>def <span class="ident">gl_draw_all</span></span>(<span>self, gl_surface)</span>
 </code></dt>
 <dd>
@@ -3436,7 +2785,6 @@ widget dependent on some external condition.</p>
 <summary>Source code</summary>
 <pre><code class="python">def gl_draw_all(self, gl_surface):
 
-    # print &#34;Widget.gl_draw_all:&#34;, self, &#34;on&#34;, gl_surface ###
     if self.visible:
         if self.is_gl_container:
             self.gl_draw_self(gl_surface)
@@ -3451,7 +2799,7 @@ widget dependent on some external condition.</p>
             gl_surface.gl_exit()</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.gl_draw_self"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.gl_draw_self"><code class="name flex">
 <span>def <span class="ident">gl_draw_self</span></span>(<span>self, gl_surface)</span>
 </code></dt>
 <dd>
@@ -3460,41 +2808,13 @@ widget dependent on some external condition.</p>
 <summary>Source code</summary>
 <pre><code class="python">def gl_draw_self(self, gl_surface):
 
-    # print &#34;Widget.gl_draw_self:&#34;, self ###
     gl_surface.gl_enter()
     # TODO: draw background and border here
     self.draw(gl_surface)
     gl_surface.gl_exit()</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.global_to_local"><code class="name flex">
-<span>def <span class="ident">global_to_local</span></span>(<span>self, p)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Converts the given coordinate pair from PyGame screen coordinates to the widget's local coordinate system.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>p</code></strong></dt>
-<dd>The global coordinates</dd>
-<dt><strong><code>Returns</code></strong> :&ensp; <code>The</code> <code>widget's</code> <code>local</code> <code>coordinates</code></dt>
-<dd>&nbsp;</dd>
-</dl></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def global_to_local(self, p):
-    &#34;&#34;&#34;
-    Converts the given coordinate pair from PyGame screen coordinates to the widget&#39;s local coordinate system.
-
-    Args:
-        p:  The global coordinates
-
-    Returns:  The widget&#39;s local coordinates
-
-    &#34;&#34;&#34;
-    return subtract(p, self.local_to_global_offset())</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.handle_command"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.handle_command"><code class="name flex">
 <span>def <span class="ident">handle_command</span></span>(<span>self, name, *args)</span>
 </code></dt>
 <dd>
@@ -3511,7 +2831,7 @@ widget dependent on some external condition.</p>
             return parent.handle_command(name, *args)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.handle_event"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.handle_event"><code class="name flex">
 <span>def <span class="ident">handle_event</span></span>(<span>self, name, event)</span>
 </code></dt>
 <dd>
@@ -3528,7 +2848,7 @@ widget dependent on some external condition.</p>
             return parent.handle_event(name, event)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.handle_mouse"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.handle_mouse"><code class="name flex">
 <span>def <span class="ident">handle_mouse</span></span>(<span>self, name, event)</span>
 </code></dt>
 <dd>
@@ -3536,12 +2856,13 @@ widget dependent on some external condition.</p>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def handle_mouse(self, name, event):
+
     self.augment_mouse_event(event)
     self.call_handler(name, event)
     self.setup_cursor(event)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.has_focus"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.has_focus"><code class="name flex">
 <span>def <span class="ident">has_focus</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3555,12 +2876,11 @@ has the keyboard focus.</p></section>
 
     Returns:    True if the widget is on the focus path, i.e. this widget or one of its subwidgets currently\
     has the keyboard focus.
-
     &#34;&#34;&#34;
     return self.is_modal or (self.parent and self.parent.focused_on(self))</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.inherited"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.inherited"><code class="name flex">
 <span>def <span class="ident">inherited</span></span>(<span>self, attributeName)</span>
 </code></dt>
 <dd>
@@ -3596,7 +2916,7 @@ returns its value. If not found, returns None.</p>
             return parent.inherited(attributeName)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.init_attr"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.init_attr"><code class="name flex">
 <span>def <span class="ident">init_attr</span></span>(<span>self, kwds, name)</span>
 </code></dt>
 <dd>
@@ -3610,7 +2930,7 @@ returns its value. If not found, returns None.</p>
         return getattr(self, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.invalidate"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.invalidate"><code class="name flex">
 <span>def <span class="ident">invalidate</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3634,7 +2954,7 @@ to the event loop. Future versions may be more selective.</p></section>
         root.do_draw = True</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.is_inside"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.is_inside"><code class="name flex">
 <span>def <span class="ident">is_inside</span></span>(<span>self, container)</span>
 </code></dt>
 <dd>
@@ -3650,7 +2970,7 @@ to the event loop. Future versions may be more selective.</p></section>
     return False</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.key_down"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.key_down"><code class="name flex">
 <span>def <span class="ident">key_down</span></span>(<span>self, theKeyEvent)</span>
 </code></dt>
 <dd>
@@ -3693,7 +3013,7 @@ key_down() method to pass the event to the parent widget.</p>
     self.call_parent_handler(&#39;key_down&#39;, theKeyEvent)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.key_up"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.key_up"><code class="name flex">
 <span>def <span class="ident">key_up</span></span>(<span>self, theKeyEvent)</span>
 </code></dt>
 <dd>
@@ -3725,48 +3045,7 @@ key_down() method to pass the event to the parent widget.</p>
     self.call_parent_handler(&#39;key_up&#39;, theKeyEvent)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.local_to_global"><code class="name flex">
-<span>def <span class="ident">local_to_global</span></span>(<span>self, p)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Converts the given coordinate pair from the widget's local coordinate system to PyGame screen coordinates.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>p</code></strong></dt>
-<dd>Widget local coordinates</dd>
-</dl>
-<p>Returns:</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def local_to_global(self, p):
-    &#34;&#34;&#34;
-    Converts the given coordinate pair from the widget&#39;s local coordinate system to PyGame screen coordinates.
-
-    Args:
-        p: Widget local coordinates
-
-    Returns:
-
-    &#34;&#34;&#34;
-    return add(p, self.local_to_global_offset())</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.local_to_global_offset"><code class="name flex">
-<span>def <span class="ident">local_to_global_offset</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def local_to_global_offset(self):
-    d = self.topleft
-    parent = self.parent
-    if parent:
-        d = add(d, parent.local_to_global_offset())
-    return d</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.next_handler"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.next_handler"><code class="name flex">
 <span>def <span class="ident">next_handler</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3778,7 +3057,7 @@ key_down() method to pass the event to the parent widget.</p>
         return self.parent</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.notify_attention_loss"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.notify_attention_loss"><code class="name flex">
 <span>def <span class="ident">notify_attention_loss</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3799,69 +3078,7 @@ key_down() method to pass the event to the parent widget.</p>
         widget = parent</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.parent_resized"><code class="name flex">
-<span>def <span class="ident">parent_resized</span></span>(<span>self, dw, dh)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Called when the widget's parent changes size as a result of assigning to its width, height or size
-attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
-the widget according to its anchor attribute.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>dw</code></strong></dt>
-<dd>Width</dd>
-<dt><strong><code>dh</code></strong></dt>
-<dd>Height</dd>
-</dl></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def parent_resized(self, dw, dh):
-    &#34;&#34;&#34;
-    Called when the widget&#39;s parent changes size as a result of assigning to its width, height or size
-    attributes, with (dw, dh) being the amount of the change. The default is to resize and/or reposition
-    the widget according to its anchor attribute.
-
-    Args:
-        dw:  Width
-        dh:  Height
-
-    &#34;&#34;&#34;
-    debug_resize = self.debug_resize or self.parent.debug_resize
-
-    if debug_resize:
-        self.logger.info(&#34;Widget_parent_resized %s, by (%s, %s)&#34;, self, dw, dh)
-
-    left, top, width, height = self._rect
-    move = False
-    resize = False
-    anchor = self.anchor
-
-    if dw and &#39;r&#39; in anchor:
-        if &#39;l&#39; in anchor:
-            resize = True
-            width += dw
-        else:
-            move = True
-            left += dw
-    if dh and &#39;b&#39; in anchor:
-        if &#39;t&#39; in anchor:
-            resize = True
-            height += dh
-        else:
-            move = True
-            top += dh
-
-    if resize:
-        if debug_resize:
-            self.logger.info(&#34;Widget.parent_resized: changing rect to (%s, %s, %s, %s)&#34;, left, top, width, height)
-        self.rect = (left, top, width, height)
-    elif move:
-        if debug_resize:
-            self.logger.info(&#34;Widget.parent_resized: moving to (%s,%s)&#34;, left, top)
-        self._rect.topleft = (left, top)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.predict"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.predict"><code class="name flex">
 <span>def <span class="ident">predict</span></span>(<span>self, kwds, name)</span>
 </code></dt>
 <dd>
@@ -3875,7 +3092,7 @@ the widget according to its anchor attribute.</p>
         return Theme.getThemeRoot().get(self.__class__, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.predict_attr"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.predict_attr"><code class="name flex">
 <span>def <span class="ident">predict_attr</span></span>(<span>self, kwds, name)</span>
 </code></dt>
 <dd>
@@ -3889,7 +3106,7 @@ the widget according to its anchor attribute.</p>
         return getattr(self, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.predict_font"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.predict_font"><code class="name flex">
 <span>def <span class="ident">predict_font</span></span>(<span>self, kwds, name='font')</span>
 </code></dt>
 <dd>
@@ -3900,7 +3117,7 @@ the widget according to its anchor attribute.</p>
     return kwds.get(name) or Theme.getThemeRoot().get_font(self.__class__, name)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.present"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.present"><code class="name flex">
 <span>def <span class="ident">present</span></span>(<span>self, centered=True)</span>
 </code></dt>
 <dd>
@@ -3932,13 +3149,8 @@ default is True</dd>
     Returns:  The value returned from the modal widget
 
     &#34;&#34;&#34;
-    #
-    # TODO  Something about my re-packaging caused me to lose
-    # visibility to the root widget;  Figure it out later
-    #
-    # print &#34;Widget: presenting with rect&#34;, self.rect
-    # root = self.get_root()
-    root = Widget.root_widget
+
+    root = self.get_root()
     if centered:
         self.center = root.center
     root.add(self)
@@ -3950,7 +3162,7 @@ default is True</dd>
     return self.modal_result</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.relative_mode"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.relative_mode"><code class="name flex">
 <span>def <span class="ident">relative_mode</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -3992,7 +3204,7 @@ press occurs.</p></section>
     return False</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.remove"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.remove"><code class="name flex">
 <span>def <span class="ident">remove</span></span>(<span>self, widget)</span>
 </code></dt>
 <dd>
@@ -4011,14 +3223,12 @@ press occurs.</p></section>
 
     Args:
         widget:  The widget to act on
-
-
     &#34;&#34;&#34;
     if widget in self.subwidgets:
         widget.set_parent(None)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.remove_anchor"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.remove_anchor"><code class="name flex">
 <span>def <span class="ident">remove_anchor</span></span>(<span>self, mode)</span>
 </code></dt>
 <dd>
@@ -4043,41 +3253,7 @@ press occurs.</p></section>
     self.anchor = &#34;&#34;.join(set(self.anchor) - set(mode))</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.resized"><code class="name flex">
-<span>def <span class="ident">resized</span></span>(<span>self, dw, dh)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Called when the widget changes size as a result of assigning to its width, height or size attributes,
-with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>dw</code></strong></dt>
-<dd>width</dd>
-<dt><strong><code>dh</code></strong></dt>
-<dd>height</dd>
-</dl>
-<p>Returns:</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def resized(self, dw, dh):
-    &#34;&#34;&#34;
-    Called when the widget changes size as a result of assigning to its width, height or size attributes,
-    with (dw, dh) being the amount of the change. The default is to call parent_resized on each of its subwidgets.
-
-    Args:
-        dw:  width
-        dh:  height
-
-    Returns:
-
-    &#34;&#34;&#34;
-    if self.debug_resize:
-        self.logger.info(&#34;Widget.resized: %s by: (%s, %s) to %s&#34;, self, dw, dh, self.size)
-    for widget in self.subwidgets:
-        widget.parent_resized(dw, dh)</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.set"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, **kwds)</span>
 </code></dt>
 <dd>
@@ -4092,7 +3268,7 @@ with (dw, dh) being the amount of the change. The default is to call parent_resi
         setattr(self, name, value)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_is_gl_container"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_is_gl_container"><code class="name flex">
 <span>def <span class="ident">set_is_gl_container</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
@@ -4103,7 +3279,7 @@ with (dw, dh) being the amount of the change. The default is to call parent_resi
     self._is_gl_container = x</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_menu_bar"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_menu_bar"><code class="name flex">
 <span>def <span class="ident">set_menu_bar</span></span>(<span>self, menubar)</span>
 </code></dt>
 <dd>
@@ -4122,7 +3298,7 @@ with (dw, dh) being the amount of the change. The default is to call parent_resi
             self.add(menubar)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_parent"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_parent"><code class="name flex">
 <span>def <span class="ident">set_parent</span></span>(<span>self, parent)</span>
 </code></dt>
 <dd>
@@ -4149,23 +3325,7 @@ methods of the parent widget. Setting the parent to None removes the widget from
             parent._add(self)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_rect"><code class="name flex">
-<span>def <span class="ident">set_rect</span></span>(<span>self, x)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def set_rect(self, x):
-    old_size = self._rect.size
-    self._rect = Rect(x)
-    #
-    # Python 3 update no more tuples
-    # self._resized(old_size)
-    self._resized(old_size[0], old_size[1])</code></pre>
-</details>
-</dd>
-<dt id="albow.core.Widget.Widget.set_resizing"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_resizing"><code class="name flex">
 <span>def <span class="ident">set_resizing</span></span>(<span>self, axis, value)</span>
 </code></dt>
 <dd>
@@ -4182,7 +3342,7 @@ methods of the parent widget. Setting the parent to None removes the widget from
     self.anchor = anchor + value</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_size_for_text"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_size_for_text"><code class="name flex">
 <span>def <span class="ident">set_size_for_text</span></span>(<span>self, width, nLines=1)</span>
 </code></dt>
 <dd>
@@ -4209,8 +3369,6 @@ Defaults to 1</dd>
         width:  The number of pixels or some sample text
 
         nLines: The number of lines in the text;  Defaults to 1
-
-
     &#34;&#34;&#34;
     if width is not None:
         font = self.font
@@ -4226,7 +3384,7 @@ Defaults to 1</dd>
         self.size = (width, height * nLines + d)</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.set_visible"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.set_visible"><code class="name flex">
 <span>def <span class="ident">set_visible</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
@@ -4237,7 +3395,7 @@ Defaults to 1</dd>
     self._visible = x</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.setup_cursor"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.setup_cursor"><code class="name flex">
 <span>def <span class="ident">setup_cursor</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -4252,7 +3410,7 @@ Defaults to 1</dd>
         Widget.current_cursor = cursor</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.shrink_wrap"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.shrink_wrap"><code class="name flex">
 <span>def <span class="ident">shrink_wrap</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -4267,14 +3425,10 @@ Defaults to 1</dd>
         rmax = rects.pop()
         for r in rects:
             rmax = rmax.union(r)
-        #
-        # Updated python 3 -- hasii
-        #
-        # self._rect.size = add(rmax.topleft, rmax.bottomright)
         self._rect.size = list(add(rmax.topleft, rmax.bottomright))</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.tab_to_first"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.tab_to_first"><code class="name flex">
 <span>def <span class="ident">tab_to_first</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -4287,7 +3441,7 @@ Defaults to 1</dd>
         chain[0].focus()</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Widget.Widget.tab_to_next"><code class="name flex">
+<dt id="albow.core.ui.Widget.Widget.tab_to_next"><code class="name flex">
 <span>def <span class="ident">tab_to_next</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -4306,6 +3460,19 @@ Defaults to 1</dd>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="albow.core.ui.AlbowRect.AlbowRect" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></b></code>:
+<ul class="hlist">
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.anchor" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.global_to_local" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.local_to_global" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.parent_resized" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.rect" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.core.ui.AlbowRect.AlbowRect.resized" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -4318,132 +3485,102 @@ Defaults to 1</dd>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
+<li><code><a title="albow.core.ui" href="index.html">albow.core.ui</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="albow.core.Widget.Widget" href="#albow.core.Widget.Widget">Widget</a></code></h4>
+<h4><code><a title="albow.core.ui.Widget.Widget" href="#albow.core.ui.Widget.Widget">Widget</a></code></h4>
 <ul class="">
-<li><code><a title="albow.core.Widget.Widget.add" href="#albow.core.Widget.Widget.add">add</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_anchor" href="#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_centered" href="#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.anchor" href="#albow.core.Widget.Widget.anchor">anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.attention_lost" href="#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_color" href="#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_image" href="#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_color" href="#albow.core.Widget.Widget.border_color">border_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_width" href="#albow.core.Widget.Widget.border_width">border_width</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bottom" href="#albow.core.Widget.Widget.bottom">bottom</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bottomleft" href="#albow.core.Widget.Widget.bottomleft">bottomleft</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bottomright" href="#albow.core.Widget.Widget.bottomright">bottomright</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_handler" href="#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.cancel_response" href="#albow.core.Widget.Widget.cancel_response">cancel_response</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.center" href="#albow.core.Widget.Widget.center">center</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.centerx" href="#albow.core.Widget.Widget.centerx">centerx</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.centery" href="#albow.core.Widget.Widget.centery">centery</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.collect_tab_order" href="#albow.core.Widget.Widget.collect_tab_order">collect_tab_order</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.current_cursor" href="#albow.core.Widget.Widget.current_cursor">current_cursor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.debugSubWidgetDraws" href="#albow.core.Widget.Widget.debugSubWidgetDraws">debugSubWidgetDraws</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.debug_rect" href="#albow.core.Widget.Widget.debug_rect">debug_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.debug_resize" href="#albow.core.Widget.Widget.debug_resize">debug_resize</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.diagnose_subsurface_problem" href="#albow.core.Widget.Widget.diagnose_subsurface_problem">diagnose_subsurface_problem</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.dismiss" href="#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.dispatch_attention_loss" href="#albow.core.Widget.Widget.dispatch_attention_loss">dispatch_attention_loss</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.dispatch_key" href="#albow.core.Widget.Widget.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw" href="#albow.core.Widget.Widget.draw">draw</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw_all" href="#albow.core.Widget.Widget.draw_all">draw_all</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw_over" href="#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.enter_response" href="#albow.core.Widget.Widget.enter_response">enter_response</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.fg_color" href="#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.find_widget" href="#albow.core.Widget.Widget.find_widget">find_widget</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus" href="#albow.core.Widget.Widget.focus">focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus_chain" href="#albow.core.Widget.Widget.focus_chain">focus_chain</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus_on" href="#albow.core.Widget.Widget.focus_on">focus_on</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus_switch" href="#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focused_on" href="#albow.core.Widget.Widget.focused_on">focused_on</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.font" href="#albow.core.Widget.Widget.font">font</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_cursor" href="#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_focus" href="#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_global_rect" href="#albow.core.Widget.Widget.get_global_rect">get_global_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_is_gl_container" href="#albow.core.Widget.Widget.get_is_gl_container">get_is_gl_container</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_menu_bar" href="#albow.core.Widget.Widget.get_menu_bar">get_menu_bar</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_mouse" href="#albow.core.Widget.Widget.get_mouse">get_mouse</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_rect" href="#albow.core.Widget.Widget.get_rect">get_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_root" href="#albow.core.Widget.Widget.get_root">get_root</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_tab_order" href="#albow.core.Widget.Widget.get_tab_order">get_tab_order</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_visible" href="#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.gl_draw_all" href="#albow.core.Widget.Widget.gl_draw_all">gl_draw_all</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.gl_draw_self" href="#albow.core.Widget.Widget.gl_draw_self">gl_draw_self</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.global_to_local" href="#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.handle_command" href="#albow.core.Widget.Widget.handle_command">handle_command</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.handle_event" href="#albow.core.Widget.Widget.handle_event">handle_event</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.handle_mouse" href="#albow.core.Widget.Widget.handle_mouse">handle_mouse</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.has_focus" href="#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.height" href="#albow.core.Widget.Widget.height">height</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.inherited" href="#albow.core.Widget.Widget.inherited">inherited</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.init_attr" href="#albow.core.Widget.Widget.init_attr">init_attr</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.invalidate" href="#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.is_inside" href="#albow.core.Widget.Widget.is_inside">is_inside</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_down" href="#albow.core.Widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_up" href="#albow.core.Widget.Widget.key_up">key_up</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.lastDebugRectTime" href="#albow.core.Widget.Widget.lastDebugRectTime">lastDebugRectTime</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.left" href="#albow.core.Widget.Widget.left">left</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.local_to_global" href="#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.local_to_global_offset" href="#albow.core.Widget.Widget.local_to_global_offset">local_to_global_offset</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.margin" href="#albow.core.Widget.Widget.margin">margin</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.menu_bar" href="#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.midbottom" href="#albow.core.Widget.Widget.midbottom">midbottom</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.midleft" href="#albow.core.Widget.Widget.midleft">midleft</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.midright" href="#albow.core.Widget.Widget.midright">midright</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.midtop" href="#albow.core.Widget.Widget.midtop">midtop</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.next_handler" href="#albow.core.Widget.Widget.next_handler">next_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.notify_attention_loss" href="#albow.core.Widget.Widget.notify_attention_loss">notify_attention_loss</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent" href="#albow.core.Widget.Widget.parent">parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent_resized" href="#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.predict" href="#albow.core.Widget.Widget.predict">predict</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.predict_attr" href="#albow.core.Widget.Widget.predict_attr">predict_attr</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.predict_font" href="#albow.core.Widget.Widget.predict_font">predict_font</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.present" href="#albow.core.Widget.Widget.present">present</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.rect" href="#albow.core.Widget.Widget.rect">rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.redraw_every_event" href="#albow.core.Widget.Widget.redraw_every_event">redraw_every_event</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.relative_mode" href="#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove" href="#albow.core.Widget.Widget.remove">remove</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.resized" href="#albow.core.Widget.Widget.resized">resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.resizing_axes" href="#albow.core.Widget.Widget.resizing_axes">resizing_axes</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.resizing_values" href="#albow.core.Widget.Widget.resizing_values">resizing_values</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.right" href="#albow.core.Widget.Widget.right">right</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.root_widget" href="#albow.core.Widget.Widget.root_widget">root_widget</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.scale_bg" href="#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.sel_color" href="#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set" href="#albow.core.Widget.Widget.set">set</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_is_gl_container" href="#albow.core.Widget.Widget.set_is_gl_container">set_is_gl_container</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_menu_bar" href="#albow.core.Widget.Widget.set_menu_bar">set_menu_bar</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_parent" href="#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_rect" href="#albow.core.Widget.Widget.set_rect">set_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_resizing" href="#albow.core.Widget.Widget.set_resizing">set_resizing</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_visible" href="#albow.core.Widget.Widget.set_visible">set_visible</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.setup_cursor" href="#albow.core.Widget.Widget.setup_cursor">setup_cursor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.shrink_wrap" href="#albow.core.Widget.Widget.shrink_wrap">shrink_wrap</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.size" href="#albow.core.Widget.Widget.size">size</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.subwidgets" href="#albow.core.Widget.Widget.subwidgets">subwidgets</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.tab_stop" href="#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.tab_to_first" href="#albow.core.Widget.Widget.tab_to_first">tab_to_first</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.tab_to_next" href="#albow.core.Widget.Widget.tab_to_next">tab_to_next</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.top" href="#albow.core.Widget.Widget.top">top</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.topleft" href="#albow.core.Widget.Widget.topleft">topleft</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.topright" href="#albow.core.Widget.Widget.topright">topright</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.visible" href="#albow.core.Widget.Widget.visible">visible</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.width" href="#albow.core.Widget.Widget.width">width</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add" href="#albow.core.ui.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_anchor" href="#albow.core.ui.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_centered" href="#albow.core.ui.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.attention_lost" href="#albow.core.ui.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.augment_mouse_event" href="#albow.core.ui.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_color" href="#albow.core.ui.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_image" href="#albow.core.ui.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_color" href="#albow.core.ui.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_width" href="#albow.core.ui.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_handler" href="#albow.core.ui.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_parent_handler" href="#albow.core.ui.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.cancel_response" href="#albow.core.ui.Widget.Widget.cancel_response">cancel_response</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.collect_tab_order" href="#albow.core.ui.Widget.Widget.collect_tab_order">collect_tab_order</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.current_cursor" href="#albow.core.ui.Widget.Widget.current_cursor">current_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.debugSubWidgetDraws" href="#albow.core.ui.Widget.Widget.debugSubWidgetDraws">debugSubWidgetDraws</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.debug_rect" href="#albow.core.ui.Widget.Widget.debug_rect">debug_rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.defer_drawing" href="#albow.core.ui.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.diagnose_subsurface_problem" href="#albow.core.ui.Widget.Widget.diagnose_subsurface_problem">diagnose_subsurface_problem</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.dismiss" href="#albow.core.ui.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.dispatch_attention_loss" href="#albow.core.ui.Widget.Widget.dispatch_attention_loss">dispatch_attention_loss</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.dispatch_key" href="#albow.core.ui.Widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw" href="#albow.core.ui.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw_all" href="#albow.core.ui.Widget.Widget.draw_all">draw_all</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw_over" href="#albow.core.ui.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.enter_response" href="#albow.core.ui.Widget.Widget.enter_response">enter_response</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.fg_color" href="#albow.core.ui.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.find_widget" href="#albow.core.ui.Widget.Widget.find_widget">find_widget</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus" href="#albow.core.ui.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus_chain" href="#albow.core.ui.Widget.Widget.focus_chain">focus_chain</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus_on" href="#albow.core.ui.Widget.Widget.focus_on">focus_on</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus_switch" href="#albow.core.ui.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focused_on" href="#albow.core.ui.Widget.Widget.focused_on">focused_on</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.font" href="#albow.core.ui.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_cursor" href="#albow.core.ui.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_focus" href="#albow.core.ui.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_is_gl_container" href="#albow.core.ui.Widget.Widget.get_is_gl_container">get_is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_margin_rect" href="#albow.core.ui.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_menu_bar" href="#albow.core.ui.Widget.Widget.get_menu_bar">get_menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_mouse" href="#albow.core.ui.Widget.Widget.get_mouse">get_mouse</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_root" href="#albow.core.ui.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_tab_order" href="#albow.core.ui.Widget.Widget.get_tab_order">get_tab_order</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_top_widget" href="#albow.core.ui.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_visible" href="#albow.core.ui.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.gl_draw_all" href="#albow.core.ui.Widget.Widget.gl_draw_all">gl_draw_all</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.gl_draw_self" href="#albow.core.ui.Widget.Widget.gl_draw_self">gl_draw_self</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.handle_command" href="#albow.core.ui.Widget.Widget.handle_command">handle_command</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.handle_event" href="#albow.core.ui.Widget.Widget.handle_event">handle_event</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.handle_mouse" href="#albow.core.ui.Widget.Widget.handle_mouse">handle_mouse</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.has_focus" href="#albow.core.ui.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.inherited" href="#albow.core.ui.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.init_attr" href="#albow.core.ui.Widget.Widget.init_attr">init_attr</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.invalidate" href="#albow.core.ui.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.is_gl_container" href="#albow.core.ui.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.is_inside" href="#albow.core.ui.Widget.Widget.is_inside">is_inside</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_down" href="#albow.core.ui.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_up" href="#albow.core.ui.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.lastDebugRectTime" href="#albow.core.ui.Widget.Widget.lastDebugRectTime">lastDebugRectTime</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.margin" href="#albow.core.ui.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.menu_bar" href="#albow.core.ui.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.next_handler" href="#albow.core.ui.Widget.Widget.next_handler">next_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.notify_attention_loss" href="#albow.core.ui.Widget.Widget.notify_attention_loss">notify_attention_loss</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.parent" href="#albow.core.ui.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.predict" href="#albow.core.ui.Widget.Widget.predict">predict</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.predict_attr" href="#albow.core.ui.Widget.Widget.predict_attr">predict_attr</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.predict_font" href="#albow.core.ui.Widget.Widget.predict_font">predict_font</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.present" href="#albow.core.ui.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.redraw_every_event" href="#albow.core.ui.Widget.Widget.redraw_every_event">redraw_every_event</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.relative_mode" href="#albow.core.ui.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove" href="#albow.core.ui.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove_anchor" href="#albow.core.ui.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.resizing_axes" href="#albow.core.ui.Widget.Widget.resizing_axes">resizing_axes</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.resizing_values" href="#albow.core.ui.Widget.Widget.resizing_values">resizing_values</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.root_widget" href="#albow.core.ui.Widget.Widget.root_widget">root_widget</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.scale_bg" href="#albow.core.ui.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.sel_color" href="#albow.core.ui.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set" href="#albow.core.ui.Widget.Widget.set">set</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_is_gl_container" href="#albow.core.ui.Widget.Widget.set_is_gl_container">set_is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_menu_bar" href="#albow.core.ui.Widget.Widget.set_menu_bar">set_menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_parent" href="#albow.core.ui.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_resizing" href="#albow.core.ui.Widget.Widget.set_resizing">set_resizing</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_size_for_text" href="#albow.core.ui.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_visible" href="#albow.core.ui.Widget.Widget.set_visible">set_visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.setup_cursor" href="#albow.core.ui.Widget.Widget.setup_cursor">setup_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.shrink_wrap" href="#albow.core.ui.Widget.Widget.shrink_wrap">shrink_wrap</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.tab_stop" href="#albow.core.ui.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.tab_to_first" href="#albow.core.ui.Widget.Widget.tab_to_first">tab_to_first</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.tab_to_next" href="#albow.core.ui.Widget.Widget.tab_to_next">tab_to_next</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.visible" href="#albow.core.ui.Widget.Widget.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>

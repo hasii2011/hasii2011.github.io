@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.2" />
-<title>albow.core.Screen API documentation</title>
+<title>albow.core.ui.Screen API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -17,15 +17,15 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>albow.core.Screen</code></h1>
+<h1 class="title">Module <code>albow.core.ui.Screen</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">from pygame.event import Event
 
-from albow.core.Shell import Shell
-from albow.core.Widget import Widget
+from albow.core.ui.Shell import Shell
+from albow.core.ui.Widget import Widget
 
 
 class Screen(Widget):
@@ -87,7 +87,7 @@ class Screen(Widget):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="albow.core.Screen.Screen"><code class="flex name class">
+<dt id="albow.core.ui.Screen.Screen"><code class="flex name class">
 <span>class <span class="ident">Screen</span></span>
 <span>(</span><span>shell, **kwds)</span>
 </code></dt>
@@ -153,17 +153,19 @@ class Screen(Widget):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="albow.core.Widget.Widget" href="Widget.html#albow.core.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.Widget.Widget" href="Widget.html#albow.core.ui.Widget.Widget">Widget</a></li>
+<li><a title="albow.core.ui.AlbowRect.AlbowRect" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect">AlbowRect</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li>albow.demo.screens.BaseDemoScreen.BaseDemoScreen</li>
 <li>albow.demo.screens.LaunchDemosScreen.LaunchDemosScreen</li>
-<li><a title="albow.text.TextScreen.TextScreen" href="../text/TextScreen.html#albow.text.TextScreen.TextScreen">TextScreen</a></li>
+<li>albow.demo.AlbowDemoScreen.AlbowDemoScreen</li>
+<li><a title="albow.text.TextScreen.TextScreen" href="../../text/TextScreen.html#albow.text.TextScreen.TextScreen">TextScreen</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="albow.core.Screen.Screen.begin_frame"><code class="name flex">
+<dt id="albow.core.ui.Screen.Screen.begin_frame"><code class="name flex">
 <span>def <span class="ident">begin_frame</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -175,7 +177,7 @@ class Screen(Widget):
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Screen.Screen.enter_screen"><code class="name flex">
+<dt id="albow.core.ui.Screen.Screen.enter_screen"><code class="name flex">
 <span>def <span class="ident">enter_screen</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -189,7 +191,7 @@ class Screen(Widget):
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Screen.Screen.leave_screen"><code class="name flex">
+<dt id="albow.core.ui.Screen.Screen.leave_screen"><code class="name flex">
 <span>def <span class="ident">leave_screen</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -203,7 +205,7 @@ class Screen(Widget):
     pass</code></pre>
 </details>
 </dd>
-<dt id="albow.core.Screen.Screen.timer_event"><code class="name flex">
+<dt id="albow.core.ui.Screen.Screen.timer_event"><code class="name flex">
 <span>def <span class="ident">timer_event</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
@@ -229,58 +231,58 @@ implementation returns true so that a display update is performed.</p>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="albow.core.Widget.Widget" href="Widget.html#albow.core.Widget.Widget">Widget</a></b></code>:
+<li><code><b><a title="albow.core.ui.Widget.Widget" href="Widget.html#albow.core.ui.Widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
-<li><code><a title="albow.core.Widget.Widget.add" href="Widget.html#albow.core.Widget.Widget.add">add</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_anchor" href="Widget.html#albow.core.Widget.Widget.add_anchor">add_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.add_centered" href="Widget.html#albow.core.Widget.Widget.add_centered">add_centered</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.anchor" href="Widget.html#albow.core.Widget.Widget.anchor">anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.attention_lost" href="Widget.html#albow.core.Widget.Widget.attention_lost">attention_lost</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.augment_mouse_event" href="Widget.html#albow.core.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_color" href="Widget.html#albow.core.Widget.Widget.bg_color">bg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.bg_image" href="Widget.html#albow.core.Widget.Widget.bg_image">bg_image</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_color" href="Widget.html#albow.core.Widget.Widget.border_color">border_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.border_width" href="Widget.html#albow.core.Widget.Widget.border_width">border_width</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_handler" href="Widget.html#albow.core.Widget.Widget.call_handler">call_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.call_parent_handler" href="Widget.html#albow.core.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.defer_drawing" href="Widget.html#albow.core.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.dismiss" href="Widget.html#albow.core.Widget.Widget.dismiss">dismiss</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw" href="Widget.html#albow.core.Widget.Widget.draw">draw</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.draw_over" href="Widget.html#albow.core.Widget.Widget.draw_over">draw_over</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.fg_color" href="Widget.html#albow.core.Widget.Widget.fg_color">fg_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus" href="Widget.html#albow.core.Widget.Widget.focus">focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.focus_switch" href="Widget.html#albow.core.Widget.Widget.focus_switch">focus_switch</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.font" href="Widget.html#albow.core.Widget.Widget.font">font</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_cursor" href="Widget.html#albow.core.Widget.Widget.get_cursor">get_cursor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_focus" href="Widget.html#albow.core.Widget.Widget.get_focus">get_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_margin_rect" href="Widget.html#albow.core.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_root" href="Widget.html#albow.core.Widget.Widget.get_root">get_root</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_top_widget" href="Widget.html#albow.core.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.get_visible" href="Widget.html#albow.core.Widget.Widget.get_visible">get_visible</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.global_to_local" href="Widget.html#albow.core.Widget.Widget.global_to_local">global_to_local</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.has_focus" href="Widget.html#albow.core.Widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.inherited" href="Widget.html#albow.core.Widget.Widget.inherited">inherited</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.invalidate" href="Widget.html#albow.core.Widget.Widget.invalidate">invalidate</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.is_gl_container" href="Widget.html#albow.core.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_down" href="Widget.html#albow.core.Widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.key_up" href="Widget.html#albow.core.Widget.Widget.key_up">key_up</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.local_to_global" href="Widget.html#albow.core.Widget.Widget.local_to_global">local_to_global</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.margin" href="Widget.html#albow.core.Widget.Widget.margin">margin</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.menu_bar" href="Widget.html#albow.core.Widget.Widget.menu_bar">menu_bar</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent" href="Widget.html#albow.core.Widget.Widget.parent">parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.parent_resized" href="Widget.html#albow.core.Widget.Widget.parent_resized">parent_resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.present" href="Widget.html#albow.core.Widget.Widget.present">present</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.rect" href="Widget.html#albow.core.Widget.Widget.rect">rect</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.relative_mode" href="Widget.html#albow.core.Widget.Widget.relative_mode">relative_mode</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove" href="Widget.html#albow.core.Widget.Widget.remove">remove</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.remove_anchor" href="Widget.html#albow.core.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.resized" href="Widget.html#albow.core.Widget.Widget.resized">resized</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.scale_bg" href="Widget.html#albow.core.Widget.Widget.scale_bg">scale_bg</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.sel_color" href="Widget.html#albow.core.Widget.Widget.sel_color">sel_color</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_parent" href="Widget.html#albow.core.Widget.Widget.set_parent">set_parent</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.set_size_for_text" href="Widget.html#albow.core.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.tab_stop" href="Widget.html#albow.core.Widget.Widget.tab_stop">tab_stop</a></code></li>
-<li><code><a title="albow.core.Widget.Widget.visible" href="Widget.html#albow.core.Widget.Widget.visible">visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add" href="Widget.html#albow.core.ui.Widget.Widget.add">add</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_anchor" href="Widget.html#albow.core.ui.Widget.Widget.add_anchor">add_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.add_centered" href="Widget.html#albow.core.ui.Widget.Widget.add_centered">add_centered</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.anchor" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.anchor">anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.attention_lost" href="Widget.html#albow.core.ui.Widget.Widget.attention_lost">attention_lost</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.augment_mouse_event" href="Widget.html#albow.core.ui.Widget.Widget.augment_mouse_event">augment_mouse_event</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_color" href="Widget.html#albow.core.ui.Widget.Widget.bg_color">bg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.bg_image" href="Widget.html#albow.core.ui.Widget.Widget.bg_image">bg_image</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_color" href="Widget.html#albow.core.ui.Widget.Widget.border_color">border_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.border_width" href="Widget.html#albow.core.ui.Widget.Widget.border_width">border_width</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_handler" href="Widget.html#albow.core.ui.Widget.Widget.call_handler">call_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.call_parent_handler" href="Widget.html#albow.core.ui.Widget.Widget.call_parent_handler">call_parent_handler</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.defer_drawing" href="Widget.html#albow.core.ui.Widget.Widget.defer_drawing">defer_drawing</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.dismiss" href="Widget.html#albow.core.ui.Widget.Widget.dismiss">dismiss</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw" href="Widget.html#albow.core.ui.Widget.Widget.draw">draw</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.draw_over" href="Widget.html#albow.core.ui.Widget.Widget.draw_over">draw_over</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.fg_color" href="Widget.html#albow.core.ui.Widget.Widget.fg_color">fg_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus" href="Widget.html#albow.core.ui.Widget.Widget.focus">focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.focus_switch" href="Widget.html#albow.core.ui.Widget.Widget.focus_switch">focus_switch</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.font" href="Widget.html#albow.core.ui.Widget.Widget.font">font</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_cursor" href="Widget.html#albow.core.ui.Widget.Widget.get_cursor">get_cursor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_focus" href="Widget.html#albow.core.ui.Widget.Widget.get_focus">get_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_margin_rect" href="Widget.html#albow.core.ui.Widget.Widget.get_margin_rect">get_margin_rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_root" href="Widget.html#albow.core.ui.Widget.Widget.get_root">get_root</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_top_widget" href="Widget.html#albow.core.ui.Widget.Widget.get_top_widget">get_top_widget</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.get_visible" href="Widget.html#albow.core.ui.Widget.Widget.get_visible">get_visible</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.global_to_local" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.global_to_local">global_to_local</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.has_focus" href="Widget.html#albow.core.ui.Widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.inherited" href="Widget.html#albow.core.ui.Widget.Widget.inherited">inherited</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.invalidate" href="Widget.html#albow.core.ui.Widget.Widget.invalidate">invalidate</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.is_gl_container" href="Widget.html#albow.core.ui.Widget.Widget.is_gl_container">is_gl_container</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_down" href="Widget.html#albow.core.ui.Widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.key_up" href="Widget.html#albow.core.ui.Widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.local_to_global" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.local_to_global">local_to_global</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.margin" href="Widget.html#albow.core.ui.Widget.Widget.margin">margin</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.menu_bar" href="Widget.html#albow.core.ui.Widget.Widget.menu_bar">menu_bar</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.parent" href="Widget.html#albow.core.ui.Widget.Widget.parent">parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.parent_resized" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.parent_resized">parent_resized</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.present" href="Widget.html#albow.core.ui.Widget.Widget.present">present</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.rect" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.rect">rect</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.relative_mode" href="Widget.html#albow.core.ui.Widget.Widget.relative_mode">relative_mode</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove" href="Widget.html#albow.core.ui.Widget.Widget.remove">remove</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.remove_anchor" href="Widget.html#albow.core.ui.Widget.Widget.remove_anchor">remove_anchor</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.resized" href="AlbowRect.html#albow.core.ui.AlbowRect.AlbowRect.resized">resized</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.scale_bg" href="Widget.html#albow.core.ui.Widget.Widget.scale_bg">scale_bg</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.sel_color" href="Widget.html#albow.core.ui.Widget.Widget.sel_color">sel_color</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_parent" href="Widget.html#albow.core.ui.Widget.Widget.set_parent">set_parent</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.set_size_for_text" href="Widget.html#albow.core.ui.Widget.Widget.set_size_for_text">set_size_for_text</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.tab_stop" href="Widget.html#albow.core.ui.Widget.Widget.tab_stop">tab_stop</a></code></li>
+<li><code><a title="albow.core.ui.Widget.Widget.visible" href="Widget.html#albow.core.ui.Widget.Widget.visible">visible</a></code></li>
 </ul>
 </li>
 </ul>
@@ -296,18 +298,18 @@ implementation returns true so that a display update is performed.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="albow.core" href="index.html">albow.core</a></code></li>
+<li><code><a title="albow.core.ui" href="index.html">albow.core.ui</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="albow.core.Screen.Screen" href="#albow.core.Screen.Screen">Screen</a></code></h4>
+<h4><code><a title="albow.core.ui.Screen.Screen" href="#albow.core.ui.Screen.Screen">Screen</a></code></h4>
 <ul class="">
-<li><code><a title="albow.core.Screen.Screen.begin_frame" href="#albow.core.Screen.Screen.begin_frame">begin_frame</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.enter_screen" href="#albow.core.Screen.Screen.enter_screen">enter_screen</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.leave_screen" href="#albow.core.Screen.Screen.leave_screen">leave_screen</a></code></li>
-<li><code><a title="albow.core.Screen.Screen.timer_event" href="#albow.core.Screen.Screen.timer_event">timer_event</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.begin_frame" href="#albow.core.ui.Screen.Screen.begin_frame">begin_frame</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.enter_screen" href="#albow.core.ui.Screen.Screen.enter_screen">enter_screen</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.leave_screen" href="#albow.core.ui.Screen.Screen.leave_screen">leave_screen</a></code></li>
+<li><code><a title="albow.core.ui.Screen.Screen.timer_event" href="#albow.core.ui.Screen.Screen.timer_event">timer_event</a></code></li>
 </ul>
 </li>
 </ul>
