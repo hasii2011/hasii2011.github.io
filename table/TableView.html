@@ -100,8 +100,8 @@ class TableView(Column):
         columns = self.predict_attr(kwds, &#39;columns&#39;)
 
         if row_height is None:
-            font = self.predict_font(kwds)
-            row_height = font.get_linesize()
+            predictedFont = self.predict_font(kwds)
+            row_height    = predictedFont.get_linesize()
 
         if header_height is None:
             header_height = row_height
@@ -129,8 +129,8 @@ class TableView(Column):
         super().__init__(contents, align=&#39;l&#39;, spacing=s, **kwds)
         if header:
             header.font = self.header_font or self.font
-            header.fg_color = fg_color = self.header_fg_color or self.fg_color
-            header.bg_color = bg_color = self.header_bg_color or self.bg_color
+            header.fg_color = self.header_fg_color or self.fg_color
+            header.bg_color = self.header_bg_color or self.bg_color
         rows.font = self.font
         rows.fg_color = self.fg_color
         rows.bg_color = self.bg_color
@@ -178,7 +178,7 @@ class TableView(Column):
 
             cell_rect: The rect is the rectangle corresponding to the header area,
 
-            theTableColumn:  The table column header to render
+            tableColumn:  The table column header to render
         &#34;&#34;&#34;
         text = tableColumn.format(data)
         self.draw_text_cell(surf, text, cell_rect, tableColumn.alignment, self.font)
@@ -213,7 +213,7 @@ class TableView(Column):
         &#34;&#34;&#34;
         pass
 
-    def row_is_selected(self, theRowNumber: int, theEvent: Event) -&gt; bool:
+    def row_is_selected(self, theRowNumber: int, theEvent: Event = None) -&gt; bool:
         &#34;&#34;&#34;
         Should return true if *theRowNumber* is considered selected. The default implementation
         always returns *False*.  *StarStar*, &#39;quotequote&#39;
@@ -359,8 +359,8 @@ the font.</li>
         columns = self.predict_attr(kwds, &#39;columns&#39;)
 
         if row_height is None:
-            font = self.predict_font(kwds)
-            row_height = font.get_linesize()
+            predictedFont = self.predict_font(kwds)
+            row_height    = predictedFont.get_linesize()
 
         if header_height is None:
             header_height = row_height
@@ -388,8 +388,8 @@ the font.</li>
         super().__init__(contents, align=&#39;l&#39;, spacing=s, **kwds)
         if header:
             header.font = self.header_font or self.font
-            header.fg_color = fg_color = self.header_fg_color or self.fg_color
-            header.bg_color = bg_color = self.header_bg_color or self.bg_color
+            header.fg_color = self.header_fg_color or self.fg_color
+            header.bg_color = self.header_bg_color or self.bg_color
         rows.font = self.font
         rows.fg_color = self.fg_color
         rows.bg_color = self.bg_color
@@ -437,7 +437,7 @@ the font.</li>
 
             cell_rect: The rect is the rectangle corresponding to the header area,
 
-            theTableColumn:  The table column header to render
+            tableColumn:  The table column header to render
         &#34;&#34;&#34;
         text = tableColumn.format(data)
         self.draw_text_cell(surf, text, cell_rect, tableColumn.alignment, self.font)
@@ -472,7 +472,7 @@ the font.</li>
         &#34;&#34;&#34;
         pass
 
-    def row_is_selected(self, theRowNumber: int, theEvent: Event) -&gt; bool:
+    def row_is_selected(self, theRowNumber: int, theEvent: Event = None) -&gt; bool:
         &#34;&#34;&#34;
         Should return true if *theRowNumber* is considered selected. The default implementation
         always returns *False*.  *StarStar*, &#39;quotequote&#39;
@@ -650,7 +650,7 @@ specified by TableColumn's format_string and rendered using the widget's font.</
 <dd>The data to display</dd>
 <dt><strong><code>cell_rect</code></strong></dt>
 <dd>The rect is the rectangle corresponding to the header area,</dd>
-<dt><strong><code>theTableColumn</code></strong></dt>
+<dt><strong><code>tableColumn</code></strong></dt>
 <dd>The table column header to render</dd>
 </dl></section>
 <details class="source">
@@ -668,7 +668,7 @@ specified by TableColumn's format_string and rendered using the widget's font.</
 
         cell_rect: The rect is the rectangle corresponding to the header area,
 
-        theTableColumn:  The table column header to render
+        tableColumn:  The table column header to render
     &#34;&#34;&#34;
     text = tableColumn.format(data)
     self.draw_text_cell(surf, text, cell_rect, tableColumn.alignment, self.font)</code></pre>
@@ -749,7 +749,7 @@ can be formatted as specified by the corresponding TableColumn. Must be implemen
 </details>
 </dd>
 <dt id="albow.table.TableView.TableView.row_is_selected"><code class="name flex">
-<span>def <span class="ident">row_is_selected</span></span>(<span>self, theRowNumber, theEvent)</span>
+<span>def <span class="ident">row_is_selected</span></span>(<span>self, theRowNumber, theEvent=None)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Should return true if <em>theRowNumber</em> is considered selected. The default implementation
@@ -766,7 +766,7 @@ always returns <em>False</em>.
 </dl></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def row_is_selected(self, theRowNumber: int, theEvent: Event) -&gt; bool:
+<pre><code class="python">def row_is_selected(self, theRowNumber: int, theEvent: Event = None) -&gt; bool:
     &#34;&#34;&#34;
     Should return true if *theRowNumber* is considered selected. The default implementation
     always returns *False*.  *StarStar*, &#39;quotequote&#39;

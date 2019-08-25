@@ -22,7 +22,10 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">from pygame import Rect
+<pre><code class="python">from logging import Logger
+from logging import getLogger
+
+from pygame import Rect
 
 from albow.core.ui.Widget import Widget
 
@@ -38,17 +41,23 @@ class Grid(Widget):
 
     def __init__(self, rows, row_spacing=DEFAULT_GRID_ROW_SPACING, column_spacing=DEFAULT_GRID_COLUMN_SPACING, **kwds):
 
+        self.logger: Logger = getLogger(__name__)
+
         self.margin = m = kwds.pop(&#39;margin&#39;, self.margin)
-        col_widths = [0] * len(rows[0])
+
+        col_widths  = [0] * len(rows[0])
         row_heights = [0] * len(rows)
         for j, row in enumerate(rows):
             for i, widget in enumerate(row):
                 if widget:
-                    col_widths[i] = max(col_widths[i], widget.width)
+                    col_widths[i]  = max(col_widths[i], widget.width)
                     row_heights[j] = max(row_heights[j], widget.height)
 
-        row_top = 0
+        self.logger.info(f&#34;column_spacing: {column_spacing}&#34;)
+        self.logger.info(f&#34;... col_widths:   {col_widths} ... row_heights: {row_heights}&#34;)
 
+        row_top:  int = 0
+        col_left: int = 0
         for j, row in enumerate(rows):
             h = row_heights[j]
             y = m + row_top + h // 2
@@ -58,21 +67,21 @@ class Grid(Widget):
                 w = col_widths[i]
                 if widget:
                     x = m + col_left
+                    self.logger.info(f&#34;x: {x} m: {m} + col_left: {col_left}&#34;)
                     widget.midleft = (x, y)
                 col_left += w + column_spacing
             row_top += h + row_spacing
         #
         # Bad warning on &#34;local variable col_left might be referenced before assignment&#34;
         #
-        width = max(1, col_left - column_spacing)
+        width  = max(1, col_left - column_spacing)
         height = max(1, row_top - row_spacing)
         m2 = 2 * m
-        r = Rect(0, 0, width + m2, height + m2)
-        #
-        # print &#34;albow.controls.Grid: r =&#34;, r
-        # print &#34;...col_widths =&#34;, col_widths
-        # print &#34;...row_heights =&#34;, row_heights
-        #
+        self.logger.info(f&#34;width: {width} height: {height} m2: {m2}&#34;)
+        r = Rect(0, 0, width + m2 + column_spacing, height + m2)
+
+        self.logger.info(f&#34;r = {r}&#34;)
+
         super().__init__(r, **kwds)
         self.add(rows)
 
@@ -138,17 +147,23 @@ ize and position relative to its parent.</p>
 
     def __init__(self, rows, row_spacing=DEFAULT_GRID_ROW_SPACING, column_spacing=DEFAULT_GRID_COLUMN_SPACING, **kwds):
 
+        self.logger: Logger = getLogger(__name__)
+
         self.margin = m = kwds.pop(&#39;margin&#39;, self.margin)
-        col_widths = [0] * len(rows[0])
+
+        col_widths  = [0] * len(rows[0])
         row_heights = [0] * len(rows)
         for j, row in enumerate(rows):
             for i, widget in enumerate(row):
                 if widget:
-                    col_widths[i] = max(col_widths[i], widget.width)
+                    col_widths[i]  = max(col_widths[i], widget.width)
                     row_heights[j] = max(row_heights[j], widget.height)
 
-        row_top = 0
+        self.logger.info(f&#34;column_spacing: {column_spacing}&#34;)
+        self.logger.info(f&#34;... col_widths:   {col_widths} ... row_heights: {row_heights}&#34;)
 
+        row_top:  int = 0
+        col_left: int = 0
         for j, row in enumerate(rows):
             h = row_heights[j]
             y = m + row_top + h // 2
@@ -158,21 +173,21 @@ ize and position relative to its parent.</p>
                 w = col_widths[i]
                 if widget:
                     x = m + col_left
+                    self.logger.info(f&#34;x: {x} m: {m} + col_left: {col_left}&#34;)
                     widget.midleft = (x, y)
                 col_left += w + column_spacing
             row_top += h + row_spacing
         #
         # Bad warning on &#34;local variable col_left might be referenced before assignment&#34;
         #
-        width = max(1, col_left - column_spacing)
+        width  = max(1, col_left - column_spacing)
         height = max(1, row_top - row_spacing)
         m2 = 2 * m
-        r = Rect(0, 0, width + m2, height + m2)
-        #
-        # print &#34;albow.controls.Grid: r =&#34;, r
-        # print &#34;...col_widths =&#34;, col_widths
-        # print &#34;...row_heights =&#34;, row_heights
-        #
+        self.logger.info(f&#34;width: {width} height: {height} m2: {m2}&#34;)
+        r = Rect(0, 0, width + m2 + column_spacing, height + m2)
+
+        self.logger.info(f&#34;r = {r}&#34;)
+
         super().__init__(r, **kwds)
         self.add(rows)
 

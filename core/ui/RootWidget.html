@@ -23,6 +23,7 @@
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">from typing import List
+from typing import cast
 
 import sys
 
@@ -58,7 +59,6 @@ from albow.media.MusicUtilities import MusicUtilities
 
 
 class RootWidget(Widget):
-
 
     &#34;&#34;&#34;
     For the GUI to function, there must be exactly one instance of RootWidget. It implements the main event loop
@@ -147,7 +147,7 @@ class RootWidget(Widget):
         is called.
 
         &#34;&#34;&#34;
-        self.run_modal(None)
+        self.run_modal(cast(Widget, None))
 
     def run_modal(self, modal_widget: Widget):
         &#34;&#34;&#34;
@@ -401,7 +401,6 @@ but could be a subsurface of it.</p>
 <summary>Source code</summary>
 <pre><code class="python">class RootWidget(Widget):
 
-
     &#34;&#34;&#34;
     For the GUI to function, there must be exactly one instance of RootWidget. It implements the main event loop
     and serves as the ultimate container for all other visible widgets.
@@ -489,7 +488,7 @@ but could be a subsurface of it.</p>
         is called.
 
         &#34;&#34;&#34;
-        self.run_modal(None)
+        self.run_modal(cast(Widget, None))
 
     def run_modal(self, modal_widget: Widget):
         &#34;&#34;&#34;
@@ -961,7 +960,7 @@ is called.</p></section>
     is called.
 
     &#34;&#34;&#34;
-    self.run_modal(None)</code></pre>
+    self.run_modal(cast(Widget, None))</code></pre>
 </details>
 </dd>
 <dt id="albow.core.ui.RootWidget.RootWidget.run_modal"><code class="name flex">

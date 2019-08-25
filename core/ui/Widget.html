@@ -22,7 +22,9 @@
 <section id="section-intro">
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">import sys
+<pre><code class="python">from typing import cast
+
+import sys
 import logging
 
 from datetime import datetime
@@ -325,7 +327,7 @@ class Widget(AlbowRect):
     def _remove(self, widget):
         self.subwidgets.remove(widget)
         if self.focus_switch is widget:
-            self.focus_switch = None
+            self.focus_switch = cast(Widget, None)
 
     def draw_all(self, surface):
 
@@ -376,7 +378,7 @@ class Widget(AlbowRect):
             currentTime = datetime.now()
             if currentTime &gt;= Widget.lastDebugRectTime:
 
-                print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
+                self.logger.info(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
                 Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)
 
@@ -1272,7 +1274,7 @@ ize and position relative to its parent.</p>
     def _remove(self, widget):
         self.subwidgets.remove(widget)
         if self.focus_switch is widget:
-            self.focus_switch = None
+            self.focus_switch = cast(Widget, None)
 
     def draw_all(self, surface):
 
@@ -1323,7 +1325,7 @@ ize and position relative to its parent.</p>
             currentTime = datetime.now()
             if currentTime &gt;= Widget.lastDebugRectTime:
 
-                print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
+                self.logger.info(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
                 Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)
 
@@ -1915,9 +1917,9 @@ ize and position relative to its parent.</p>
 <li><a title="albow.containers.GridView.GridView" href="../../containers/GridView.html#albow.containers.GridView.GridView">GridView</a></li>
 <li><a title="albow.core.ui.Screen.Screen" href="Screen.html#albow.core.ui.Screen.Screen">Screen</a></li>
 <li>albow.demo.screens.DemoAnimationWidget.DemoAnimationWidget</li>
+<li><a title="albow.layout.Grid.Grid" href="../../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
 <li><a title="albow.dialog.Dialog.Dialog" href="../../dialog/Dialog.html#albow.dialog.Dialog.Dialog">Dialog</a></li>
 <li><a title="albow.input.TextEditor.TextEditor" href="../../input/TextEditor.html#albow.input.TextEditor.TextEditor">TextEditor</a></li>
-<li><a title="albow.layout.Grid.Grid" href="../../layout/Grid.html#albow.layout.Grid.Grid">Grid</a></li>
 <li><a title="albow.widgets.CheckWidget.CheckWidget" href="../../widgets/CheckWidget.html#albow.widgets.CheckWidget.CheckWidget">CheckWidget</a></li>
 <li><a title="albow.media.MusicVolumeControl.MusicVolumeControl" href="../../media/MusicVolumeControl.html#albow.media.MusicVolumeControl.MusicVolumeControl">MusicVolumeControl</a></li>
 <li><a title="albow.dialog.DirectoryPathView.DirectoryPathView" href="../../dialog/DirectoryPathView.html#albow.dialog.DirectoryPathView.DirectoryPathView">DirectoryPathView</a></li>
@@ -2293,7 +2295,7 @@ parent widget if you don't want to handle it.</p>
         currentTime = datetime.now()
         if currentTime &gt;= Widget.lastDebugRectTime:
 
-            print(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
+            self.logger.info(f&#34;Drawing subwidget &#39;{widget}&#39; of &#39;{self} with rect &#39;{sub_rect}&#39;&#34;)
 
             Widget.lastDebugRectTime = currentTime + timedelta(seconds=4)</code></pre>
 </details>

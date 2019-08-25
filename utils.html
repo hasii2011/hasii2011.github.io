@@ -31,7 +31,7 @@ from pygame import Rect
 # from pygame.locals import SRCALPHA
 
 
-def overridable_property(name: str, doc:str =None):
+def overridable_property(name: str, doc: str =None):
     &#34;&#34;&#34;
     Creates a property which calls methods _get_xxx_ and _set_xxx_ of
     the underlying object to get and set the property value, so that
@@ -365,7 +365,7 @@ the property's behaviour may be easily overridden by subclasses.</p>
 </dl></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def overridable_property(name: str, doc:str =None):
+<pre><code class="python">def overridable_property(name: str, doc: str =None):
     &#34;&#34;&#34;
     Creates a property which calls methods _get_xxx_ and _set_xxx_ of
     the underlying object to get and set the property value, so that

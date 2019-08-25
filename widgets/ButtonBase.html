@@ -42,7 +42,7 @@ class ButtonBase(Control):
     a method in the subclass.
     &#34;&#34;&#34;
 
-    def mouse_down(self, event):
+    def mouse_down(self, theEvent: event):
         if self.enabled:
             self._highlighted = True
 
@@ -54,11 +54,11 @@ class ButtonBase(Control):
             self._highlighted = state
             self.invalidate()
 
-    def mouse_up(self, event):
-        if event in self:
+    def mouse_up(self, theEvent: event):
+        if theEvent in self:
             self._highlighted = False
             if self.enabled:
-                self.call_handler(&#39;action&#39;)
+                self.call_handler(&#39;action&#39;)     # TODO Fix this by using another &#39;mixin&#39; shared with the Widget class
 
     def get_highlighted(self):
         return self._highlighted
@@ -109,7 +109,7 @@ upport for calling a function when the button is clicked.</p>
     a method in the subclass.
     &#34;&#34;&#34;
 
-    def mouse_down(self, event):
+    def mouse_down(self, theEvent: event):
         if self.enabled:
             self._highlighted = True
 
@@ -121,11 +121,11 @@ upport for calling a function when the button is clicked.</p>
             self._highlighted = state
             self.invalidate()
 
-    def mouse_up(self, event):
-        if event in self:
+    def mouse_up(self, theEvent: event):
+        if theEvent in self:
             self._highlighted = False
             if self.enabled:
-                self.call_handler(&#39;action&#39;)
+                self.call_handler(&#39;action&#39;)     # TODO Fix this by using another &#39;mixin&#39; shared with the Widget class
 
     def get_highlighted(self):
         return self._highlighted
@@ -190,13 +190,13 @@ a method in the subclass.</p></section>
 </details>
 </dd>
 <dt id="albow.widgets.ButtonBase.ButtonBase.mouse_down"><code class="name flex">
-<span>def <span class="ident">mouse_down</span></span>(<span>self, event)</span>
+<span>def <span class="ident">mouse_down</span></span>(<span>self, theEvent)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def mouse_down(self, event):
+<pre><code class="python">def mouse_down(self, theEvent: event):
     if self.enabled:
         self._highlighted = True</code></pre>
 </details>
@@ -218,17 +218,17 @@ a method in the subclass.</p></section>
 </details>
 </dd>
 <dt id="albow.widgets.ButtonBase.ButtonBase.mouse_up"><code class="name flex">
-<span>def <span class="ident">mouse_up</span></span>(<span>self, event)</span>
+<span>def <span class="ident">mouse_up</span></span>(<span>self, theEvent)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def mouse_up(self, event):
-    if event in self:
+<pre><code class="python">def mouse_up(self, theEvent: event):
+    if theEvent in self:
         self._highlighted = False
         if self.enabled:
-            self.call_handler(&#39;action&#39;)</code></pre>
+            self.call_handler(&#39;action&#39;)     # TODO Fix this by using another &#39;mixin&#39; shared with the Widget class</code></pre>
 </details>
 </dd>
 <dt id="albow.widgets.ButtonBase.ButtonBase.set_enabled"><code class="name flex">

@@ -117,7 +117,13 @@ class TextBox(Widget):
         return self._text
 
     def setText(self, theNewText: str):
+        &#34;&#34;&#34;
+        Replace the contents with this new text
 
+        Args:
+            theNewText:  The text that replaces what was in the widget
+
+        &#34;&#34;&#34;
         lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
         self.lines = lines
         self.debugJustInserted = True
@@ -151,6 +157,37 @@ class TextBox(Widget):
 
         oldLines += f&#34;{newText}{TextBox.LINE_SEPARATOR}&#34;
         self.setText(oldLines)
+
+    def insertText(self, theNewLine):
+        &#34;&#34;&#34;
+
+        Args:
+            theNewLine:
+        &#34;&#34;&#34;
+        oldLines: str = self.getText()
+        oldLines = f&#34;{theNewLine}{TextBox.LINE_SEPARATOR}&#34; + oldLines
+        self.setText(oldLines)
+
+    def deleteText(self, theLineNumber: int = 0):
+        &#34;&#34;&#34;
+        Lines are defined as strings of text separated by `TextBox.LINE_SEPARATOR`
+        Can&#39;t delete any lines if widget is empty (operation is ignored)
+        Can&#39;t delete a line that does not exist (operation is ignored)
+
+        Args:
+            theLineNumber:  The line number to delete;  Defaults to the first line (numbered 0)
+        &#34;&#34;&#34;
+        if len(self.getText()) &gt; 0:
+            oldLines: str       = self.getText()
+            splits:   List[str] = oldLines.splitlines(True)
+            self.logger.info(f&#39;splits: {splits}&#39;)
+
+            if len(splits) &gt; theLineNumber:
+                del splits[theLineNumber]
+                newLines: str = &#39;&#39;.join(splits)
+                self.logger.info(f&#39;newLines: {newLines}&#39;)
+
+                self.setText(newLines)
 
     def clearText(self):
         &#34;&#34;&#34;
@@ -394,7 +431,13 @@ One text line is one row</dd>
         return self._text
 
     def setText(self, theNewText: str):
+        &#34;&#34;&#34;
+        Replace the contents with this new text
 
+        Args:
+            theNewText:  The text that replaces what was in the widget
+
+        &#34;&#34;&#34;
         lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
         self.lines = lines
         self.debugJustInserted = True
@@ -428,6 +471,37 @@ One text line is one row</dd>
 
         oldLines += f&#34;{newText}{TextBox.LINE_SEPARATOR}&#34;
         self.setText(oldLines)
+
+    def insertText(self, theNewLine):
+        &#34;&#34;&#34;
+
+        Args:
+            theNewLine:
+        &#34;&#34;&#34;
+        oldLines: str = self.getText()
+        oldLines = f&#34;{theNewLine}{TextBox.LINE_SEPARATOR}&#34; + oldLines
+        self.setText(oldLines)
+
+    def deleteText(self, theLineNumber: int = 0):
+        &#34;&#34;&#34;
+        Lines are defined as strings of text separated by `TextBox.LINE_SEPARATOR`
+        Can&#39;t delete any lines if widget is empty (operation is ignored)
+        Can&#39;t delete a line that does not exist (operation is ignored)
+
+        Args:
+            theLineNumber:  The line number to delete;  Defaults to the first line (numbered 0)
+        &#34;&#34;&#34;
+        if len(self.getText()) &gt; 0:
+            oldLines: str       = self.getText()
+            splits:   List[str] = oldLines.splitlines(True)
+            self.logger.info(f&#39;splits: {splits}&#39;)
+
+            if len(splits) &gt; theLineNumber:
+                del splits[theLineNumber]
+                newLines: str = &#39;&#39;.join(splits)
+                self.logger.info(f&#39;newLines: {newLines}&#39;)
+
+                self.setText(newLines)
 
     def clearText(self):
         &#34;&#34;&#34;
@@ -694,6 +768,43 @@ This appends the new text to the contents of the widget</p>
     return size</code></pre>
 </details>
 </dd>
+<dt id="albow.widgets.TextBox.TextBox.deleteText"><code class="name flex">
+<span>def <span class="ident">deleteText</span></span>(<span>self, theLineNumber=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Lines are defined as strings of text separated by <a title="albow.widgets.TextBox.TextBox.LINE_SEPARATOR" href="#albow.widgets.TextBox.TextBox.LINE_SEPARATOR"><code>TextBox.LINE_SEPARATOR</code></a>
+Can't delete any lines if widget is empty (operation is ignored)
+Can't delete a line that does not exist (operation is ignored)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theLineNumber</code></strong></dt>
+<dd>The line number to delete;
+Defaults to the first line (numbered 0)</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def deleteText(self, theLineNumber: int = 0):
+    &#34;&#34;&#34;
+    Lines are defined as strings of text separated by `TextBox.LINE_SEPARATOR`
+    Can&#39;t delete any lines if widget is empty (operation is ignored)
+    Can&#39;t delete a line that does not exist (operation is ignored)
+
+    Args:
+        theLineNumber:  The line number to delete;  Defaults to the first line (numbered 0)
+    &#34;&#34;&#34;
+    if len(self.getText()) &gt; 0:
+        oldLines: str       = self.getText()
+        splits:   List[str] = oldLines.splitlines(True)
+        self.logger.info(f&#39;splits: {splits}&#39;)
+
+        if len(splits) &gt; theLineNumber:
+            del splits[theLineNumber]
+            newLines: str = &#39;&#39;.join(splits)
+            self.logger.info(f&#39;newLines: {newLines}&#39;)
+
+            self.setText(newLines)</code></pre>
+</details>
+</dd>
 <dt id="albow.widgets.TextBox.TextBox.draw"><code class="name flex">
 <span>def <span class="ident">draw</span></span>(<span>self, theSurface)</span>
 </code></dt>
@@ -788,6 +899,25 @@ This appends the new text to the contents of the widget</p>
     return self._text</code></pre>
 </details>
 </dd>
+<dt id="albow.widgets.TextBox.TextBox.insertText"><code class="name flex">
+<span>def <span class="ident">insertText</span></span>(<span>self, theNewLine)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="args">Args</h2>
+<p>theNewLine:</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def insertText(self, theNewLine):
+    &#34;&#34;&#34;
+
+    Args:
+        theNewLine:
+    &#34;&#34;&#34;
+    oldLines: str = self.getText()
+    oldLines = f&#34;{theNewLine}{TextBox.LINE_SEPARATOR}&#34; + oldLines
+    self.setText(oldLines)</code></pre>
+</details>
+</dd>
 <dt id="albow.widgets.TextBox.TextBox.mouse_down"><code class="name flex">
 <span>def <span class="ident">mouse_down</span></span>(<span>self, theEvent)</span>
 </code></dt>
@@ -874,11 +1004,22 @@ This appends the new text to the contents of the widget</p>
 <span>def <span class="ident">setText</span></span>(<span>self, theNewText)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<section class="desc"><p>Replace the contents with this new text</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>theNewText</code></strong></dt>
+<dd>The text that replaces what was in the widget</dd>
+</dl></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def setText(self, theNewText: str):
+    &#34;&#34;&#34;
+    Replace the contents with this new text
 
+    Args:
+        theNewText:  The text that replaces what was in the widget
+
+    &#34;&#34;&#34;
     lines = theNewText.strip().split(TextBox.LINE_SEPARATOR)
     self.lines = lines
     self.debugJustInserted = True
@@ -971,6 +1112,7 @@ This appends the new text to the contents of the widget</p>
 <li><code><a title="albow.widgets.TextBox.TextBox.addText" href="#albow.widgets.TextBox.TextBox.addText">addText</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.clearText" href="#albow.widgets.TextBox.TextBox.clearText">clearText</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.computeBoxSize" href="#albow.widgets.TextBox.TextBox.computeBoxSize">computeBoxSize</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.deleteText" href="#albow.widgets.TextBox.TextBox.deleteText">deleteText</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.disabled_bg_color" href="#albow.widgets.TextBox.TextBox.disabled_bg_color">disabled_bg_color</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.disabled_color" href="#albow.widgets.TextBox.TextBox.disabled_color">disabled_color</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.draw" href="#albow.widgets.TextBox.TextBox.draw">draw</a></code></li>
@@ -981,6 +1123,7 @@ This appends the new text to the contents of the widget</p>
 <li><code><a title="albow.widgets.TextBox.TextBox.firstRow" href="#albow.widgets.TextBox.TextBox.firstRow">firstRow</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.getLastInsertedVisible" href="#albow.widgets.TextBox.TextBox.getLastInsertedVisible">getLastInsertedVisible</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.getText" href="#albow.widgets.TextBox.TextBox.getText">getText</a></code></li>
+<li><code><a title="albow.widgets.TextBox.TextBox.insertText" href="#albow.widgets.TextBox.TextBox.insertText">insertText</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.lastIdx" href="#albow.widgets.TextBox.TextBox.lastIdx">lastIdx</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.lastInsertedVisible" href="#albow.widgets.TextBox.TextBox.lastInsertedVisible">lastInsertedVisible</a></code></li>
 <li><code><a title="albow.widgets.TextBox.TextBox.lines" href="#albow.widgets.TextBox.TextBox.lines">lines</a></code></li>
